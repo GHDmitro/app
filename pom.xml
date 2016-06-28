@@ -32,8 +32,13 @@
 	</pluginRepositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<spring.mvc>4.2.1.RELEASE</spring.mvc>
+		<javax.servlet>3.1.0</javax.servlet>
+		<jstl.version>1.2</jstl.version>
+		<spring.security>3.2.0.RELEASE</spring.security>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -51,8 +56,14 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
+
+
+
 		</dependency>
 	</dependencies>
+
+
+
 	<profiles>
 		<profile>
 			<!-- When built in OpenShift the 'openshift' profile will be used when 
