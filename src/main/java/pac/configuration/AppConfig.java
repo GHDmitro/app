@@ -56,7 +56,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
     {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setShowSql(true);
-        adapter.setGenerateDdl(true);
+        adapter.setGenerateDdl(false);
         adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");
 
         return adapter;
