@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/App/src/main/webapp/images/";
+    private String pathToImg = "../pages/imagesUsers/";
 
 //    private ContactService contactService;
 
