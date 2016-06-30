@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/Users/macbookair/IdeaProjects/ComInternetPlatform/src/main/resources/";
+    private String pathToImg = "/App/src/main/webapp/images/";
 
 //    private ContactService contactService;
 
