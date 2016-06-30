@@ -66,7 +66,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://$OPENSHIFT_MYSQL_DB_PORTHOST:$OPENSHIFT_MYSQL_DB_PORT/app");
+        ds.setUrl("jdbc:mysql://127.5.38.2:3306/app");
 //        ds.setUrl("jdbc:mysql://localhost:3307/dbComIntPlat");
 //        ds.setUsername("root");
         ds.setUsername("admin8T4vpC5");
