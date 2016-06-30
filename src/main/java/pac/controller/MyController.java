@@ -506,11 +506,6 @@ public class MyController {
         model.addAttribute("login", login);
         model.addAttribute("type", type);
 
-//        if (type.equalsIgnoreCase("customer")) {
-//            return "customer";
-//        } else if (type.equalsIgnoreCase("client")) {
-//            return "client";
-//        } else throw new TypeIsNotFound();
         return "login";
 
     }
