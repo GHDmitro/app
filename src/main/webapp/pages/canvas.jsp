@@ -78,35 +78,6 @@
         <img  id="pageHeader1" src="<c:url value="/pages/images/header1.jpg"/> ">
         <!-- индикаторы слайдов -->
     </div>
-    <%--<div class="container" >--%>
-        <%--<div class="row " id="photoCont">--%>
-            <%--&lt;%&ndash;row-offcanvas row-offcanvas-right&ndash;%&gt;--%>
-            <%--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >--%>
-                <%--&lt;%&ndash;<p class="pull-right visible-xs">&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>&ndash;%&gt;--%>
-                <%--&lt;%&ndash;</p>&ndash;%&gt;--%>
-                <%--<!-- <div class="page-header"> -->--%>
-                <%--&lt;%&ndash;<img class="page-header" id="pageHeader1" src="<c:url value="/pages/images/header.jpg"/> " >&ndash;%&gt;--%>
-                <%--<!--  <h1>Hello, world!</h1>--%>
-                 <%--<p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p> -->--%>
-                <%--<!-- </div> -->--%>
-                <%--<!--           <div class="row">--%>
-                            <%--<div class="col-xs-6 col-lg-4">--%>
-                              <%--<h2>Heading</h2>--%>
-                              <%--<div class="col-md-5">--%>
-                              <%--<img class="featurette-image img-responsive center-block" src="img/header.jpg.jpg" height="960" width="1280" alt="Изображение загружается">--%>
-                              <%--</div>--%>
-                              <%--<! <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>--%>
-                            <%--</div> -->--%>
-            <%--</div>--%>
-            <%--&lt;%&ndash;<div class="col-md-12">&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<img class="page-header" id="pageHeader2" src="<c:url value="/pages/images/header.jpg"/> ">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-            <%--&lt;%&ndash;<div class="col-xs-12">&ndash;%&gt;--%>
-                <%--&lt;%&ndash;<img class="page-header" id="pageHeader3" src="<c:url value="/pages/images/header.jpg"/> ">&ndash;%&gt;--%>
-            <%--&lt;%&ndash;</div>&ndash;%&gt;--%>
-        <%--</div>--%>
-    <%--</div>--%>
     <c:forEach items="${listPositions}" var="position">
     <div class="container marketing">
         <%--<hr class="featurette-divider">--%>
@@ -138,9 +109,10 @@
                         <sec:authorize access="hasRole('customer')">
 
                                 <li><p class="lead"><c:out value="Колличество:   ${position.product.amount}"/> </p> </li>
-                                <li><p><a class="btn btn-default" href="<c:url value="/changePosition/${position.id}"/> " role="button" style="width: 110px">Изменить &raquo;</a></p></li>
-                                <li><p><a class="btn btn-default" href="<c:url value="/deletePosition/${position.id}"/> " role="button" style="width: 110px" >Удалить &raquo;</a></p></li>
-
+                            <div class="btn-group btn-group-justified">
+                                <a class="btn btn-success" href="<c:url value="/changePosition/${position.id}"/> " role="button" style="width: 110px">Изменить &raquo;</a>
+                                <a class="btn btn-success" href="<c:url value="/deletePosition/${position.id}"/> " role="button" style="width: 110px" >Удалить &raquo;</a>
+                            </div>
                         </sec:authorize>
                         <sec:authorize access="hasRole('client')">
                             <form action="<c:url value="/bookingPosition"/> " method="post">

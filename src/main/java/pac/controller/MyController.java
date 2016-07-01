@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "../pages/usersImages/";
+    private String pathToImg = "/Users/macbookair/IdeaProjects/App/src/main/webapp/img/";
 
 //    private ContactService contactService;
 
@@ -471,6 +471,8 @@ public class MyController {
     public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto) {
         byte[] arr;
         try {
+//            String string =  request.getSession().getServletContext().getRealPath("/webapp/");
+//            System.out.println(string +" --------------------------------------------------------------------------");
             File file = new File(pathToImg + refPhoto + ".png");
             if (!file.exists()) {
                 file = new File(pathToImg+"defaultPhotoToScreen.png");
