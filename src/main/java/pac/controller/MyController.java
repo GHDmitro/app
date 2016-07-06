@@ -70,7 +70,7 @@ public class MyController {
                     Calendar c = Calendar.getInstance();
                     list1.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
                             new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                            "Описание товара", "defaultPhotoToScreen", "Код модели", 000000)));
+                            "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
                     list = list1;
                 }
                 model.addAttribute("listPositions", list);
