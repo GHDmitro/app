@@ -44,7 +44,7 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String pathToImg = "/var/lib/openshift/PROJECT_ID/App/src/main/webapp/img/";
-    private String IMAGE_EXTENTION = ".png";
+    private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
     @RequestMapping("/")
@@ -175,7 +175,7 @@ public class MyController {
         Account account = accountService.findAccount(login);
 
         System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
-        String ref = codeOfModel + login+IMAGE_EXTENTION;
+        String ref = codeOfModel + login+ IMAGE_EXTENSION;
 
         String relativepath = "/img/";
         String absolutePath = request.getRealPath(relativepath);
@@ -255,10 +255,10 @@ public class MyController {
             Account account1 = accountService.findAccount(userName);
             Account account = accountService.findAccount(login);
             if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + IMAGE_EXTENTION;
+                String fileName = pathToImg + login + IMAGE_EXTENSION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
+                    model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
                     model.addAttribute("login", login);
                 } else {
                     // не существует
@@ -283,10 +283,10 @@ public class MyController {
             Account account = accountService.findAccount(login);
             System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + IMAGE_EXTENTION;
+                String fileName = pathToImg + login + IMAGE_EXTENSION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
+                    model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
                     System.out.println("model.addAttribute(\"refPhoto\", login);");
                 } else {
                     // не существует
@@ -315,14 +315,14 @@ public class MyController {
         System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
         if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
             if (!photo.isEmpty()) {
-                File file = new File(pathToImg + login + IMAGE_EXTENTION);
+                File file = new File(pathToImg + login + IMAGE_EXTENSION);
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
 
-                File file1 = new File(pathToImg + login + IMAGE_EXTENTION);
+                File file1 = new File(pathToImg + login + IMAGE_EXTENSION);
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -330,7 +330,7 @@ public class MyController {
                     e.printStackTrace();
                 }
             }
-            model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
+            model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
 
             if (email.length() == 0) {
                 model.addAttribute("email", account.getEmail());
@@ -433,7 +433,7 @@ public class MyController {
                 product.setCodeOfModel(codeOfModel);
                 File source = new File(fileName);
                 if (source.exists()) {
-                    String refPhoto = codeOfModel + account.getLogin() +IMAGE_EXTENTION;
+                    String refPhoto = codeOfModel + account.getLogin() + IMAGE_EXTENSION;
                     File dest = new File(pathToImg + refPhoto );
                     try {
                         FileUtils.copyFile(source, dest);  //
