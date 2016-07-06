@@ -177,7 +177,7 @@ public class MyController {
         System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
         String ref = codeOfModel + login+IMAGE_EXTENTION;
 
-        String relativepath = "/webapp/img/";
+        String relativepath = "/img/";
         String absolutePath = request.getRealPath(relativepath);
         String path = absolutePath+"/"+ref;
 
