@@ -44,7 +44,7 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String pathToImg = "/var/lib/openshift/PROJECT_ID/App/src/main/webapp/img/";
-
+    private String IMAGE_EXTENTION = ".png";
 //    private ContactService contactService;
 
     @RequestMapping("/")
@@ -174,7 +174,7 @@ public class MyController {
         Account account = accountService.findAccount(login);
 
         System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
-        String ref = codeOfModel + login;
+        String ref = codeOfModel + login+IMAGE_EXTENTION;
 
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
@@ -185,10 +185,7 @@ public class MyController {
         } else {
             if (!photo.isEmpty()) {
 
-//                String relativeWebPath = "/webapp/img/";
-//                String absoluteFilePath =
-
-                File file = new File(pathToImg + ref + ".png");
+                File file = new File(pathToImg + ref);
                 try (FileOutputStream fileOut = new FileOutputStream(file)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -197,7 +194,7 @@ public class MyController {
                 }
                 product = new Product(name, description, ref, codeOfModel, capacity);
 
-            } else product = new Product(name, description, "defaultPhotoToScreen", codeOfModel, capacity);
+            } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
 
         }
 
@@ -245,14 +242,14 @@ public class MyController {
             Account account1 = accountService.findAccount(userName);
             Account account = accountService.findAccount(login);
             if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + ".png";
+                String fileName = pathToImg + login + IMAGE_EXTENTION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login);
+                    model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
                     model.addAttribute("login", login);
                 } else {
                     // не существует
-                    model.addAttribute("refPhoto", "defaultPhotoToScreen");
+                    model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
                     model.addAttribute("login", login);
                 }
 
@@ -273,14 +270,14 @@ public class MyController {
             Account account = accountService.findAccount(login);
             System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + ".png";
+                String fileName = pathToImg + login + IMAGE_EXTENTION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login);
+                    model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
                     System.out.println("model.addAttribute(\"refPhoto\", login);");
                 } else {
                     // не существует
-                    model.addAttribute("refPhoto", "defaultPhotoToScreen");
+                    model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
                     System.out.println("model.addAttribute(\"refPhoto\", \"defaultPhotoToScreen\");");
                 }
 
@@ -305,14 +302,14 @@ public class MyController {
         System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
         if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
             if (!photo.isEmpty()) {
-                File file = new File(pathToImg + login + ".png");
+                File file = new File(pathToImg + login + IMAGE_EXTENTION);
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
 
-                File file1 = new File(pathToImg + login + ".png");
+                File file1 = new File(pathToImg + login + IMAGE_EXTENTION);
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -320,7 +317,7 @@ public class MyController {
                     e.printStackTrace();
                 }
             }
-            model.addAttribute("refPhoto", login);
+            model.addAttribute("refPhoto", login+IMAGE_EXTENTION);
 
             if (email.length() == 0) {
                 model.addAttribute("email", account.getEmail());
@@ -363,7 +360,7 @@ public class MyController {
 //                System.out.println(list.get(0).getProduct().getName() + " --------- ");
 //            }
 
-            File file = new File(pathToImg + refPhoto + ".png");
+            File file = new File(pathToImg + refPhoto);
             if (file.exists()) {
                 file.delete();
             }
@@ -379,7 +376,7 @@ public class MyController {
                 Calendar c = Calendar.getInstance();
                 set.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
                         new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                        "Описание товара", "defaultPhotoToScreen", "Код модели", 000000)));
+                        "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
                 setPositions = set;
             }
             model.addAttribute("listPositions", setPositions);
@@ -419,12 +416,12 @@ public class MyController {
             }
             if (!codeOfModel.isEmpty()) {
 
-                String fileName = pathToImg + product.getPhoto() + ".png";
+                String fileName = pathToImg + product.getPhoto();
                 product.setCodeOfModel(codeOfModel);
                 File source = new File(fileName);
                 if (source.exists()) {
-                    String refPhoto = codeOfModel + account.getLogin();
-                    File dest = new File(pathToImg + refPhoto + ".png");
+                    String refPhoto = codeOfModel + account.getLogin() +IMAGE_EXTENTION;
+                    File dest = new File(pathToImg + refPhoto );
                     try {
                         FileUtils.copyFile(source, dest);  //
                     } catch (IOException e) {
@@ -445,13 +442,13 @@ public class MyController {
             }
             if (!photo.isEmpty()) {
 
-                File file = new File(pathToImg + product.getPhoto() + ".png");
+                File file = new File(pathToImg + product.getPhoto());
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
-                File file1 = new File(pathToImg + product.getPhoto() + ".png");
+                File file1 = new File(pathToImg + product.getPhoto() );
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -477,7 +474,7 @@ public class MyController {
         try {
 //            String string =  request.getSession().getServletContext().getRealPath("/webapp/");
 //            System.out.println(string +" --------------------------------------------------------------------------");
-            File file = new File(pathToImg + refPhoto + ".png");
+            File file = new File(pathToImg + refPhoto);
             if (!file.exists()) {
                 file = new File(pathToImg+"defaultPhotoToScreen.png");
             }
