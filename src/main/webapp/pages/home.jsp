@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,38 +88,6 @@
     </nav>
 
 
-    <%--<nav class="navbar navbar-fixed-top navbar-inverse">--%>
-        <%--<div class="container">--%>
-            <%--<div class="navbar-header">--%>
-                <%--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"--%>
-                        <%--aria-expanded="false" aria-controls="navbar">--%>
-                    <%--<span class="sr-only">Toggle navigation</span>--%>
-                    <%--<span class="icon-bar"></span>--%>
-                    <%--<span class="icon-bar"></span>--%>
-                    <%--<span class="icon-bar"></span>--%>
-                <%--</button>--%>
-                <%--<!-- <a class="active" href="#">Прайс лист</a> -->--%>
-            <%--</div>--%>
-            <%--<div id="navbar" class="collapse navbar-collapse">--%>
-                    <%--&lt;%&ndash;<ul class="nav navbar-nav">&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<li class="active"><a href="#">Прайс лист</a></li>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<li><a href="<c:url value="/getNewPosition"/> ">Добавить позицию</a></li>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<li><a href="<c:url value="/booking"/> ">Заказы</a></li>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;<li><a href="<c:url value="/ownData"/> ">Личные данные пользователя</a></li>&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
-                <%--<ul class="nav navbar-nav navbar-right">--%>
-
-                        <%--&lt;%&ndash;<li><p class="text"><sec:authentication property="principal.username"/></p></li>&ndash;%&gt;--%>
-                    <%--<li><a href="<c:url value="/logout"/>">Вийти</a></li>--%>
-                    <%--<!-- <li><a href="#">Войти</a></li> -->--%>
-                <%--</ul>--%>
-            <%--</div>--%>
-            <%--<!-- /.nav-collapse -->--%>
-        <%--</div>--%>
-        <%--<!-- /.container -->--%>
-    <%--</nav>--%>
-    <!-- /.navbar -->
-
 
     <%--<option value="${account.login}">Name: ${account.login} , User age: ${account.pass}</option>--%>
 
@@ -126,10 +95,11 @@
 
         <c:forEach items="${accountList}" var="customer" varStatus="status">
             <div class="row">
-
+                <%--src="/givePhoto/${}"--%>
                 <div class="col-lg-6 col-lg-offset-3 col-md-4 col-md-offset-4">
                     <div class="thumbnail">
-                        <img src="/givePhoto/${customer.login}">
+
+                        <img src="<spring:url value="/img/${customer.login}"/>">
 
                         <div class="caption">
                             <h3>${customer.email}</h3>
@@ -144,28 +114,7 @@
 
             </div>
         </c:forEach>
-            <%--<div class="row row-offcanvas row-offcanvas-right">--%>
 
-            <%--<div class="col-xs-12 col-sm-9">--%>
-            <%--<p class="pull-right visible-xs">--%>
-            <%--<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>--%>
-            <%--</p>--%>
-            <%--<!-- <div class="page-header"> -->--%>
-            <%--<img class="page-header" style="margin-top : 0" src="<c:url value="/pages/images/header.jpg"/> "--%>
-            <%--&lt;%&ndash;pages/images/header.jpg&ndash;%&gt;--%>
-            <%--height="250" width="1000">--%>
-            <%--<!--  <h1>Hello, world!</h1>--%>
-            <%--<p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p> -->--%>
-            <%--<!-- </div> -->--%>
-            <%--<!--           <div class="row">--%>
-            <%--<div class="col-xs-6 col-lg-4">--%>
-            <%--<h2>Heading</h2>--%>
-            <%--<div class="col-md-5">--%>
-            <%--<img class="featurette-image img-responsive center-block" src="img/header.jpg.jpg" height="960" width="1280" alt="Изображение загружается">--%>
-            <%--</div>--%>
-            <%--<! <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>--%>
-            <%--</div> -->--%>
-            <%--</div>--%>
 
     </div>
 

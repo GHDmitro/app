@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/Users/macbookair/IdeaProjects/App/src/main/webapp/img/";
+    private String pathToImg = "/var/lib/openshift/PROJECT_ID/App/src/main/webapp/img/";
 
 //    private ContactService contactService;
 
@@ -184,6 +184,9 @@ public class MyController {
             return "customer";
         } else {
             if (!photo.isEmpty()) {
+
+//                String relativeWebPath = "/webapp/img/";
+//                String absoluteFilePath =
 
                 File file = new File(pathToImg + ref + ".png");
                 try (FileOutputStream fileOut = new FileOutputStream(file)) {
@@ -415,6 +418,7 @@ public class MyController {
                 product.setName(name);
             }
             if (!codeOfModel.isEmpty()) {
+
                 String fileName = pathToImg + product.getPhoto() + ".png";
                 product.setCodeOfModel(codeOfModel);
                 File source = new File(fileName);

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: macbookair
@@ -106,7 +107,7 @@
         </div>
 
         <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" height="250" width="250" src="<c:url value="/givePhoto/${booking.accountClient.login}"/> "
+          <img class="featurette-image img-responsive center-block" height="250" width="250" src="<spring:url value="/img/${booking.accountClient.login}"/>"
                alt="Изображение загружается"><br><br>
           <ul>
             <li><p class="lead">Email  : <c:out value="${booking.accountClient.email}"/></p></li>

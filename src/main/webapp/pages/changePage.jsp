@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: macbookair
@@ -107,8 +108,9 @@
         <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>
       </p>
     </div>
+
     <div class="col-md-5 col-md-pull-7">
-      <img class="featurette-image img-responsive center-block" src="<c:url value="/givePhoto/${position.product.photo}"/> "
+      <img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"
            alt="Изображение загружается"><br><br>
       <input type="file" name="photo" id="Photo" placeholder="Photo">
 
