@@ -165,8 +165,9 @@ public class MyController {
     public String addPricePosition(@RequestParam String name, @RequestParam String codeOfModel,
                                    @RequestParam String description, @RequestParam MultipartFile photo,
                                    @RequestParam int capacity, @RequestParam String bookingCondition,
-                                   @RequestParam String deliveryCondition, @RequestParam double cost, Model model) {
+                                   @RequestParam String deliveryCondition, @RequestParam double cost,HttpServletRequest request ,Model model) {
 //        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        if (!(auth instanceof AnonymousAuthenticationToken)) {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -175,6 +176,10 @@ public class MyController {
 
         System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
         String ref = codeOfModel + login+IMAGE_EXTENTION;
+
+        String relativepath = "/webapp/img/";
+        String absolutePath = request.getRealPath(relativepath);
+        String path = absolutePath+"/"+ref;
 
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
@@ -185,13 +190,21 @@ public class MyController {
         } else {
             if (!photo.isEmpty()) {
 
-                File file = new File(pathToImg + ref);
-                try (FileOutputStream fileOut = new FileOutputStream(file)) {
-                    fileOut.write(photo.getBytes());
-                    fileOut.flush();
+//                File file = new File(pathToImg + ref);
+                File file = new File(path);
+
+                try {
+                    photo.transferTo(file);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+//                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+//                    fileOut.write(photo.getBytes());
+//                    fileOut.flush();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 product = new Product(name, description, ref, codeOfModel, capacity);
 
             } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
