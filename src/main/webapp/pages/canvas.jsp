@@ -79,6 +79,8 @@
         <img  id="pageHeader1" src="<c:url value="/pages/images/header1.jpg"/> ">
         <!-- индикаторы слайдов -->
     </div>
+
+    <p><h2><c:out value="${myHref}"/></h2></p>
     <c:forEach items="${listPositions}" var="position">
     <div class="container marketing">
         <%--<hr class="featurette-divider">--%>
