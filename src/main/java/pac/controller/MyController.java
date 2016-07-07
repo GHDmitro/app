@@ -193,7 +193,7 @@ public class MyController {
             if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path+""+ref);
+                File file = new File(path+"/"+ref);
 
 //                try {
 //                    photo.transferTo(file);
