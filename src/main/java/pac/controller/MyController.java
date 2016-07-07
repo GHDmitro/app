@@ -193,8 +193,8 @@ public class MyController {
             if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path+ref);
-
+                File file = new File("//57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/"+ref);
+//                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
 //                try {
 //                    photo.transferTo(file);
 //                } catch (IOException e) {
