@@ -177,10 +177,11 @@ public class MyController {
         System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
         String ref = codeOfModel + login+ IMAGE_EXTENSION;
 
-        String relativepath = "/img/";
-        String absolutePath = request.getRealPath(relativepath);
-        String path = absolutePath+"/"+ref;
-
+//        String relativepath = "/img/";
+//        String absolutePath = request.getRealPath(relativepath);
+//        String path = absolutePath+"/"+ref;
+        String path = request.getSession().getServletContext().getRealPath("/resources");
+//        System.out.println(path+"--------------------");
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
         if (product != null) {
@@ -191,7 +192,7 @@ public class MyController {
             if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path);
+                File file = new File(path+"/"+ref);
 
                 try {
                     photo.transferTo(file);
