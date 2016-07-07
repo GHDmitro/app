@@ -42,7 +42,7 @@
             <div class="panel-body">
               <c:if test="${error != null}">
                 <div class="row">
-                  <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3">
+                  <div class="col-lg-10 col-md-12 ">
                     <h2 class="text-center"><c:out value="${error}"/></h2>
                   </div>
                 </div>
