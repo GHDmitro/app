@@ -194,18 +194,18 @@ public class MyController {
 //                File file = new File(pathToImg + ref);
                 File file = new File(path+"/"+ref);
 
-                try {
-                    photo.transferTo(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-//                try (FileOutputStream fileOut = new FileOutputStream(file)) {
-//                    fileOut.write(photo.getBytes());
-//                    fileOut.flush();
+//                try {
+//                    photo.transferTo(file);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
+
+                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    fileOut.write(photo.getBytes());
+                    fileOut.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 product = new Product(name, description, ref, codeOfModel, capacity);
 
             } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
