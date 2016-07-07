@@ -169,7 +169,7 @@ public class MyController {
 //        String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (!(auth instanceof AnonymousAuthenticationToken)) {
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
         UserDetails userDetail = (UserDetails) auth.getPrincipal();
         String login = userDetail.getUsername();
         Account account = accountService.findAccount(login);
@@ -245,7 +245,7 @@ public class MyController {
 
 //        System.out.println(login);
         return "canvas";
-//        } else return "login";
+        } else return "login";
     }
 
 
