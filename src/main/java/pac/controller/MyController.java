@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/var/lib/openshift/PROJECT_ID/App/src/main/webapp/img/";
+    private String pathToImg = "/var/lib/openshift/PROJECT_ID/App/img/";
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
@@ -180,7 +180,7 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-        String path = request.getSession().getServletContext().getRealPath("/img");
+        String path = request.getSession().getServletContext().getRealPath(pathToImg);
 //        System.out.println(path+"--------------------");
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
@@ -192,7 +192,7 @@ public class MyController {
             if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path+"/"+ref);
+                File file = new File(path+""+ref);
 
 //                try {
 //                    photo.transferTo(file);
