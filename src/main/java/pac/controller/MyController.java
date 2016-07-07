@@ -181,7 +181,7 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-        String path = request.getSession().getServletContext().getRealPath(pathToImg);
+        String path = request.getSession().getServletContext().getRealPath("/img/");
 //        System.out.println(path+"--------------------");
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
@@ -193,7 +193,7 @@ public class MyController {
             if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path+"/"+ref);
+                File file = new File(path+ref);
 
 //                try {
 //                    photo.transferTo(file);
