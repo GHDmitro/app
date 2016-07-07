@@ -43,7 +43,8 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/var/lib/openshift/57728e217628e1ec270000ea/App/img/";
+    private String pathToImg = "/img/";
+//    /var/lib/openshift/57728e217628e1ec270000ea/App
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
