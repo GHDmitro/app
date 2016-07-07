@@ -180,7 +180,7 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-        String path = request.getSession().getServletContext().getRealPath("/resources");
+        String path = request.getSession().getServletContext().getRealPath("/img");
 //        System.out.println(path+"--------------------");
         Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
