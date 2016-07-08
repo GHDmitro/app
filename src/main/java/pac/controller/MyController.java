@@ -181,8 +181,8 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-            String path = request.getSession().getServletContext().getRealPath("/");
-            String relativeWebPath = "/img/";
+            String path = request.getSession().getServletContext().getRealPath("/resources/");
+//            String relativeWebPath = "/img/";
 
             model.addAttribute("myHref", path + ref);
 //        System.out.println(path+"--------------------");
@@ -196,7 +196,7 @@ public class MyController {
                 if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                    File file = new File(path +relativeWebPath +ref);
+                    File file = new File(path +"/" +ref);
                     if (!(file.exists())){
                         file.mkdir();
                     }
