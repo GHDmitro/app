@@ -181,7 +181,7 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-            String path = request.getSession().getServletContext().getRealPath("/resources/");
+            String path = request.getSession().getServletContext().getRealPath("/webapp/img/");
 //            String relativeWebPath = "/img/";
 
             model.addAttribute("myHref", path + ref);
