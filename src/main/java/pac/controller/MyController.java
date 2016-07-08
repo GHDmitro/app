@@ -23,6 +23,8 @@ import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 
@@ -178,7 +180,7 @@ public class MyController {
     public String addPricePosition(@RequestParam String name, @RequestParam String codeOfModel,
                                    @RequestParam String description, @RequestParam MultipartFile photo,
                                    @RequestParam int capacity, @RequestParam String bookingCondition,
-                                   @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) {
+                                   @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) throws MalformedURLException {
 //        String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -214,7 +216,8 @@ public class MyController {
                 if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                    File file = new File("//57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp/img" +"/" +ref);
+                    URL url = new URL("//57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp/img");
+                    File file = new File(url +"/" +ref);
                     if (!(file.exists())){
                         file.mkdir();
                     }
