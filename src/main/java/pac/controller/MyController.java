@@ -193,7 +193,7 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-            String path = request.getSession().getServletContext().getRealPath("/img/");
+            String path = request.getSession().getServletContext().getRealPath("/img");
 //            String relativeWebPath = "/img/";
 //            try {
 //                URL url = request.getSession().getServletContext().getResource("/img/");
@@ -202,7 +202,7 @@ public class MyController {
 //                e.printStackTrace();
 //            }
 
-            model.addAttribute("myHref", path +"/"+ ref);
+//            model.addAttribute("myHref", path +"/"+ ref);
 //        System.out.println(path+"--------------------");
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
@@ -214,13 +214,13 @@ public class MyController {
                 if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                    File file = new File(path +"/" +ref);
+                    File file = new File("//57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp/img" +"/" +ref);
                     if (!(file.exists())){
                         file.mkdir();
                     }
 //                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
 //                try {
-//                    photo.transferTo(file);
+//                    OutputStream outputStream = request.getSession().getServletContext().
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
