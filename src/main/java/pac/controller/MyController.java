@@ -54,7 +54,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/home")
-    public String home(Model model) {
+    public String home(HttpServletRequest request, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
 //            if (login == null) {
@@ -74,6 +74,8 @@ public class MyController {
                             "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
                     list = list1;
                 }
+                Set<String> paths = request.getServletContext().getResourcePaths("/");
+                model.addAttribute("paths", paths);
                 model.addAttribute("listPositions", list);
 //                model.addAttribute("login", login);
                 return "canvas";
