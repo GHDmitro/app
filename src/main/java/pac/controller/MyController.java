@@ -216,7 +216,8 @@ public class MyController {
                 if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                    URL url = new URL("//57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp/img");
+//                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
+                    URL url = request.getSession().getServletContext().getResource("/img");
                     File file = new File(url +"/" +ref);
                     if (!(file.exists())){
                         file.mkdir();
