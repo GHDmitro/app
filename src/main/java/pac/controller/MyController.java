@@ -75,7 +75,7 @@ public class MyController {
                     list = list1;
                 }
 
-                String d = request.getRealPath("/");
+                String d = request.getSession().getServletContext().getRealPath("/img/");
 //                Set<String> paths = request.getServletContext().getResourcePaths("/");
 //                model.addAttribute("paths", paths);
 //                String d = null;

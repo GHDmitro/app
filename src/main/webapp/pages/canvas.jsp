@@ -80,11 +80,6 @@
         <!-- индикаторы слайдов -->
     </div>
 
-    <p><h2><c:out value="${myHref}"/></h2></p>
-    <c:forEach items="${paths}" var="path">
-        <c:out value="${path}"/>
-        <br>
-    </c:forEach>
     <c:out value="${path1}"/>
     <c:forEach items="${listPositions}" var="position">
     <div class="container marketing">
