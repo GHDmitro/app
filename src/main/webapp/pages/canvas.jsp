@@ -85,6 +85,7 @@
         <c:out value="${path}"/>
         <br>
     </c:forEach>
+    <c:out value="${path1}"/>
     <c:forEach items="${listPositions}" var="position">
     <div class="container marketing">
         <%--<hr class="featurette-divider">--%>
