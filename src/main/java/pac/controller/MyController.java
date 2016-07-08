@@ -82,7 +82,7 @@ public class MyController {
 //                model.addAttribute("paths", paths);
 //                String d = null;
                 try {
-                    URL url = request.getServletContext().getResource("/img/");
+                    URL url = request.getSession().getServletContext().getResource("/img/");
                     d = url.getPath();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
