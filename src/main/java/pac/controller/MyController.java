@@ -23,8 +23,6 @@ import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 
@@ -46,7 +44,7 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String pathToImg = "/img/";
-    //    /var/lib/openshift/57728e217628e1ec270000ea/App
+    //    /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
@@ -76,15 +74,17 @@ public class MyController {
                             "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
                     list = list1;
                 }
-                Set<String> paths = request.getServletContext().getResourcePaths("/");
-                model.addAttribute("paths", paths);
-                String d = null;
-                try {
-                    URL url = request.getServletContext().getResource("http://app-timoshdomain12.rhcloud.com/img");
-                    d = url.getPath();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+
+                String d = request.getRealPath("/");
+//                Set<String> paths = request.getServletContext().getResourcePaths("/");
+//                model.addAttribute("paths", paths);
+//                String d = null;
+//                try {
+//                    URL url = request.getServletContext().getResource("http://app-timoshdomain12.rhcloud.com/img");
+//                    d = url.getPath();
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
                 model.addAttribute("path1", d);
                 model.addAttribute("listPositions", list);
 //                model.addAttribute("login", login);
