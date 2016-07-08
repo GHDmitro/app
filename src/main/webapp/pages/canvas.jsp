@@ -80,7 +80,7 @@
         <!-- индикаторы слайдов -->
     </div>
 
-    <c:out value="${path1}"/>
+    <c:out value="${myHref}"/>
     <c:forEach items="${listPositions}" var="position">
     <div class="container marketing">
         <%--<hr class="featurette-divider">--%>
