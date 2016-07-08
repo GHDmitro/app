@@ -44,7 +44,7 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String pathToImg = "/img/";
-//    /var/lib/openshift/57728e217628e1ec270000ea/App
+    //    /var/lib/openshift/57728e217628e1ec270000ea/App
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
@@ -166,36 +166,40 @@ public class MyController {
     public String addPricePosition(@RequestParam String name, @RequestParam String codeOfModel,
                                    @RequestParam String description, @RequestParam MultipartFile photo,
                                    @RequestParam int capacity, @RequestParam String bookingCondition,
-                                   @RequestParam String deliveryCondition, @RequestParam double cost,HttpServletRequest request ,Model model) {
+                                   @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) {
 //        String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-        UserDetails userDetail = (UserDetails) auth.getPrincipal();
-        String login = userDetail.getUsername();
-        Account account = accountService.findAccount(login);
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
 
-        System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
-        String ref = codeOfModel + login+ IMAGE_EXTENSION;
+            System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
+            String ref = codeOfModel + login + IMAGE_EXTENSION;
 
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-        String path = request.getSession().getServletContext().getRealPath("/img/");
+            String path = request.getSession().getServletContext().getRealPath("/");
+            String relativeWebPath = "/img/";
 
-            model.addAttribute("myHref", path+ref);
+            model.addAttribute("myHref", path + ref);
 //        System.out.println(path+"--------------------");
-        Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
+            Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
-        if (product != null) {
-            model.addAttribute("error", "Название: " + name + ", модель: " + codeOfModel + " -- тот продукт уже существует," +
-                    " попробуйте добавить что-то другое");
-            return "customer";
-        } else {
-            if (!photo.isEmpty()) {
+            if (product != null) {
+                model.addAttribute("error", "Название: " + name + ", модель: " + codeOfModel + " -- тот продукт уже существует," +
+                        " попробуйте добавить что-то другое");
+                return "customer";
+            } else {
+                if (!photo.isEmpty()) {
 
 //                File file = new File(pathToImg + ref);
-                File file = new File(path+ref);
+                    File file = new File(path +relativeWebPath +ref);
+                    if (!(file.exists())){
+                        file.mkdir();
+                    }
 //                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
 //                try {
 //                    photo.transferTo(file);
@@ -203,51 +207,51 @@ public class MyController {
 //                    e.printStackTrace();
 //                }
 
-                try (FileOutputStream fileOut = new FileOutputStream(file)) {
-                    fileOut.write(photo.getBytes());
-                    fileOut.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                product = new Product(name, description, ref, codeOfModel, capacity);
+                    try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                        fileOut.write(photo.getBytes());
+                        fileOut.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    product = new Product(name, description, ref, codeOfModel, capacity);
 
-            } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
+                } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
 
-        }
+            }
 
 
-        Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance();
 
-        PositionOfPrice positionOfPrice = new PositionOfPrice(bookingCondition, deliveryCondition,
-                new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), cost, account, product);
-        account.addPricePositions(positionOfPrice);
+            PositionOfPrice positionOfPrice = new PositionOfPrice(bookingCondition, deliveryCondition,
+                    new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), cost, account, product);
+            account.addPricePositions(positionOfPrice);
 //        positionOfPriceService.setPositionOfPrice(positionOfPrice);
-        accountService.updateAccount(account);
+            accountService.updateAccount(account);
 //            account.addPricePositions(positionOfPrice);   /////// проверить будет ли оно правильно работать добавле поз после ее создания
-        System.out.println("-----------------");
+            System.out.println("-----------------");
 
 //        accountService.updateAccount(account);
 //
 //        List<PositionOfPrice> listPosition = accountService.listPositions(account);  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //        List<PositionOfPrice> listPosition = positionOfPriceService.listPositions(account);
 
-        List<PositionOfPrice> listPosition = accountService.listPositions(account);
+            List<PositionOfPrice> listPosition = accountService.listPositions(account);
 
-        if (listPosition.size() != 0) {
-            model.addAttribute("listPositions", listPosition);
+            if (listPosition.size() != 0) {
+                model.addAttribute("listPositions", listPosition);
 //            System.out.println(listPosition.get(0).getProduct().getName() + "     если есть то в контроллере позиция ");
-        } else {
-            System.out.println("Лист позиций пуст");
-            model.addAttribute("error", "Проблеммы у сервера в addPricePosition");
-            return "customer";
-        }
+            } else {
+                System.out.println("Лист позиций пуст");
+                model.addAttribute("error", "Проблеммы у сервера в addPricePosition");
+                return "customer";
+            }
 
 
 //        model.addAttribute()  !!!!!!!!!!!!!!!!!!!!!!!!
 
 
 //        System.out.println(login);
-        return "canvas";
+            return "canvas";
         } else return "login";
     }
 
@@ -262,7 +266,7 @@ public class MyController {
                 String fileName = pathToImg + login + IMAGE_EXTENSION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
+                    model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
                     model.addAttribute("login", login);
                 } else {
                     // не существует
@@ -290,7 +294,7 @@ public class MyController {
                 String fileName = pathToImg + login + IMAGE_EXTENSION;
                 if ((new File(fileName)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
+                    model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
                     System.out.println("model.addAttribute(\"refPhoto\", login);");
                 } else {
                     // не существует
@@ -334,7 +338,7 @@ public class MyController {
                     e.printStackTrace();
                 }
             }
-            model.addAttribute("refPhoto", login+ IMAGE_EXTENSION);
+            model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
 
             if (email.length() == 0) {
                 model.addAttribute("email", account.getEmail());
@@ -438,7 +442,7 @@ public class MyController {
                 File source = new File(fileName);
                 if (source.exists()) {
                     String refPhoto = codeOfModel + account.getLogin() + IMAGE_EXTENSION;
-                    File dest = new File(pathToImg + refPhoto );
+                    File dest = new File(pathToImg + refPhoto);
                     try {
                         FileUtils.copyFile(source, dest);  //
                     } catch (IOException e) {
@@ -465,7 +469,7 @@ public class MyController {
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
-                File file1 = new File(pathToImg + product.getPhoto() );
+                File file1 = new File(pathToImg + product.getPhoto());
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -493,7 +497,7 @@ public class MyController {
 //            System.out.println(string +" --------------------------------------------------------------------------");
             File file = new File(pathToImg + refPhoto);
             if (!file.exists()) {
-                file = new File(pathToImg+"defaultPhotoToScreen.png");
+                file = new File(pathToImg + "defaultPhotoToScreen.png");
             }
             FileInputStream reader = new FileInputStream(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
@@ -553,10 +557,10 @@ public class MyController {
 //                List<BookingPosition> listB = list.get(0).getBookingPositions();
 //                System.out.println("ID 1:  "+ listB.get(0).getId()+";     ID 2: "+listB.get(1).getId());
 //            }
-            if (list.size()>0){
+            if (list.size() > 0) {
 
                 model.addAttribute("bookingList", list);
-            }else {
+            } else {
                 model.addAttribute("bookingList", null);
             }
             return "bookingPage";
@@ -586,12 +590,12 @@ public class MyController {
                     booking.deleteBookingPosition(bookingPosition);
                     bookingService.updateBooking(booking);
 
-                    if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0){
+                    if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
                         customer.deleteBooking(booking);
                         accountService.updateAccount(customer);
 
-                    }else {
-                        System.out.println(booking.getBookingPositions().size() +"  лист не обновился");
+                    } else {
+                        System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
                     }
                 } else {
                     bookingPosition.setCapacity(posCapacity - capacity);
@@ -610,18 +614,18 @@ public class MyController {
                 bookingPosition.setCapacity(capacity);
                 bookingPositionService.setBookingPosition(bookingPosition);
             }
-        }else {
-            if (capacity >= posCapacity ) {
+        } else {
+            if (capacity >= posCapacity) {
                 System.out.println("тут 1");
                 booking.deleteBookingPosition(bookingPosition);
                 bookingService.updateBooking(booking);
 
-                if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0){
+                if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
                     customer.deleteBooking(booking);
                     accountService.updateAccount(customer);
                 }
 
-            }else if (capacity >= 0){
+            } else if (capacity >= 0) {
                 System.out.println("тут 2");
                 bookingPosition.setCapacity(posCapacity - capacity);
                 bookingPositionService.setBookingPosition(bookingPosition);
@@ -661,14 +665,14 @@ public class MyController {
             booking = new Booking(client, customer); //, customer
             bookingService.save(booking);
             System.out.println(booking.getId() + " это ID заказа ");
-            BookingPosition bookingPosition = new BookingPosition(capacity, booking,product); //, booking
+            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); //, booking
             bookingPositionService.setBookingPosition(bookingPosition);
 //            booking.addBookingPosition(bookingPosition);
 //            customer.addBookingList(booking);
             accountService.updateAccount(customer);
         } else {
             System.out.println(booking.getId() + " это ID заказа else");
-            BookingPosition bookingPosition = new BookingPosition(capacity, booking,product); // booking ,
+            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); // booking ,
             bookingPositionService.setBookingPosition(bookingPosition);
 //            booking.addBookingPosition(bookingPosition);
             bookingService.updateBooking(booking);
