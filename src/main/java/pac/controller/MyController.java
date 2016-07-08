@@ -80,7 +80,7 @@ public class MyController {
                 model.addAttribute("paths", paths);
                 String d = null;
                 try {
-                    URL url = request.getServletContext().getResource("/img");
+                    URL url = request.getServletContext().getResource("http://app-timoshdomain12.rhcloud.com/img");
                     d = url.getPath();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
