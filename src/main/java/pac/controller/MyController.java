@@ -23,8 +23,6 @@ import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 
@@ -77,17 +75,17 @@ public class MyController {
                     list = list1;
                 }
 
-                String d = null;
+//                String d = null;
 //                Set<String> paths = request.getServletContext().getResourcePaths("/");
 //                model.addAttribute("paths", paths);
-//                String d = null;
-                try {
-                    URL url = request.getSession().getServletContext().getResource("/img/");
-                    d = url.getPath();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                model.addAttribute("path1", d);
+////                String d = null;
+//                try {
+//                    URL url = request.getSession().getServletContext().getResource("/img/");
+//                    d = url.getPath();
+//                } catch (MalformedURLException e) {
+//                    e.printStackTrace();
+//                }
+//                model.addAttribute("path1", d);
                 model.addAttribute("listPositions", list);
 //                model.addAttribute("login", login);
                 return "canvas";
@@ -195,10 +193,16 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-            String path = request.getSession().getServletContext().getRealPath("/webapp/img/");
+            String path = request.getSession().getServletContext().getRealPath("/img/");
 //            String relativeWebPath = "/img/";
+//            try {
+//                URL url = request.getSession().getServletContext().getResource("/img/");
+//                d = url.getPath();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
 
-            model.addAttribute("myHref", path + ref);
+            model.addAttribute("myHref", path +"/"+ ref);
 //        System.out.println(path+"--------------------");
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
