@@ -23,6 +23,8 @@ import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 
@@ -76,6 +78,14 @@ public class MyController {
                 }
                 Set<String> paths = request.getServletContext().getResourcePaths("/");
                 model.addAttribute("paths", paths);
+                String d = null;
+                try {
+                    URL url = request.getServletContext().getResource("/img");
+                    d = url.getPath();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                model.addAttribute("path1", d);
                 model.addAttribute("listPositions", list);
 //                model.addAttribute("login", login);
                 return "canvas";
