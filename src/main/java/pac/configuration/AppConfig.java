@@ -74,7 +74,6 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         ds.setUsername("admin8T4vpC5");
 //        ds.setPassword("root");
         ds.setPassword("1GviuGzpz4lQ");
-//        Map<String, String>
         Properties properties = new Properties();
         properties.setProperty("useUnicode", "true");
         properties.setProperty("characterEncoding", "UTF-8");

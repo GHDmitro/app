@@ -23,8 +23,6 @@ import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Date;
 import java.util.*;
 
@@ -80,6 +78,7 @@ public class MyController {
 //                String d = null;
 //                Set<String> paths = request.getServletContext().getResourcePaths("/");
 //                model.addAttribute("paths", paths);
+//                String path1 = request.getSession().getServletContext().
 ////                String d = null;
 //                try {
 //                    URL url = request.getSession().getServletContext().getResource("/img/");
@@ -180,7 +179,7 @@ public class MyController {
     public String addPricePosition(@RequestParam String name, @RequestParam String codeOfModel,
                                    @RequestParam String description, @RequestParam MultipartFile photo,
                                    @RequestParam int capacity, @RequestParam String bookingCondition,
-                                   @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) throws MalformedURLException {
+                                   @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) throws IOException {
 //        String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -195,7 +194,6 @@ public class MyController {
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
-            String path = request.getSession().getServletContext().getRealPath("/img");
 //            String relativeWebPath = "/img/";
 //            try {
 //                URL url = request.getSession().getServletContext().getResource("/img/");
@@ -206,6 +204,10 @@ public class MyController {
 
 //            model.addAttribute("myHref", path +"/"+ ref);
 //        System.out.println(path+"--------------------");
+
+            String filename = photo.getOriginalFilename();
+//            String path = request.getSession().getServletContext().getRealPath("/img");
+            String path = request.getRealPath("/");
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 //            System.out.println("next step");
             if (product != null) {
@@ -215,12 +217,12 @@ public class MyController {
             } else {
                 if (!photo.isEmpty()) {
 
-//                File file = new File(pathToImg + ref);
+                    File file = new File(path, "img");
 //                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
-                    URL url = request.getSession().getServletContext().getResource("/img");
-                    File file = new File(url +"/" +ref);
-                    if (!(file.exists())){
-                        file.mkdir();
+//                    URL url = request.getSession().getServletContext().("/img");
+//                    File file = new File(path+"/" +ref);
+                    if (!(file.exists())) {
+                        file.mkdirs();
                     }
 //                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
 //                try {
@@ -228,14 +230,23 @@ public class MyController {
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
+                    File file1 = new File(file, filename+ref);
 
-                    try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    FileOutputStream fileOut = null;
+                    try {
+                        fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }finally {
+                        fileOut.close();
                     }
-                    product = new Product(name, description, ref, codeOfModel, capacity);
+
+                    System.out.println("------------original path ---------  "+file1.getAbsolutePath()+"        ----------");
+
+//                    FileInputStream f = request.getSession().getServletContext()
+                    product = new Product(name, description, filename+ref, codeOfModel, capacity);
 
                 } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
 
