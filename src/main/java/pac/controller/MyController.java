@@ -523,15 +523,19 @@ public class MyController {
     }
 
     @RequestMapping(value = "/givePhoto/{refPhoto}")
-    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto) {
+    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto, HttpServletRequest request) {
         byte[] arr;
         try {
-//            String string =  request.getSession().getServletContext().getRealPath("/webapp/");
-//            System.out.println(string +" --------------------------------------------------------------------------");
-            File file = new File(pathToImg + refPhoto);
+            String path = request.getRealPath("/");
+            File file = new File(path+"/img/"+ refPhoto);
+//            File file = new File(pathToImg + refPhoto);
             if (!file.exists()) {
                 file = new File(pathToImg + "defaultPhotoToScreen.png");
             }
+
+
+
+
             FileInputStream reader = new FileInputStream(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
             arr = new byte[inputStream.available()];
