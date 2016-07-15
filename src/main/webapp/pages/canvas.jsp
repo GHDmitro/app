@@ -88,9 +88,10 @@
             <div class="col-lg-1"></div>
 
             <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
-                <img class="featurette-image img-responsive center-block" width="350" height="350" src="<spring:url value="/img/${position.product.photo}"/>"
+                <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
                      alt="Изображение загружается">
                 <%-- src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
+                <%--src="<spring:url value="/img/${position.product.photo}"/>"--%>
             </div>
 
 
