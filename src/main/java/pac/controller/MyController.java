@@ -206,7 +206,7 @@ public class MyController {
 //        System.out.println(path+"--------------------");
 
             String filename = photo.getOriginalFilename();
-            String path = request.getServletContext().getRealPath("/img");
+            String path = request.getServletContext().getRealPath("/");
 //            String path = request.getRealPath("/");
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 
@@ -528,7 +528,7 @@ public class MyController {
         try {
 //            String path = request.getRealPath("/");
             String path = request.getServletContext().getRealPath("/img");
-            File file = new File(path+ refPhoto);
+            File file = new File(path+ "/"+refPhoto);
 //            File file = new File(pathToImg + refPhoto);
             if (!file.exists()) {
                 file = new File(pathToImg + "defaultPhotoToScreen.png");
