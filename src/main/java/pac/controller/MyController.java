@@ -44,14 +44,14 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String pathToImg = "/img/";
-    //    /var/lib/openshift/PROJECT_ID/app-root/data/
+//        /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
     @RequestMapping("/test")
     public String test(HttpServletRequest request, Model model){
 
-        File file = new File("/app-root/data/test");
+        File file = new File("$OPENSHIFT_DATA_DIR/test");
 
         try{
             FileWriter w = new FileWriter(file);
