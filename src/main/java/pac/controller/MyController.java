@@ -52,11 +52,19 @@ public class MyController {
     public String test(HttpServletRequest request, Model model){
 
         File file = new File("/app-root/data/test");
-        try {
+
+        try{
             FileWriter w = new FileWriter(file);
             w.write("Hello world");
             w.flush();
             w.close();
+        } catch (IOException e){
+            model.addAttribute("text", e.getMessage() + "   write");
+        }
+
+
+        try {
+
 
             BufferedReader read = new BufferedReader(new FileReader(file));
 
@@ -71,8 +79,7 @@ public class MyController {
 
 
         } catch (IOException e) {
-
-            model.addAttribute("text", e.getMessage());
+            model.addAttribute("text", e.getMessage() + "  read");
         }
 
         return "test";
