@@ -71,7 +71,8 @@ public class MyController {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+
+            model.addAttribute("text", e.getMessage());
         }
 
         return "test";
