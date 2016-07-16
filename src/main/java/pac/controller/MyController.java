@@ -67,7 +67,7 @@ public class MyController {
                 sb.append(str);
             }
 
-            model.addAttribute("text", sb.toString());
+            model.addAttribute("text", sb.toString() + " foooooooo" );
 
 
         } catch (IOException e) {
