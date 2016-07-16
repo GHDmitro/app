@@ -59,7 +59,7 @@ public class MyController {
             w.flush();
             w.close();
         } catch (IOException e){
-            model.addAttribute("text", e.getMessage() + "   write");
+            model.addAttribute("text1", e.getMessage() + "   write");
         }
 
 
@@ -79,7 +79,7 @@ public class MyController {
 
 
         } catch (IOException e) {
-            model.addAttribute("text", e.getMessage() + "  read");
+            model.addAttribute("text1", e.getMessage() + "  read");
         }
 
         return "test";
