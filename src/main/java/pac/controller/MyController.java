@@ -51,7 +51,7 @@ public class MyController {
     @RequestMapping("/test")
     public String test(HttpServletRequest request, Model model){
 
-        File file = new File("$OPENSHIFT_DATA_DIR/test");
+        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data//test");
 
         try{
             FileWriter w = new FileWriter(file);
@@ -61,7 +61,7 @@ public class MyController {
         } catch (IOException e){
             model.addAttribute("text1", e.getMessage() + "   write");
         }
-
+//ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
 
         try {
 
