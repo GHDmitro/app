@@ -58,6 +58,11 @@ public class AccountService {
         accountDAO.deletePosition(positionOfPrice);
     }
 
+    @Transactional
+    public void refreshAccount(Account account){
+        accountDAO.refresh(account);
+    }
+
 
 
 

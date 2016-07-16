@@ -26,6 +26,8 @@ public class Account {
     private String telNumber;
     @Column(name = "state")
     private boolean state;
+//    @Column(name = "background")
+//    private byte[] background;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PositionOfPrice> pricePositions  = new HashSet<>();
@@ -169,4 +171,12 @@ public class Account {
     public void setState(boolean state) {
         this.state = state;
     }
+
+//    public byte[] getBackground() {
+//        return background;
+//    }
+//
+//    public void setBackground(byte[] background) {
+//        this.background = background;
+//    }
 }

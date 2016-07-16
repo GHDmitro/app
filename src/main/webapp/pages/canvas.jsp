@@ -67,6 +67,21 @@
                         <sec:authorize access="hasRole('client')">
                             <li><a href="<c:url value="/home"/> ">К списку продавцов</a></li>
                         </sec:authorize>
+                        <sec:authorize access="hasRole('customer')">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Пункт 1 <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><p>Загрузить новый фон:</p></li>
+                                    <li>
+                                        <form enctype="multipart/form-data" method="post" action="#">
+                                            <input type="file" name="photo" id="Photo" placeholder="Photo" required>
+                                            <button type="submit" class="btn btn-success">Подтвердить</button>
+                                        </form>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        </sec:authorize>
                     <li><a href="<c:url value="/logout"/>">Вийти</a></li>
                     <!-- <li><a href="#">Войти</a></li> -->
                 </ul>
@@ -76,7 +91,7 @@
         <!-- /.container -->
     </nav>
     <div class="carousel slide" id="carousel">
-        <img  id="pageHeader1" src="<c:url value="/pages/images/header1.jpg"/> ">
+        <img  id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
         <!-- индикаторы слайдов -->
     </div>
 
@@ -88,8 +103,17 @@
             <div class="col-lg-1"></div>
 
             <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
-                <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
-                     alt="Изображение загружается">
+                    <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
+                    alt="Изображение загружается">
+                <%--<c:if test="${position.product.photo != null}">--%>
+                    <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.id}"/>"--%>
+                         <%--alt="Изображение загружается">--%>
+                    <%--&lt;%&ndash;&ndash;%&gt;--%>
+                <%--</c:if>--%>
+                <%--<c:if test="${position.product.photo == null}">--%>
+                    <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"--%>
+                         <%--alt="Изображение загружается">--%>
+                <%--</c:if>--%>
                 <%-- src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
                 <%--src="<spring:url value="/img/${position.product.photo}"/>"--%>
             </div>

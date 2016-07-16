@@ -19,17 +19,17 @@ public class Product {
     @Column(name = "description")
     private String description;
     @Column(name = "photo")
-    private String photo;
+    private String photo;    //String -> byte[]
     @Column(name = "codeOfModel")
     private String codeOfModel;
     @Column(name = "amount")
     private int amount;
+
 //    @OneToMany(mappedBy = "product")
 //    private Set<PositionOfPrice> positions = new HashSet<>();
 
     public Product() {
     }
-
 
     public Product(String name, String description, String photo, String codeOfModel, int amount ) {
         this.name = name;

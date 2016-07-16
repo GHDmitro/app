@@ -13,6 +13,7 @@ public interface AccountDAO {
     void add(Account account);
     void delete(Account account);
     void update(Account account);
+    void refresh(Account account);
     Account findOne(String login);
     List<Account> list(AccountType accountType);
     List<PositionOfPrice> listPositions(Account account);

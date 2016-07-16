@@ -36,6 +36,11 @@ public class AccountDAOImpl implements AccountDAO {
     }
 
     @Override
+    public void refresh(Account account) {
+        entityManager.refresh(account);
+    }
+
+    @Override
     public Account findOne(String login) {
 
 //        Account account = entityManager.find(Account.class, login);
