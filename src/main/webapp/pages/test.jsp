@@ -14,5 +14,6 @@
 <body>
 <h1><c:out value="${text1}"/> fytrdrtdtrdtrd</h1>
 <h1><c:out value="${text2}"/> fytrdrtdtrdtrd</h1>
+<h1><c:out value="${text}"/> fytrdrtdtrdtrd</h1>
 </body>
 </html>
