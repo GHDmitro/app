@@ -48,6 +48,35 @@ public class MyController {
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
+    @RequestMapping("/test")
+    public String test(HttpServletRequest request, Model model){
+
+        File file = new File("/app-root/data/test");
+        try {
+            FileWriter w = new FileWriter(file);
+            w.write("Hello world");
+            w.flush();
+            w.close();
+
+            BufferedReader read = new BufferedReader(new FileReader(file));
+
+            String str;
+            StringBuilder sb = new StringBuilder();
+
+            while((str = read.readLine()) != null){
+                sb.append(str);
+            }
+
+            model.addAttribute("text", sb.toString());
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "test";
+    }
+
     @RequestMapping("/")
     public String rootPage(Model model, HttpServletRequest request) {
         return "login";
@@ -188,7 +217,7 @@ public class MyController {
             String login = userDetail.getUsername();
             Account account = accountService.findAccount(login);
 
-            System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
+//            System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
             String ref = codeOfModel + login + IMAGE_EXTENSION;
 
 //        String relativepath = "/img/";
@@ -206,8 +235,9 @@ public class MyController {
 //        System.out.println(path+"--------------------");
 
             String filename = photo.getOriginalFilename();
-            String path = request.getServletContext().getRealPath("/");
+//            String path = request.getServletContext().getRealPath("/");
 //            String path = request.getRealPath("/");
+//            System.out.println(path);
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 
             if (product != null) {
@@ -217,20 +247,21 @@ public class MyController {
             } else {
                 if (!photo.isEmpty()) {
 
-                    File file = new File(path, "img");
+                    File file = new File("/app-root/data");
 //                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
 //                    URL url = request.getSession().getServletContext().("/img");
 //                    File file = new File(path+"/" +ref);
                     if (!(file.exists())) {
                         file.mkdirs();
                     }
+                    System.out.println(file.getAbsolutePath());
 //                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
 //                try {
 //                    OutputStream outputStream = request.getSession().getServletContext().
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
-                    File file1 = new File(file, filename+ref);
+                    File file1 = new File(file, ref);
 
                     FileOutputStream fileOut = null;
                     try {
@@ -243,7 +274,7 @@ public class MyController {
                         fileOut.close();
                     }
 
-                    System.out.println("------------original path ---------  "+file1.getAbsolutePath()+"        ----------");
+                    System.out.println("------------original path ---------  "+file.getAbsolutePath()+"        ----------");
 
 //                    FileInputStream f = request.getSession().getServletContext()
                     product = new Product(name, description, filename+ref, codeOfModel, capacity);
@@ -526,8 +557,8 @@ public class MyController {
     public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto, HttpServletRequest request) {
         byte[] arr;
         try {
-//            String path = request.getRealPath("/");
-            String path = request.getServletContext().getRealPath("/img");
+            String path = "/app-root/data";
+//            String path = request.getServletContext().getRealPath("/img");
             File file = new File(path+ "/"+refPhoto);
 //            File file = new File(pathToImg + refPhoto);
             if (!file.exists()) {
