@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: macbookair
@@ -11,6 +12,6 @@
     <title></title>
 </head>
 <body>
-<h1>${text}</h1>
+<h1><c:out value="${test}"/></h1>
 </body>
 </html>
