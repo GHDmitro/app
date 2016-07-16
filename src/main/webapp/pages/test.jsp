@@ -12,6 +12,6 @@
     <title></title>
 </head>
 <body>
-<h1><c:out value="${test}"/></h1>
+<h1><c:out value="${text}"/></h1>
 </body>
 </html>
