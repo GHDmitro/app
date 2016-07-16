@@ -79,7 +79,7 @@ public class MyController {
 
 
         } catch (IOException e) {
-            model.addAttribute("text1", e.getMessage() + "  read");
+            model.addAttribute("text2", e.getMessage() + "  read");
         }
 
         return "test";
