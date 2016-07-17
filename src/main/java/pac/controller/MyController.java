@@ -563,6 +563,7 @@ public class MyController {
     @RequestMapping(value = "/givePhoto/{refPhoto}")
     public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto) {
         byte[] arr;
+        System.out.println("handle img " + refPhoto);
         try {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
