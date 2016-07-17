@@ -568,9 +568,10 @@ public class MyController {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
             File file = new File(PATH_TO_IMG+refPhoto);
+
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
-                return new ResponseEntity<byte[]>("В системе нет этого изображения".getBytes(), new HttpHeaders(), HttpStatus.NO_CONTENT);
+                return new ResponseEntity<byte[]>( "Нет такого файла".getBytes(), HttpStatus.OK);
             }
             FileInputStream reader = new FileInputStream(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
@@ -578,6 +579,7 @@ public class MyController {
             int s = inputStream.read(arr);
             if (s == 0)
                 throw new PhotoNotFoundException();
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
             System.out.println("отдает  фотку на страничку");
