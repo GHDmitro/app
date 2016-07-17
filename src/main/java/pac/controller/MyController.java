@@ -274,7 +274,7 @@ public class MyController {
                         FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
-                        fileOut.close();
+//                        fileOut.close();
                     } catch (IOException e) {
                         model.addAttribute("error", e.getMessage());
                     }
