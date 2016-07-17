@@ -43,7 +43,7 @@ public class MyController {
     private BookingService bookingService;
     @Autowired
     private BookingPositionService bookingPositionService;
-    private String pathToImg = "/img/";
+    private String PATH_TO_IMG = "/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/";
 //        /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
@@ -51,7 +51,7 @@ public class MyController {
     @RequestMapping("/test")
     public String test(HttpServletRequest request, Model model){
 
-        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data//test");
+        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/test");
 
         try{
             FileWriter w = new FileWriter(file);
@@ -108,7 +108,7 @@ public class MyController {
                     Calendar c = Calendar.getInstance();
                     list1.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
                             new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                            "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
+                            "Описание товара", null, "Код модели", 000000)));
                     list = list1;
                 }
 
@@ -150,7 +150,7 @@ public class MyController {
                     Calendar c = Calendar.getInstance();
                     list1.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
                             new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                            "Описание товара", "defaultPhotoToScreen", "Код модели", 000000)));
+                            "Описание товара", null, "Код модели", 000000)));
                     list = list1;
                 }
                 model.addAttribute("listPositions", list);
@@ -226,7 +226,7 @@ public class MyController {
             Account account = accountService.findAccount(login);
 
 //            System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
-            String ref = codeOfModel + login + IMAGE_EXTENSION;
+            String ref = name+codeOfModel + login + IMAGE_EXTENSION;
 
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
@@ -242,7 +242,7 @@ public class MyController {
 //            model.addAttribute("myHref", path +"/"+ ref);
 //        System.out.println(path+"--------------------");
 
-            String filename = photo.getOriginalFilename();
+//            String filename = photo.getOriginalFilename();
 //            String path = request.getServletContext().getRealPath("/");
 //            String path = request.getRealPath("/");
 //            System.out.println(path);
@@ -255,7 +255,7 @@ public class MyController {
             } else {
                 if (!photo.isEmpty()) {
 
-                    File file = new File("/app-root/data");
+                    File file = new File(PATH_TO_IMG);
 //                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
 //                    URL url = request.getSession().getServletContext().("/img");
 //                    File file = new File(path+"/" +ref);
@@ -271,23 +271,21 @@ public class MyController {
 //                }
                     File file1 = new File(file, ref);
 
-                    FileOutputStream fileOut = null;
                     try {
-                        fileOut = new FileOutputStream(file1);
+                        FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }finally {
                         fileOut.close();
+                    } catch (IOException e) {
+                        model.addAttribute("error", e.getMessage());
                     }
 
                     System.out.println("------------original path ---------  "+file.getAbsolutePath()+"        ----------");
 
 //                    FileInputStream f = request.getSession().getServletContext()
-                    product = new Product(name, description, filename+ref, codeOfModel, capacity);
+                    product = new Product(name, description, ref, codeOfModel, capacity);
 
-                } else product = new Product(name, description, "defaultPhotoToScreen.png", codeOfModel, capacity);
+                } else product = new Product(name, description, null , codeOfModel, capacity);
 
             }
 
@@ -318,11 +316,6 @@ public class MyController {
                 return "customer";
             }
 
-
-//        model.addAttribute()  !!!!!!!!!!!!!!!!!!!!!!!!
-
-
-//        System.out.println(login);
             return "canvas";
         } else return "login";
     }
@@ -330,29 +323,33 @@ public class MyController {
 
     @RequestMapping(value = "/ownData/{login}")
     public String ownData(@PathVariable(value = "login") String login, Model model) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (!(auth instanceof AnonymousAuthenticationToken)) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (login != null) {
-            Account account1 = accountService.findAccount(userName);
-            Account account = accountService.findAccount(login);
-            if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + IMAGE_EXTENSION;
-                if ((new File(fileName)).exists()) {
-                    // существует
-                    model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
-                    model.addAttribute("login", login);
-                } else {
-                    // не существует
-                    model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
-                    model.addAttribute("login", login);
-                }
+//            String userName = auth.getName();
+            if (login != null) {
+                Account account1 = accountService.findAccount(userName);
+                Account account = accountService.findAccount(login);
+                if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
+                    String fileName = PATH_TO_IMG + login + IMAGE_EXTENSION;
+                    if ((new File(fileName)).exists()) {
+                        // существует
+                        model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
+                        model.addAttribute("login", login);
+                    } else {
+                        // не существует
+                        model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
+                        model.addAttribute("login", login);
+                    }
 
-                model.addAttribute("email", account.getEmail());
-                model.addAttribute("telNumber", account.getTelNumber());
+                    model.addAttribute("email", account.getEmail());
+                    model.addAttribute("telNumber", account.getTelNumber());
 
-                return "ownData";
-            } else return "login";
-        }
-        return "login";
+                    return "ownData";
+                } else return "login";
+            }
+            return "login";
+//        }else return "login";
     }
 
     @RequestMapping(value = "/ownData")
@@ -363,15 +360,15 @@ public class MyController {
             Account account = accountService.findAccount(login);
             System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                String fileName = pathToImg + login + IMAGE_EXTENSION;
+                String fileName = PATH_TO_IMG + login + IMAGE_EXTENSION;
                 if ((new File(fileName)).exists()) {
                     // существует
                     model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
-                    System.out.println("model.addAttribute(\"refPhoto\", login);");
+//                    System.out.println("model.addAttribute(\"refPhoto\", login);");
                 } else {
                     // не существует
-                    model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
-                    System.out.println("model.addAttribute(\"refPhoto\", \"defaultPhotoToScreen\");");
+                    model.addAttribute("refPhoto", null);
+//                    System.out.println("model.addAttribute(\"refPhoto\", \"defaultPhotoToScreen\");");
                 }
 
                 System.out.println("ownData: " + account.getEmail() + "    " + account.getTelNumber());
@@ -395,17 +392,19 @@ public class MyController {
         System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
         if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
             if (!photo.isEmpty()) {
-                File file = new File(pathToImg + login + IMAGE_EXTENSION);
+                File file = new File(PATH_TO_IMG + login + IMAGE_EXTENSION);
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
 
-                File file1 = new File(pathToImg + login + IMAGE_EXTENSION);
+                File file1 = new File(PATH_TO_IMG + login + IMAGE_EXTENSION);
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
+                    fileOut.close();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -453,7 +452,7 @@ public class MyController {
 //                System.out.println(list.get(0).getProduct().getName() + " --------- ");
 //            }
 
-            File file = new File(pathToImg + refPhoto);
+            File file = new File(PATH_TO_IMG + refPhoto);
             if (file.exists()) {
                 file.delete();
             }
@@ -469,7 +468,7 @@ public class MyController {
                 Calendar c = Calendar.getInstance();
                 set.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
                         new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                        "Описание товара", "defaultPhotoToScreen.png", "Код модели", 000000)));
+                        "Описание товара", null, "Код модели", 000000)));
                 setPositions = set;
             }
             model.addAttribute("listPositions", setPositions);
@@ -496,6 +495,7 @@ public class MyController {
                                      @RequestParam String codeOfModel, @RequestParam String description,
                                      @RequestParam MultipartFile photo, @RequestParam String amount,
                                      @RequestParam String cost, Model model) {
+
         if (!id.isEmpty()) {
             System.out.println("id пустой");
         }
@@ -509,12 +509,12 @@ public class MyController {
             }
             if (!codeOfModel.isEmpty()) {
 
-                String fileName = pathToImg + product.getPhoto();
+                String fileName = PATH_TO_IMG + product.getPhoto();
                 product.setCodeOfModel(codeOfModel);
                 File source = new File(fileName);
                 if (source.exists()) {
                     String refPhoto = codeOfModel + account.getLogin() + IMAGE_EXTENSION;
-                    File dest = new File(pathToImg + refPhoto);
+                    File dest = new File(PATH_TO_IMG + refPhoto);
                     try {
                         FileUtils.copyFile(source, dest);  //
                     } catch (IOException e) {
@@ -535,13 +535,13 @@ public class MyController {
             }
             if (!photo.isEmpty()) {
 
-                File file = new File(pathToImg + product.getPhoto());
+                File file = new File(PATH_TO_IMG + product.getPhoto());
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
-                File file1 = new File(pathToImg + product.getPhoto());
+                File file1 = new File(PATH_TO_IMG + product.getPhoto());
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -565,12 +565,12 @@ public class MyController {
     public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto, HttpServletRequest request) {
         byte[] arr;
         try {
-            String path = "/app-root/data";
+//            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
-            File file = new File(path+ "/"+refPhoto);
-//            File file = new File(pathToImg + refPhoto);
+            File file = new File(PATH_TO_IMG+refPhoto);
             if (!file.exists()) {
-                file = new File(pathToImg + "defaultPhotoToScreen.png");
+//                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
+                return new ResponseEntity<byte[]>("В системе нет этого изображения".getBytes(), new HttpHeaders(), HttpStatus.NO_CONTENT);
             }
 
 
