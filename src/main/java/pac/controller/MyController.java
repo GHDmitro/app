@@ -570,7 +570,7 @@ public class MyController {
             StringBuilder sb1 = new StringBuilder();
             sb1.append(refPhoto);
 
-            File file = new File(PATH_TO_IMG, refPhoto);
+            File file = new File(PATH_TO_IMG, refPhoto+ IMAGE_EXTENSION);
 
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
