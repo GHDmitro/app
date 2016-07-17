@@ -275,7 +275,7 @@ public class MyController {
                         FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
-                        fileOut.close();
+//                        fileOut.close();
                     } catch (IOException e) {
                         model.addAttribute("error", e.getMessage());
                     }
@@ -567,19 +567,13 @@ public class MyController {
         try {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
-            File file = new File(PATH_TO_IMG+"/"+refPhoto);
+            File file = new File(PATH_TO_IMG+refPhoto);
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
                 return new ResponseEntity<byte[]>("В системе нет этого изображения".getBytes(), new HttpHeaders(), HttpStatus.NO_CONTENT);
             }
-
-
-
-
             FileInputStream reader = new FileInputStream(file);
-//            FileReader reader = new FileReader(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
-//            BufferedReader inputStream = new BufferedReader()
             arr = new byte[inputStream.available()];
             int s = inputStream.read(arr);
             if (s == 0)
