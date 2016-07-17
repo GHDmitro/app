@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import pac.entities.*;
-import pac.errors.PhotoNotFoundException;
 import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -275,7 +274,7 @@ public class MyController {
                         FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
-//                        fileOut.close();
+                        fileOut.close();
                     } catch (IOException e) {
                         model.addAttribute("error", e.getMessage());
                     }
@@ -573,12 +572,23 @@ public class MyController {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
                 return new ResponseEntity<byte[]>( "Нет такого файла".getBytes(), HttpStatus.OK);
             }
-            FileInputStream reader = new FileInputStream(file);
-            BufferedInputStream inputStream = new BufferedInputStream(reader);
-            arr = new byte[inputStream.available()];
-            int s = inputStream.read(arr);
-            if (s == 0)
-                throw new PhotoNotFoundException();
+
+            BufferedReader read = new BufferedReader(new FileReader(file));
+
+            String str;
+            StringBuilder sb = new StringBuilder();
+
+            while((str = read.readLine()) != null){
+                sb.append(str);
+            }
+
+            arr = sb.toString().getBytes();
+//            FileInputStream reader = new FileInputStream(file);
+//            BufferedInputStream inputStream = new BufferedInputStream(reader);
+//            arr = new byte[inputStream.available()];
+//            int s = inputStream.read(arr);
+//            if (s == 0)
+//                throw new PhotoNotFoundException();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
