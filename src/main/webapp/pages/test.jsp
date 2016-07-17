@@ -12,6 +12,9 @@
     <title></title>
 </head>
 <body>
+<form enctype="multipart/form-data" action="/test" method="post">
+  <input type="file" name="file" placeholder="file">
+</form>
 <h1><c:out value="${text1}"/> fytrdrtdtrdtrd</h1>
 <h1><c:out value="${text2}"/> fytrdrtdtrdtrd</h1>
 <h1><c:out value="${text}"/> fytrdrtdtrdtrd</h1>

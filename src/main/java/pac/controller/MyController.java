@@ -47,13 +47,13 @@ public class MyController {
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
-    @RequestMapping("/test")
-    public String test(HttpServletRequest request, Model model){
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public String test(@RequestParam MultipartFile file,HttpServletRequest request ,Model model){
 
-        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
-
+        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
+        File file2 = new File(file1, "photo.png");
         try{
-            FileWriter w = new FileWriter(file);
+            FileWriter w = new FileWriter(file1);
             w.write("Hello world");
             w.flush();
             w.close();
@@ -65,7 +65,7 @@ public class MyController {
         try {
 
 
-            BufferedReader read = new BufferedReader(new FileReader(file));
+            BufferedReader read = new BufferedReader(new FileReader(file2));
 
             String str;
             StringBuilder sb = new StringBuilder();
@@ -274,7 +274,7 @@ public class MyController {
                         FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
-//                        fileOut.close();
+                        fileOut.close();
                     } catch (IOException e) {
                         model.addAttribute("error", e.getMessage());
                     }
@@ -569,25 +569,30 @@ public class MyController {
             StringBuilder sb1 = new StringBuilder();
             sb1.append(refPhoto);
 
-            File file = new File(PATH_TO_IMG+sb1.substring(0, sb1.indexOf(".")));
+            File file = new File(PATH_TO_IMG, refPhoto);
 
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
                 return new ResponseEntity<byte[]>( "Нет такого файла".getBytes(), HttpStatus.OK);
             }
-
-            BufferedReader read = new BufferedReader(new FileReader(file));
-
-            String str;
-            StringBuilder sb = new StringBuilder();
-
-            while((str = read.readLine()) != null){
-                sb.append(str);
+//
+//            BufferedReader read = new BufferedReader(new FileReader(file));
+//
+//            String str;
+//            StringBuilder sb = new StringBuilder();
+//
+//            while((str = read.readLine()) != null){
+//                sb.append(str);
+//            }
+//
+//            arr = sb.toString().getBytes();
+            FileInputStream reader = new FileInputStream(file);
+            BufferedInputStream inputStream = new BufferedInputStream(reader);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int b;
+            while((b = inputStream.read()) != -1){
+                out.write(b);
             }
-
-            arr = sb.toString().getBytes();
-//            FileInputStream reader = new FileInputStream(file);
-//            BufferedInputStream inputStream = new BufferedInputStream(reader);
 //            arr = new byte[inputStream.available()];
 //            int s = inputStream.read(arr);
 //            if (s == 0)
@@ -597,7 +602,7 @@ public class MyController {
             headers.setContentType(MediaType.IMAGE_PNG);
             System.out.println("отдает  фотку на страничку");
 
-            return new ResponseEntity<byte[]>(arr, headers, HttpStatus.OK);
+            return new ResponseEntity<byte[]>(out.toByteArray(), headers, HttpStatus.OK);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
