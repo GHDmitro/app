@@ -51,7 +51,7 @@ public class MyController {
     @RequestMapping("/test")
     public String test(HttpServletRequest request, Model model){
 
-        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/test");
+        File file = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
 
         try{
             FileWriter w = new FileWriter(file);
@@ -562,12 +562,12 @@ public class MyController {
     }
 
     @RequestMapping(value = "/givePhoto/{refPhoto}")
-    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto, HttpServletRequest request) {
+    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto) {
         byte[] arr;
         try {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
-            File file = new File(PATH_TO_IMG+refPhoto);
+            File file = new File(PATH_TO_IMG+"/"+refPhoto);
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
                 return new ResponseEntity<byte[]>("В системе нет этого изображения".getBytes(), new HttpHeaders(), HttpStatus.NO_CONTENT);
@@ -577,7 +577,9 @@ public class MyController {
 
 
             FileInputStream reader = new FileInputStream(file);
+//            FileReader reader = new FileReader(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
+//            BufferedReader inputStream = new BufferedReader()
             arr = new byte[inputStream.available()];
             int s = inputStream.read(arr);
             if (s == 0)
