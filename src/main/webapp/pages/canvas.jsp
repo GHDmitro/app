@@ -106,7 +106,7 @@
                     <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
                     <%--alt="Изображение загружается">--%>
                 <c:if test="${position.product.photo != null}">
-                    <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.id}"/>"
+                    <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
                          alt="Изображение загружается">
                     <%----%>
                 </c:if>
