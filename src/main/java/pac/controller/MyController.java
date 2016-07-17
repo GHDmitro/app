@@ -566,7 +566,10 @@ public class MyController {
         try {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
-            File file = new File(PATH_TO_IMG+refPhoto);
+            StringBuilder sb1 = new StringBuilder();
+            sb1.append(refPhoto);
+
+            File file = new File(PATH_TO_IMG+sb1.substring(0, sb1.indexOf(".")));
 
             if (!file.exists()) {
 //                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
