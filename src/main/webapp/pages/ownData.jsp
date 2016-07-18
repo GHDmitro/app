@@ -46,19 +46,19 @@
                                 <%--<div class="col-md- col-lg-">--%>
                                     <div class="thumbnail">
 
-                                        <c:if test="${refPhoto != null}">
-                                            <c:if test="${booking.accountClient.login != null}">
+                                        <%--<c:if test="${refPhoto != null}">--%>
+                                            <c:if test="${refPhoto != null}">
                                                 <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${refPhoto}"/>"
                                                      alt="Изображение загружается">
                                                 <%----%>
                                             </c:if>
-                                            <c:if test="${booking.accountClient.login == null}">
+                                            <c:if test="${refPhoto == null}">
                                                 <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
                                                      alt="Изображение загружается">
                                             </c:if>
                                         <%--<img src="<spring:url value="/img/${refPhoto}"/>">--%>
                                             <%--src="<c:url value="/givePhoto/${refPhoto}"/>--%>
-                                        </c:if>
+                                        <%--</c:if>--%>
 
                                         <form enctype="multipart/form-data" action="<c:url value="/changeOwnData"/> "
                                               method="post">
