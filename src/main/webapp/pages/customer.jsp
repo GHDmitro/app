@@ -36,7 +36,7 @@
         <h1 class="text">Добавление продукта в ваш прайс лист</h1>
       </header>
       <section class="row">
-        <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">
           <div class="panel panel-default">
             <div class="panel-heading"><h4>Новый продукт</h4></div>
             <div class="panel-body">

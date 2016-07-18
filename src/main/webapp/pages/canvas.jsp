@@ -99,8 +99,9 @@
         <!-- индикаторы слайдов -->
     </div>
     <br>
-
-    <c:out value="${myHref}"/>
+    <c:if test="${error != null}">
+        <a class="btn-primary" href="<c:url value="/home"/>">Если прайс лист не появился нажмите на кнопку</a>
+    </c:if>
     <c:forEach items="${listPositions}" var="position">
         <div class="container marketing">
                 <%--<hr class="featurette-divider">--%>

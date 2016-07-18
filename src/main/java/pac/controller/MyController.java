@@ -434,8 +434,12 @@ public class MyController {
                     setPositions = set;
                 }
                 model.addAttribute("listPositions", setPositions);
+                return "canvas";
+            }else {
+                model.addAttribute("error", "Обновите страницу по этой ссылке");
+                return "canvas";
+
             }
-            return "canvas";
         }
         return "login";
     }
