@@ -69,13 +69,17 @@
                         </sec:authorize>
                         <sec:authorize access="hasRole('customer')">
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" > Пункт 1 <b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Новый фон<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><p>Загрузить новый фон:</p></li>
+                                    <li class="text-center"><p>Загрузить новый фон </p></li>
                                     <li>
                                         <form enctype="multipart/form-data" method="post" action="#">
-                                            <input type="file" name="photo" id="Photo" placeholder="Photo" required>
-                                            <button type="submit" class="btn btn-success">Подтвердить</button>
+                                            <div class="btn-group-justified">
+                                                <input type="file" name="mainPhoto1" placeholder="Photo1" required>
+                                                <input type="file" name="mainPhoto2" placeholder="Photo2">
+                                                <input type="file" name="mainPhoto3" placeholder="Photo3">
+                                                <button type="submit" class="btn btn-success ">Подтвердить</button>
+                                            </div>
                                         </form>
                                     </li>
 
