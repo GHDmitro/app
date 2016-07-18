@@ -94,6 +94,7 @@
         <img  id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
         <!-- индикаторы слайдов -->
     </div>
+    <br>
 
     <c:out value="${myHref}"/>
     <c:forEach items="${listPositions}" var="position">

@@ -39,7 +39,7 @@
 </head>
 <body>
 <sec:authorize access="hasRole('customer')">
-  <nav class="navbar navbar-fixed-top navbar-inverse">
+  <nav class="navbar navbar-static-top  navbar-inverse" id="navBarhead1">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -63,53 +63,7 @@
   <div class="row featurette">
     <input type="hidden" name="id" value="${position.id}"/>
 
-    <div class="col-md-7 col-md-push-5 col-sm-110 col-xs-12">
-
-      <ul>
-        <%--Here will name of positioin from product--%>
-        <li style="list-style-type: none ">
-          <ul>
-            <li><h3 class="featurette-heading"><c:out value="${position.product.name}"/></h3></li>
-            <li style="list-style-type: none "><input type="text" class="form-control" name="name" placeholder="изменить название"></li>
-          </ul>
-        </li>
-        <%--Here will be code of position from product--%>
-        <li style="list-style-type: none ">
-          <ul>
-            <li><h4 class="text-muted" ><c:out value="${position.product.codeOfModel}"/></h4></li>
-            <li style="list-style-type: none"><input type="text" class="form-control" name="codeOfModel"  placeholder="изменить модель"></li>
-          </ul>
-        </li>
-        <%--Here will be decription from position--%>
-        <li style="list-style-type: none ">
-          <ul>
-           <li><p class="lead"><c:out value="${position.product.description}"/></p></li>
-           <li style="list-style-type: none ; height: 200px"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>
-          </ul>
-        </li>
-
-          <li style="list-style-type: none ">
-            <ul>
-             <li><p class="lead"><c:out value="${position.cost}"/></p></li>
-             <li style="list-style-type: none"><input type="text" class="form-control" name="cost"  placeholder="изменить цену"/></li>
-            </ul>
-          </li>
-
-          <li style="list-style-type: none ">
-            <ul>
-             <li><p class="lead"><c:out value="${position.product.amount}"/> </p></li>
-             <li style="list-style-type: none"><input type="number" class="form-control" name="amount" placeholder="изменить колличество"/></li>
-            </ul>
-          </li>
-      </ul><br><br>
-
-      <p class="text-center">
-        <button type="submit" class="btn btn-success">Изменить позицию</button>
-        <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>
-      </p>
-    </div>
-
-    <div class="col-md-5 col-md-pull-7">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
       <c:if test="${position.product.photo != null}">
         <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
              alt="Изображение загружается">
@@ -119,12 +73,120 @@
         <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
              alt="Изображение загружается">
       </c:if>
-      <%--<img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"--%>
-           <%--alt="Изображение загружается">--%>
+        <%--<img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"--%>
+        <%--alt="Изображение загружается">--%>
       <br><br>
       <input type="file" name="photo" id="Photo" placeholder="Изменить фото">
+    </div>
 
-    </div><br>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5" >
+      <ul>
+          <%--Here will name of positioin from product--%>
+        <li style="list-style-type: none ">
+          <ul>
+            <li><h3 class="featurette-heading"><c:out value="${position.product.name}"/></h3></li>
+            <li style="list-style-type: none "><input type="text" class="form-control" name="name" placeholder="изменить название"></li>
+          </ul>
+        </li>
+          <%--Here will be code of position from product--%>
+        <li style="list-style-type: none ">
+          <ul>
+            <li><h4 class="text-muted" ><c:out value="${position.product.codeOfModel}"/></h4></li>
+            <li style="list-style-type: none"><input type="text" class="form-control" name="codeOfModel"  placeholder="изменить модель"></li>
+          </ul>
+        </li>
+          <%--Here will be decription from position--%>
+        <li style="list-style-type: none ">
+          <ul>
+            <li><p class="lead"><c:out value="${position.product.description}"/></p></li>
+            <li style="list-style-type: none ; height: 200px"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>
+          </ul>
+        </li>
+
+        <li style="list-style-type: none ">
+          <ul>
+            <li><p class="lead"><c:out value="${position.cost}"/></p></li>
+            <li style="list-style-type: none"><input type="text" class="form-control" name="cost"  placeholder="изменить цену"/></li>
+          </ul>
+        </li>
+
+        <li style="list-style-type: none ">
+          <ul>
+            <li><p class="lead"><c:out value="${position.product.amount}"/> </p></li>
+            <li style="list-style-type: none"><input type="number" class="form-control" name="amount" placeholder="изменить колличество"/></li>
+          </ul>
+        </li>
+      </ul><br><br>
+
+      <p class="text-center">
+        <button type="submit" class="btn btn-success">Изменить позицию</button>
+        <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>
+      </p>
+    </div>
+
+
+    <%--<div class="col-md-7 col-md-push-5 col-sm-110 col-xs-12">--%>
+
+      <%--<ul>--%>
+        <%--&lt;%&ndash;Here will name of positioin from product&ndash;%&gt;--%>
+        <%--<li style="list-style-type: none ">--%>
+          <%--<ul>--%>
+            <%--<li><h3 class="featurette-heading"><c:out value="${position.product.name}"/></h3></li>--%>
+            <%--<li style="list-style-type: none "><input type="text" class="form-control" name="name" placeholder="изменить название"></li>--%>
+          <%--</ul>--%>
+        <%--</li>--%>
+        <%--&lt;%&ndash;Here will be code of position from product&ndash;%&gt;--%>
+        <%--<li style="list-style-type: none ">--%>
+          <%--<ul>--%>
+            <%--<li><h4 class="text-muted" ><c:out value="${position.product.codeOfModel}"/></h4></li>--%>
+            <%--<li style="list-style-type: none"><input type="text" class="form-control" name="codeOfModel"  placeholder="изменить модель"></li>--%>
+          <%--</ul>--%>
+        <%--</li>--%>
+        <%--&lt;%&ndash;Here will be decription from position&ndash;%&gt;--%>
+        <%--<li style="list-style-type: none ">--%>
+          <%--<ul>--%>
+           <%--<li><p class="lead"><c:out value="${position.product.description}"/></p></li>--%>
+           <%--<li style="list-style-type: none ; height: 200px"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>--%>
+          <%--</ul>--%>
+        <%--</li>--%>
+
+          <%--<li style="list-style-type: none ">--%>
+            <%--<ul>--%>
+             <%--<li><p class="lead"><c:out value="${position.cost}"/></p></li>--%>
+             <%--<li style="list-style-type: none"><input type="text" class="form-control" name="cost"  placeholder="изменить цену"/></li>--%>
+            <%--</ul>--%>
+          <%--</li>--%>
+
+          <%--<li style="list-style-type: none ">--%>
+            <%--<ul>--%>
+             <%--<li><p class="lead"><c:out value="${position.product.amount}"/> </p></li>--%>
+             <%--<li style="list-style-type: none"><input type="number" class="form-control" name="amount" placeholder="изменить колличество"/></li>--%>
+            <%--</ul>--%>
+          <%--</li>--%>
+      <%--</ul><br><br>--%>
+
+      <%--<p class="text-center">--%>
+        <%--<button type="submit" class="btn btn-success">Изменить позицию</button>--%>
+        <%--<a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>--%>
+      <%--</p>--%>
+    <%--</div>--%>
+
+    <%--<div class="col-md-5 col-md-pull-7">--%>
+      <%--<c:if test="${position.product.photo != null}">--%>
+        <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
+             <%--alt="Изображение загружается">--%>
+        <%--&lt;%&ndash;&ndash;%&gt;--%>
+      <%--</c:if>--%>
+      <%--<c:if test="${position.product.photo == null}">--%>
+        <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"--%>
+             <%--alt="Изображение загружается">--%>
+      <%--</c:if>--%>
+      <%--&lt;%&ndash;<img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"&ndash;%&gt;--%>
+           <%--&lt;%&ndash;alt="Изображение загружается">&ndash;%&gt;--%>
+      <%--<br><br>--%>
+      <%--<input type="file" name="photo" id="Photo" placeholder="Изменить фото">--%>
+
+    <%--</div><br>--%>
 
 
 
