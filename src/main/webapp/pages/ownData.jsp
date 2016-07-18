@@ -37,13 +37,12 @@
                     <%--<h1 class="text">Добавление продукта в ваш прайс лист</h1>--%>
             </header>
             <section class="row">
-                <div class="col-xs-6 col-xs-offset-3">
+                <div class="col-xs-12 col-sm-10 col-md-7">
                     <div class="panel panel-default">
                         <div class="panel-heading"><h4>Личные данные</h4></div>
                         <div class="panel-body">
-
                             <div class="row">
-                                <div class="col-md-7 col-sm-10 col-xs-12">
+                                <%--<div class="col-md-7 col-sm-10 col-xs-12">--%>
                                     <div class="thumbnail">
 
                                         <%--<c:if test="${refPhoto != null}">--%>
@@ -121,7 +120,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                </div>
+                                <%--</div>--%>
                             </div>
 
                         </div>
