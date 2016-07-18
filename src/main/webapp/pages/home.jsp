@@ -87,10 +87,6 @@
         <!-- /.container -->
     </nav>
 
-
-
-    <%--<option value="${account.login}">Name: ${account.login} , User age: ${account.pass}</option>--%>
-
     <div class="container">
 
         <c:forEach items="${accountList}" var="customer" varStatus="status">

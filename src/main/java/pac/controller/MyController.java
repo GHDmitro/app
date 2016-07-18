@@ -43,12 +43,12 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String PATH_TO_IMG = "/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/";
-//        /var/lib/openshift/PROJECT_ID/app-root/data/
+    //        /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
-//    private ContactService contactService;
+
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Foo test(@RequestParam MultipartFile file,HttpServletRequest request ,Model model){
+    public Foo test(@RequestParam MultipartFile file, HttpServletRequest request, Model model) {
 //
 //        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
 //        File file2 = new File(file1, "photo.png");
@@ -82,7 +82,6 @@ public class MyController {
 //        }
 
 
-
         return new Foo(32, "uuuuuuu");
     }
 
@@ -108,9 +107,7 @@ public class MyController {
     public String home(HttpServletRequest request, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-//            if (login == null) {
 //
-//            }
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
             String login = userDetail.getUsername();
             Account account = accountService.findAccount(login);
@@ -126,20 +123,9 @@ public class MyController {
                     list = list1;
                 }
 
-//                String d = null;
-//                Set<String> paths = request.getServletContext().getResourcePaths("/");
-//                model.addAttribute("paths", paths);
-//                String path1 = request.getSession().getServletContext().
-////                String d = null;
-//                try {
-//                    URL url = request.getSession().getServletContext().getResource("/img/");
-//                    d = url.getPath();
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                }
-//                model.addAttribute("path1", d);
+//
                 model.addAttribute("listPositions", list);
-//                model.addAttribute("login", login);
+//
                 return "canvas";
             } else if (account.getAccountType().getTypeName().equals("client")) {
                 AccountType accountType = accountTypeService.findByTypeName("customer");
@@ -154,8 +140,8 @@ public class MyController {
 
     @RequestMapping(value = "/home/{login}")
     public String homePage(@PathVariable(value = "login") String login, Model model) {
-        Authentication userName = SecurityContextHolder.getContext().getAuthentication();
-        if (!(userName instanceof AnonymousAuthenticationToken)) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
             Account account = accountService.findAccount(login);
             if (account != null && account.getAccountType().getTypeName().equals("customer")) {
                 List<PositionOfPrice> list = positionOfPriceService.listPositions(account);
@@ -215,7 +201,7 @@ public class MyController {
         return "login";
     }
 
-    @RequestMapping(value = "/addNewPosition", method = RequestMethod.GET)
+    @RequestMapping(value = "/addPricePosition", method = RequestMethod.GET)
     public String getNewPosition(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -231,7 +217,6 @@ public class MyController {
                                    @RequestParam String description, @RequestParam MultipartFile photo,
                                    @RequestParam int capacity, @RequestParam String bookingCondition,
                                    @RequestParam String deliveryCondition, @RequestParam double cost, HttpServletRequest request, Model model) throws IOException {
-//        String login = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -239,8 +224,8 @@ public class MyController {
             String login = userDetail.getUsername();
             Account account = accountService.findAccount(login);
 
-            String ref = name+codeOfModel + login ; // IMAGE_EXTENSION
-
+            String ref = name + codeOfModel + login; // IMAGE_EXTENSION
+//57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
 //        String path = absolutePath+"/"+ref;
@@ -251,14 +236,9 @@ public class MyController {
 //            } catch (MalformedURLException e) {
 //                e.printStackTrace();
 //            }
-
-//            model.addAttribute("myHref", path +"/"+ ref);
-//        System.out.println(path+"--------------------");
-
 //            String filename = photo.getOriginalFilename();
 //            String path = request.getServletContext().getRealPath("/");
 //            String path = request.getRealPath("/");
-//            System.out.println(path);
             Product product = productService.findProduct(name, codeOfModel, ref);    //////////////////////////  вот тут
 
             if (product != null) {
@@ -267,18 +247,12 @@ public class MyController {
                 return "customer";
             } else {
                 if (!photo.isEmpty()) {
-                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
-//                    URL url = request.getSession().getServletContext().("/img");
-//                    File file = new File(path+"/" +ref);
-
                     File file = new File(PATH_TO_IMG);
                     if (!(file.exists())) {
                         file.mkdirs();
                     }
-//                    System.out.println(file.getAbsolutePath());
-//
-                    File file1 = new File(file, ref +IMAGE_EXTENSION);
 
+                    File file1 = new File(file, ref + IMAGE_EXTENSION);
                     try {
                         FileOutputStream fileOut = new FileOutputStream(file1);
                         fileOut.write(photo.getBytes());
@@ -288,29 +262,24 @@ public class MyController {
                         model.addAttribute("error", e.getMessage());
                     }
 
-                    System.out.println("------------original path ---------  "+file.getAbsolutePath()+"        ----------");
+                    System.out.println("------------original path ---------  " + file.getAbsolutePath() + "        ----------");
 
                     product = new Product(name, description, ref, codeOfModel, capacity);
 
-                } else product = new Product(name, description, null , codeOfModel, capacity);
+                } else product = new Product(name, description, null, codeOfModel, capacity);
 
             }
 
-
             Calendar c = Calendar.getInstance();
-
             PositionOfPrice positionOfPrice = new PositionOfPrice(bookingCondition, deliveryCondition,
                     new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), cost, account, product);
             account.addPricePositions(positionOfPrice);
             accountService.updateAccount(account);
-//           /////// проверить будет ли оно правильно работать добавле поз после ее создания
-            System.out.println("-----------------");
-
+//                                                      проверить будет ли оно правильно работать добавле поз после ее создания
             List<PositionOfPrice> listPosition = accountService.listPositions(account);
 
             if (listPosition.size() != 0) {
                 model.addAttribute("listPositions", listPosition);
-//            System.out.println(listPosition.get(0).getProduct().getName() + "     если есть то в контроллере позиция ");
             } else {
                 System.out.println("Лист позиций пуст");
                 model.addAttribute("error", "Проблеммы у сервера в addPricePosition");
@@ -324,10 +293,10 @@ public class MyController {
 
     @RequestMapping(value = "/ownData/{login}")
     public String ownData(@PathVariable(value = "login") String login, Model model) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (!(auth instanceof AnonymousAuthenticationToken)) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-//            String userName = auth.getName();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            String userName = auth.getName();
             if (login != null) {
                 Account account1 = accountService.findAccount(userName);
                 Account account = accountService.findAccount(login);
@@ -350,7 +319,7 @@ public class MyController {
                 } else return "login";
             }
             return "login";
-//        }else return "login";
+        } else return "login";
     }
 
     @RequestMapping(value = "/ownData")
@@ -361,9 +330,9 @@ public class MyController {
             Account account = accountService.findAccount(login);
             System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                if ((new File(PATH_TO_IMG , login + IMAGE_EXTENSION)).exists()) {
+                if ((new File(PATH_TO_IMG, login + IMAGE_EXTENSION)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login ); //IMAGE_EXTENSION
+                    model.addAttribute("refPhoto", login); //IMAGE_EXTENSION
                 } else {
                     // не существует
                     model.addAttribute("refPhoto", null);
@@ -382,103 +351,109 @@ public class MyController {
     public String changeOwnData(@RequestParam MultipartFile photo, @RequestParam String email,
                                 @RequestParam String telNumber, Model model) {
 
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String login = auth.getName();
-        Account account = accountService.findAccount(login);
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String login = auth.getName();
+            Account account = accountService.findAccount(login);
+//        System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
+            if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
+                if (!photo.isEmpty()) {
+                    File file = new File(PATH_TO_IMG, login + IMAGE_EXTENSION);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    // существует
 
-        System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
-        if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-            if (!photo.isEmpty()) {
-                File file = new File(PATH_TO_IMG , login + IMAGE_EXTENSION);
-                if (file.exists()) {
-                    file.delete();
+                    File file1 = new File(PATH_TO_IMG, login + IMAGE_EXTENSION);
+                    try (FileOutputStream fileOut = new FileOutputStream(file1)) {
+                        fileOut.write(photo.getBytes());
+                        fileOut.flush();
+                        fileOut.close();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                System.out.println("фотки нету но в IF вошел ---------------------------");
-                // существует
+                model.addAttribute("refPhoto", login);   // IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
 
-                File file1 = new File(PATH_TO_IMG ,  login + IMAGE_EXTENSION);
-                try (FileOutputStream fileOut = new FileOutputStream(file1)) {
-                    fileOut.write(photo.getBytes());
-                    fileOut.flush();
-                    fileOut.close();
+                if (email.length() == 0) {
+                    model.addAttribute("email", account.getEmail());
+//                System.out.println("changeOwnData: email by Account: " + account.getEmail());
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    account.setEmail(email);
+//                System.out.println("changeOwnData: email: " + email);
+                    model.addAttribute("email", email);
                 }
-            }
-            model.addAttribute("refPhoto", login );   // IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
 
-            if (email.length() == 0) {
-                model.addAttribute("email", account.getEmail());
-                System.out.println("changeOwnData: email by Account: " + account.getEmail());
+                if (telNumber.length() == 0) {
+                    model.addAttribute("telNumber", account.getTelNumber());
+//                System.out.println("changeOwnData: telNumber by Account: " + account.getTelNumber());
 
-            } else {
-                account.setEmail(email);
-                System.out.println("changeOwnData: email: " + email);
-                model.addAttribute("email", email);
-            }
-
-            if (telNumber.length() == 0) {
-                model.addAttribute("telNumber", account.getTelNumber());
-                System.out.println("changeOwnData: telNumber by Account: " + account.getTelNumber());
-
-            } else {
-                System.out.println("changeOwnData: telNumber:" + telNumber);
-                account.setTelNumber(telNumber);
-                model.addAttribute("telNumber", telNumber);
-            }
+                } else {
+//                System.out.println("changeOwnData: telNumber:" + telNumber);
+                    account.setTelNumber(telNumber);
+                    model.addAttribute("telNumber", telNumber);
+                }
 
 
-            accountService.updateAccount(account);
+                accountService.updateAccount(account);
 
-            return "ownData";
+                return "ownData";
+            } else return "login";
         } else return "login";
     }
 
-    @RequestMapping(value = "deletePosition/{positionID}", method = RequestMethod.GET)
+    @RequestMapping(value = "/deletePosition/{positionID}", method = RequestMethod.GET)
     public String deletePosition(@PathVariable(value = "positionID") Integer positionID, Model model) {
-        PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
+            if (positionOfPrice != null) {
+                Account account = positionOfPrice.getAccount();
+                Product product = positionOfPrice.getProduct();
+                String refPhoto = product.getPhoto();
 
-        if (positionOfPrice != null) {
-            Account account = positionOfPrice.getAccount();
-            Product product = positionOfPrice.getProduct();
-            String refPhoto = product.getPhoto();
+                File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);
+                if (file.exists()) {
+                    file.delete();
+                }
 
-            File file = new File(PATH_TO_IMG ,  refPhoto + IMAGE_EXTENSION);
-            if (file.exists()) {
-                file.delete();
+                account.deletePricePosition(positionOfPrice);
+                accountService.updateAccount(account);
+
+
+                Set<PositionOfPrice> setPositions = accountService.findAccount(account.getLogin()).getPricePositions();
+                if (setPositions.size() == 0) {
+                    Set<PositionOfPrice> set = new HashSet<>();
+                    Calendar c = Calendar.getInstance();
+                    set.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
+                            new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
+                            "Описание товара", null, "Код модели", 000000)));
+                    setPositions = set;
+                }
+                model.addAttribute("listPositions", setPositions);
             }
-
-            account.deletePricePosition(positionOfPrice);
-            accountService.updateAccount(account);
-
-
-            Set<PositionOfPrice> setPositions = accountService.findAccount(account.getLogin()).getPricePositions();
-            if (setPositions.size() == 0) {
-                Set<PositionOfPrice> set = new HashSet<>();
-                Calendar c = Calendar.getInstance();
-                set.add(new PositionOfPrice("Здесь будет ваши условия заказа", "Здесь будут ваши условия доставки",
-                        new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), 000000, account, new Product("Название товара",
-                        "Описание товара", null, "Код модели", 000000)));
-                setPositions = set;
-            }
-            model.addAttribute("listPositions", setPositions);
+            return "canvas";
         }
-        return "canvas";
+        return "login";
     }
 
     @RequestMapping(value = "/changePosition/{positionID}", method = RequestMethod.GET)
     public String changePosition(@PathVariable(value = "positionID") Integer positionID, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String login = auth.getName();
-        if (positionID != null) {
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String login = auth.getName();
+            if (positionID != null) {
 
-            PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
-            System.out.println(positionOfPrice.getId() + " -----  " + positionOfPrice.getCost() + " ----- " + positionOfPrice.getProduct().getName());
-            model.addAttribute("position", positionOfPrice);
-            return "changePage";
-        }
-        return "canvas";
+                PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
+                System.out.println(positionOfPrice.getId() + " -----  " + positionOfPrice.getCost() + " ----- " + positionOfPrice.getProduct().getName());
+                model.addAttribute("position", positionOfPrice);
+                return "changePage";
+            }
+            return "canvas";
+        } else return "login";
     }
 
     @RequestMapping(value = "/changePositionPost", method = RequestMethod.POST)
@@ -491,70 +466,72 @@ public class MyController {
 //            System.out.println("id пустой");
 //        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(Integer.valueOf(id));
+            if (positionOfPrice != null) {
+                Account account = positionOfPrice.getAccount();
+                Product product = positionOfPrice.getProduct();
+                if (!name.isEmpty()) {
+                    product.setName(name);
+                }
+                if (!codeOfModel.isEmpty()) {
 
-        PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(Integer.valueOf(id));
-        if (positionOfPrice != null) {
-            Account account = positionOfPrice.getAccount();
-            Product product = positionOfPrice.getProduct();
-            if (!name.isEmpty()) {
-                product.setName(name);
-            }
-            if (!codeOfModel.isEmpty()) {
+                    product.setCodeOfModel(codeOfModel);
+                    File source = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
+                    if (source.exists()) {
+                        String refPhoto = product.getName() + codeOfModel + account.getLogin();  // IMAGE_EXTENSION
+                        File dest = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);
+                        try {
+                            FileUtils.copyFile(source, dest);  //
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        source.delete();
+                        product.setPhoto(refPhoto);   // сохраняется без расширения потому что без расширения оно приходит на сервер
+                    }
+                }
+                if (!description.isEmpty()) {
+                    product.setDescription(description);
+                }
+                if (!amount.isEmpty() && Integer.parseInt(amount) != product.getAmount()) {
+                    product.setAmount(Integer.parseInt(amount));
+                }
+                if (!cost.isEmpty() && Double.parseDouble(cost) != positionOfPrice.getCost()) {
+                    positionOfPrice.setCost(Double.parseDouble(cost));
+                }
+                if (!photo.isEmpty()) {
 
-                product.setCodeOfModel(codeOfModel);
-                File source = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
-                if (source.exists()) {
-                    String refPhoto = product.getName() + codeOfModel + account.getLogin() ;  // IMAGE_EXTENSION
-                    File dest = new File(PATH_TO_IMG , refPhoto + IMAGE_EXTENSION);
-                    try {
-                        FileUtils.copyFile(source, dest);  //
+                    File file = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    System.out.println("фотки нету но в IF вошел ---------------------------");
+                    // существует
+                    File file1 = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
+                    try (FileOutputStream fileOut = new FileOutputStream(file1)) {
+                        fileOut.write(photo.getBytes());
+                        fileOut.flush();
+                        fileOut.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    source.delete();
-                    product.setPhoto(refPhoto);   // сохраняется без расширения потому что без расширения оно приходит на сервер
-                }
-            }
-            if (!description.isEmpty()) {
-                product.setDescription(description);
-            }
-            if (!amount.isEmpty() && Integer.parseInt(amount) != product.getAmount()) {
-                product.setAmount(Integer.parseInt(amount));
-            }
-            if (!cost.isEmpty() && Double.parseDouble(cost) != positionOfPrice.getCost()) {
-                positionOfPrice.setCost(Double.parseDouble(cost));
-            }
-            if (!photo.isEmpty()) {
 
-                File file = new File(PATH_TO_IMG , product.getPhoto()+IMAGE_EXTENSION);
-                if (file.exists()) {
-                    file.delete();
-                }
-                System.out.println("фотки нету но в IF вошел ---------------------------");
-                // существует
-                File file1 = new File(PATH_TO_IMG , product.getPhoto()+IMAGE_EXTENSION);
-                try (FileOutputStream fileOut = new FileOutputStream(file1)) {
-                    fileOut.write(photo.getBytes());
-                    fileOut.flush();
-                    fileOut.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
 
-            }
+                productService.setProduct(product);
+                positionOfPriceService.setPositionOfPrice(positionOfPrice);
 
-            productService.setProduct(product);
-            positionOfPriceService.setPositionOfPrice(positionOfPrice);
+                model.addAttribute("position", positionOfPrice);
+                return "changePage";
 
-            model.addAttribute("position", positionOfPrice);
-            return "changePage";
-
-        } else return "canvas";
+            } else return "canvas";
+        } else return "login";
 
     }
 
     @RequestMapping(value = "/givePhoto/{refPhoto}")
-    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto) {
+    public ResponseEntity<byte[]> takePhoto(@PathVariable(value = "refPhoto") String refPhoto, Model model) {
+
         byte[] arr;
         System.out.println("handle img " + refPhoto);
         try {
@@ -562,7 +539,7 @@ public class MyController {
 //            String path = request.getServletContext().getRealPath("/img");
 
 
-            File file = new File(PATH_TO_IMG, refPhoto+ IMAGE_EXTENSION);
+            File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);
 
 //            if (!file.exists()) {
 ////                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
@@ -573,7 +550,7 @@ public class MyController {
             BufferedInputStream inputStream = new BufferedInputStream(reader);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             int b;
-            while((b = inputStream.read()) != -1){
+            while ((b = inputStream.read()) != -1) {
                 out.write(b);
             }
 //            arr = new byte[inputStream.available()];    // так делать не корректно
@@ -596,10 +573,14 @@ public class MyController {
 
     }
 
+    @RequestMapping(value = "/addAccount")
+    public String addAccount(Model model){
+        return "registrat";
+    }
+
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
     public String addAccount(@RequestParam String login, @RequestParam String pass, @RequestParam String email,
                              @RequestParam String telNumber, @RequestParam String type, Model model) {
-
         AccountType at = accountTypeService.findByTypeName(type);
         accountService.addAccount(new Account(telNumber, email, pass, login, at));
         model.addAttribute("login", login);
@@ -613,136 +594,166 @@ public class MyController {
     @RequestMapping(value = "/bookingPage", method = RequestMethod.GET)
     public String booking(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String login = auth.getName();
-        Account customer = accountService.findAccount(login);
-        if (customer != null) {
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String login = auth.getName();
+            Account customer = accountService.findAccount(login);
+            if (customer != null) {
 //            List<Booking> list4 = bookingService.bookingList(customer);
 //            List<Booking> list = accountService.findAccount(customer.getLogin()).getBookingSet();
-            Set<Booking> set = customer.getBookingSet();
-            List<Booking> list = new ArrayList<>(set);
+                Set<Booking> set = customer.getBookingSet();
+                List<Booking> list = new ArrayList<>(set);
 
 //            if (list.size() != 0) {
 //                List<BookingPosition> list1 = (List<BookingPosition>) bookingPositionService.positionsByBooking(list.get(0));
 //                List<BookingPosition> listB = list.get(0).getBookingPositions();
 //            }
-            if (list.size() > 0) {
+                if (list.size() > 0) {
 
-                model.addAttribute("bookingList", list);
+                    model.addAttribute("bookingList", list);
+                } else {
+                    model.addAttribute("bookingList", null);
+                }
+                return "bookingPage";
             } else {
-                model.addAttribute("bookingList", null);
+                return "login";
             }
-            return "bookingPage";
-        } else {
-            return "login";
-        }
+        }else return "login";
 
     }
 
+    @RequestMapping(value = "/confirmBooking")
+    public String confirmBooking(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return "bookingPage";
+        }else return "login";
+    }
     @RequestMapping(value = "/confirmBooking", method = RequestMethod.POST)
     public String confirmBooking(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
-        BookingPosition bookingPosition = bookingPositionService.findByID(Integer.valueOf(positionID));
-        Account customer = bookingPosition.getBooking().getAccountCustomer();
-        Booking booking = bookingPosition.getBooking();
-        int posCapacity = bookingPosition.getCapacity();
-        Product product = bookingPosition.getProduct();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            BookingPosition bookingPosition = bookingPositionService.findByID(Integer.valueOf(positionID));
+            Account customer = bookingPosition.getBooking().getAccountCustomer();
+            Booking booking = bookingPosition.getBooking();
+            int posCapacity = bookingPosition.getCapacity();
+            Product product = bookingPosition.getProduct();
 
-        if (product != null && product.getId() != 0) {
-            System.out.println("не нал");
-            int amount = product.getAmount();
-            if (amount >= capacity && capacity >= 0) {
-                amount -= capacity;
-                product.setAmount(amount);
-                productService.setProduct(product);
-                if (posCapacity <= capacity) {
+            if (product != null && product.getId() != 0) {
+                System.out.println("не нал");
+                int amount = product.getAmount();
+                if (amount >= capacity && capacity >= 0) {
+                    amount -= capacity;
+                    product.setAmount(amount);
+                    productService.setProduct(product);
+                    if (posCapacity <= capacity) {
 //                bookingPositionService.deleteBookingPosition(bookingPosition);
+                        booking.deleteBookingPosition(bookingPosition);
+                        bookingService.updateBooking(booking);
+
+                        if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
+                            customer.deleteBooking(booking);
+                            accountService.updateAccount(customer);
+                        } else {
+                            System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
+                        }
+                    } else {
+                        bookingPosition.setCapacity(posCapacity - capacity);
+                        bookingPositionService.setBookingPosition(bookingPosition);
+                    }
+//                if (amount == 0) {
+////                product.setPositions(new HashSet<>());
+//                    productService.setProduct(product); //
+//                }
+                } else if (capacity >= 0) {
+                    capacity -= amount;
+                    product.setAmount(0);
+//            product.setPositions(new HashSet<>());
+                    productService.setProduct(product);
+//            productService.deleteProduct(product);
+                    bookingPosition.setCapacity(capacity);
+                    bookingPositionService.setBookingPosition(bookingPosition);
+                }
+            } else {
+                if (capacity >= posCapacity) {
+//                System.out.println("тут 1");
                     booking.deleteBookingPosition(bookingPosition);
                     bookingService.updateBooking(booking);
 
                     if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
                         customer.deleteBooking(booking);
                         accountService.updateAccount(customer);
-                    } else {
-                        System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
                     }
-                } else {
+
+                } else if (capacity >= 0) {
+//                System.out.println("тут 2");
                     bookingPosition.setCapacity(posCapacity - capacity);
                     bookingPositionService.setBookingPosition(bookingPosition);
                 }
-//                if (amount == 0) {
-////                product.setPositions(new HashSet<>());
-//                    productService.setProduct(product); //
-//                }
-            } else if (capacity >= 0) {
-                capacity -= amount;
-                product.setAmount(0);
-//            product.setPositions(new HashSet<>());
-                productService.setProduct(product);
-//            productService.deleteProduct(product);
-                bookingPosition.setCapacity(capacity);
-                bookingPositionService.setBookingPosition(bookingPosition);
             }
-        } else {
-            if (capacity >= posCapacity) {
-//                System.out.println("тут 1");
-                booking.deleteBookingPosition(bookingPosition);
-                bookingService.updateBooking(booking);
-
-                if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
-                    customer.deleteBooking(booking);
-                    accountService.updateAccount(customer);
-                }
-
-            } else if (capacity >= 0) {
-//                System.out.println("тут 2");
-                bookingPosition.setCapacity(posCapacity - capacity);
-                bookingPositionService.setBookingPosition(bookingPosition);
-            }
-        }
 
 
 //        bookingService.updateBooking(booking); //
 //        accountService.updateAccount(customer);
 
 
-        Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
-        List<Booking> list = new ArrayList<>(set);
+            Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
+            List<Booking> list = new ArrayList<>(set);
 
-        model.addAttribute("bookingList", list);
-        model.addAttribute("login", customer.getLogin());
+            model.addAttribute("bookingList", list);
+            model.addAttribute("login", customer.getLogin());
 
-        return "bookingPage";
+            return "bookingPage";
+        }else return "login";
     }
 
+    @RequestMapping(value = "/bookingPosition")
+    public String bookingPosition(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
+
+            if (account.getAccountType().getTypeName().equals("client")) {
+                AccountType accountType = accountTypeService.findByTypeName("customer");
+                List<Account> accountList = accountService.listAccount(accountType);
+                model.addAttribute("accountList", accountList);
+                return "home";
+            } else return "login";
+        }else return "login";
+
+    }
     @RequestMapping(value = "/bookingPosition", method = RequestMethod.POST)
     public String bookingPosition(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String clientLogin = auth.getName();
-        Account client = accountService.findAccount(clientLogin);
-        PositionOfPrice position = positionOfPriceService.findPosition(Integer.valueOf(positionID));
-        String s = position.getAccount().getLogin();
-        Account customer = accountService.findAccount(s);
-        Product product = position.getProduct();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            String clientLogin = auth.getName();
+            Account client = accountService.findAccount(clientLogin);
+            PositionOfPrice position = positionOfPriceService.findPosition(Integer.valueOf(positionID));
+            String s = position.getAccount().getLogin();
+            Account customer = accountService.findAccount(s);
+            Product product = position.getProduct();
 
-        Booking booking = bookingService.findForClient(client, customer);
-        if (booking == null) {
-            booking = new Booking(client, customer); //, customer
-            bookingService.save(booking);
-            System.out.println(booking.getId() + " это ID заказа ");
-            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); //, booking
-            bookingPositionService.setBookingPosition(bookingPosition);
+            Booking booking = bookingService.findForClient(client, customer);
+            if (booking == null) {
+                booking = new Booking(client, customer); //, customer
+                bookingService.save(booking);
+                System.out.println(booking.getId() + " это ID заказа ");
+                BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); //, booking
+                bookingPositionService.setBookingPosition(bookingPosition);
 //            booking.addBookingPosition(bookingPosition);
 //            customer.addBookingList(booking);
-            accountService.updateAccount(customer);
-        } else {
-            System.out.println(booking.getId() + " это ID заказа else");
-            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); // booking ,
-            bookingPositionService.setBookingPosition(bookingPosition);
+                accountService.updateAccount(customer);
+            } else {
+                System.out.println(booking.getId() + " это ID заказа else");
+                BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); // booking ,
+                bookingPositionService.setBookingPosition(bookingPosition);
 //            booking.addBookingPosition(bookingPosition);
-            bookingService.updateBooking(booking);
-        }
+                bookingService.updateBooking(booking);
+            }
 
-        //не надо сохранять т к оно сохраняется при создании позции
+            //не надо сохранять т к оно сохраняется при создании позции
 
 //        if (booking == null){
 //            booking = new Booking(client, customer);
@@ -764,11 +775,12 @@ public class MyController {
 //        }
 
 
-        List<PositionOfPrice> listPositions = accountService.listPositions(customer);
-        model.addAttribute("listPositions", listPositions);
-        model.addAttribute("login", customer.getLogin());
+            List<PositionOfPrice> listPositions = accountService.listPositions(customer);
+            model.addAttribute("listPositions", listPositions);
+            model.addAttribute("login", customer.getLogin());
 
-        return "canvas";
+            return "canvas";
+        }else return "login";
 
     }
 
