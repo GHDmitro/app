@@ -47,41 +47,56 @@ public class MyController {
     private String IMAGE_EXTENSION = ".png";
 //    private ContactService contactService;
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public String test(@RequestParam MultipartFile file,HttpServletRequest request ,Model model){
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Foo test(@RequestParam MultipartFile file,HttpServletRequest request ,Model model){
+//
+//        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
+//        File file2 = new File(file1, "photo.png");
+//        try{
+//            FileWriter w = new FileWriter(file1);
+//            w.write("Hello world");
+//            w.flush();
+//            w.close();
+//        } catch (IOException e){
+//            model.addAttribute("text1", e.getMessage() + "   write");
+//        }
+////ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
+//
+//        try {
+//
+//
+//            BufferedReader read = new BufferedReader(new FileReader(file2));
+//
+//            String str;
+//            StringBuilder sb = new StringBuilder();
+//
+//            while((str = read.readLine()) != null){
+//                sb.append(str);
+//            }
+//
+//            model.addAttribute("text", sb.toString() + " foooooooo" );
+//
+//
+//        } catch (IOException e) {
+//            model.addAttribute("text2", e.getMessage() + "  read");
+//        }
 
-        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
-        File file2 = new File(file1, "photo.png");
-        try{
-            FileWriter w = new FileWriter(file1);
-            w.write("Hello world");
-            w.flush();
-            w.close();
-        } catch (IOException e){
-            model.addAttribute("text1", e.getMessage() + "   write");
+
+
+        return new Foo(32, "uuuuuuu");
+    }
+
+    class Foo {
+
+
+        public Foo(int age, String name) {
+            this.age = age;
+            this.name = name;
         }
-//ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
 
-        try {
+        public int age;
+        public String name;
 
-
-            BufferedReader read = new BufferedReader(new FileReader(file2));
-
-            String str;
-            StringBuilder sb = new StringBuilder();
-
-            while((str = read.readLine()) != null){
-                sb.append(str);
-            }
-
-            model.addAttribute("text", sb.toString() + " foooooooo" );
-
-
-        } catch (IOException e) {
-            model.addAttribute("text2", e.getMessage() + "  read");
-        }
-
-        return "test";
     }
 
     @RequestMapping("/")
@@ -224,8 +239,7 @@ public class MyController {
             String login = userDetail.getUsername();
             Account account = accountService.findAccount(login);
 
-//            System.out.println("addPricePosition: " + account.getEmail() + "   " + account.getTelNumber());
-            String ref = name+codeOfModel + login + IMAGE_EXTENSION;
+            String ref = name+codeOfModel + login ; //IMAGE_EXTENSION
 
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
@@ -253,21 +267,16 @@ public class MyController {
                 return "customer";
             } else {
                 if (!photo.isEmpty()) {
-
-                    File file = new File(PATH_TO_IMG);
-//                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
+                    //57728e217628e1ec270000ea%40app-timoshdomain12.rhcloud.com/Users/macbookair/IdeaProjects/App/src/main/webapp
 //                    URL url = request.getSession().getServletContext().("/img");
 //                    File file = new File(path+"/" +ref);
+
+                    File file = new File(PATH_TO_IMG);
                     if (!(file.exists())) {
                         file.mkdirs();
                     }
-                    System.out.println(file.getAbsolutePath());
-//                ssh://57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com/~/git/app.git/
-//                try {
-//                    OutputStream outputStream = request.getSession().getServletContext().
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+//                    System.out.println(file.getAbsolutePath());
+//
                     File file1 = new File(file, ref);
 
                     try {
@@ -281,7 +290,6 @@ public class MyController {
 
                     System.out.println("------------original path ---------  "+file.getAbsolutePath()+"        ----------");
 
-//                    FileInputStream f = request.getSession().getServletContext()
                     product = new Product(name, description, ref, codeOfModel, capacity);
 
                 } else product = new Product(name, description, null , codeOfModel, capacity);
@@ -294,15 +302,9 @@ public class MyController {
             PositionOfPrice positionOfPrice = new PositionOfPrice(bookingCondition, deliveryCondition,
                     new Date(c.YEAR, c.MONTH, c.DAY_OF_MONTH), cost, account, product);
             account.addPricePositions(positionOfPrice);
-//        positionOfPriceService.setPositionOfPrice(positionOfPrice);
             accountService.updateAccount(account);
-//            account.addPricePositions(positionOfPrice);   /////// проверить будет ли оно правильно работать добавле поз после ее создания
+//           /////// проверить будет ли оно правильно работать добавле поз после ее создания
             System.out.println("-----------------");
-
-//        accountService.updateAccount(account);
-//
-//        List<PositionOfPrice> listPosition = accountService.listPositions(account);  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//        List<PositionOfPrice> listPosition = positionOfPriceService.listPositions(account);
 
             List<PositionOfPrice> listPosition = accountService.listPositions(account);
 
@@ -330,8 +332,8 @@ public class MyController {
                 Account account1 = accountService.findAccount(userName);
                 Account account = accountService.findAccount(login);
                 if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
-                    String fileName = PATH_TO_IMG + login + IMAGE_EXTENSION;
-                    if ((new File(fileName)).exists()) {
+
+                    if ((new File(PATH_TO_IMG, login + IMAGE_EXTENSION)).exists()) {
                         // существует
                         model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
                         model.addAttribute("login", login);
@@ -359,17 +361,13 @@ public class MyController {
             Account account = accountService.findAccount(login);
             System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                String fileName = PATH_TO_IMG + login + IMAGE_EXTENSION;
-                if ((new File(fileName)).exists()) {
+                if ((new File(PATH_TO_IMG , login + IMAGE_EXTENSION)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
-//                    System.out.println("model.addAttribute(\"refPhoto\", login);");
+                    model.addAttribute("refPhoto", login ); //IMAGE_EXTENSION
                 } else {
                     // не существует
                     model.addAttribute("refPhoto", null);
-//                    System.out.println("model.addAttribute(\"refPhoto\", \"defaultPhotoToScreen\");");
                 }
-
                 System.out.println("ownData: " + account.getEmail() + "    " + account.getTelNumber());
 
                 model.addAttribute("email", account.getEmail());
@@ -391,14 +389,14 @@ public class MyController {
         System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
         if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
             if (!photo.isEmpty()) {
-                File file = new File(PATH_TO_IMG + login + IMAGE_EXTENSION);
+                File file = new File(PATH_TO_IMG , login + IMAGE_EXTENSION);
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
 
-                File file1 = new File(PATH_TO_IMG + login + IMAGE_EXTENSION);
+                File file1 = new File(PATH_TO_IMG ,  login + IMAGE_EXTENSION);
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
@@ -408,7 +406,7 @@ public class MyController {
                     e.printStackTrace();
                 }
             }
-            model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
+            model.addAttribute("refPhoto", login );   // IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
 
             if (email.length() == 0) {
                 model.addAttribute("email", account.getEmail());
@@ -446,18 +444,12 @@ public class MyController {
             Product product = positionOfPrice.getProduct();
             String refPhoto = product.getPhoto();
 
-//            List<PositionOfPrice> list = account.getPricePositions();
-//            if (!list.isEmpty()) {
-//                System.out.println(list.get(0).getProduct().getName() + " --------- ");
-//            }
-
-            File file = new File(PATH_TO_IMG + refPhoto);
+            File file = new File(PATH_TO_IMG ,  refPhoto + IMAGE_EXTENSION);
             if (file.exists()) {
                 file.delete();
             }
 
             account.deletePricePosition(positionOfPrice);
-//            positionOfPriceService.deletePositionOfPrice(positionOfPrice);
             accountService.updateAccount(account);
 
 
@@ -479,8 +471,8 @@ public class MyController {
     public String changePosition(@PathVariable(value = "positionID") Integer positionID, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String login = auth.getName();
-//        Account account = accountService.findAccount(login);
         if (positionID != null) {
+
             PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
             System.out.println(positionOfPrice.getId() + " -----  " + positionOfPrice.getCost() + " ----- " + positionOfPrice.getProduct().getName());
             model.addAttribute("position", positionOfPrice);
@@ -495,11 +487,12 @@ public class MyController {
                                      @RequestParam MultipartFile photo, @RequestParam String amount,
                                      @RequestParam String cost, Model model) {
 
-        if (!id.isEmpty()) {
-            System.out.println("id пустой");
-        }
+//        if (!id.isEmpty()) {
+//            System.out.println("id пустой");
+//        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
         PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(Integer.valueOf(id));
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (positionOfPrice != null) {
             Account account = positionOfPrice.getAccount();
             Product product = positionOfPrice.getProduct();
@@ -508,19 +501,18 @@ public class MyController {
             }
             if (!codeOfModel.isEmpty()) {
 
-                String fileName = PATH_TO_IMG + product.getPhoto();
                 product.setCodeOfModel(codeOfModel);
-                File source = new File(fileName);
+                File source = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
                 if (source.exists()) {
-                    String refPhoto = codeOfModel + account.getLogin() + IMAGE_EXTENSION;
-                    File dest = new File(PATH_TO_IMG + refPhoto);
+                    String refPhoto = product.getName() + codeOfModel + account.getLogin() ;  // IMAGE_EXTENSION
+                    File dest = new File(PATH_TO_IMG , refPhoto + IMAGE_EXTENSION);
                     try {
                         FileUtils.copyFile(source, dest);  //
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     source.delete();
-                    product.setPhoto(refPhoto);
+                    product.setPhoto(refPhoto);   // сохраняется без расширения потому что без расширения оно приходит на сервер
                 }
             }
             if (!description.isEmpty()) {
@@ -534,16 +526,17 @@ public class MyController {
             }
             if (!photo.isEmpty()) {
 
-                File file = new File(PATH_TO_IMG + product.getPhoto());
+                File file = new File(PATH_TO_IMG , product.getPhoto()+IMAGE_EXTENSION);
                 if (file.exists()) {
                     file.delete();
                 }
                 System.out.println("фотки нету но в IF вошел ---------------------------");
                 // существует
-                File file1 = new File(PATH_TO_IMG + product.getPhoto());
+                File file1 = new File(PATH_TO_IMG , product.getPhoto()+IMAGE_EXTENSION);
                 try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                     fileOut.write(photo.getBytes());
                     fileOut.flush();
+                    fileOut.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -567,26 +560,15 @@ public class MyController {
         try {
 //            String path = "/app-root/data";
 //            String path = request.getServletContext().getRealPath("/img");
-            StringBuilder sb1 = new StringBuilder();
-            sb1.append(refPhoto);
+
 
             File file = new File(PATH_TO_IMG, refPhoto+ IMAGE_EXTENSION);
 
-            if (!file.exists()) {
-//                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
-                return new ResponseEntity<byte[]>( "Нет такого файла".getBytes(), HttpStatus.OK);
-            }
-//
-//            BufferedReader read = new BufferedReader(new FileReader(file));
-//
-//            String str;
-//            StringBuilder sb = new StringBuilder();
-//
-//            while((str = read.readLine()) != null){
-//                sb.append(str);
+//            if (!file.exists()) {
+////                file = new File(PATH_TO_IMG + "defaultPhotoToScreen.png");
+//                return new ResponseEntity<byte[]>( "Нет такого файла".getBytes(), HttpStatus.OK);
 //            }
-//
-//            arr = sb.toString().getBytes();
+
             FileInputStream reader = new FileInputStream(file);
             BufferedInputStream inputStream = new BufferedInputStream(reader);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -594,7 +576,7 @@ public class MyController {
             while((b = inputStream.read()) != -1){
                 out.write(b);
             }
-//            arr = new byte[inputStream.available()];
+//            arr = new byte[inputStream.available()];    // так делать не корректно
 //            int s = inputStream.read(arr);
 //            if (s == 0)
 //                throw new PhotoNotFoundException();
@@ -620,7 +602,6 @@ public class MyController {
 
         AccountType at = accountTypeService.findByTypeName(type);
         accountService.addAccount(new Account(telNumber, email, pass, login, at));
-//        model.addAttribute("accounts", accountService.listAccount());
         model.addAttribute("login", login);
         model.addAttribute("type", type);
 
@@ -640,16 +621,9 @@ public class MyController {
             Set<Booking> set = customer.getBookingSet();
             List<Booking> list = new ArrayList<>(set);
 
-//            System.out.println(list4.size()+" list from booking  ");
-//            System.out.println(list.size()+"  list from customer ");
 //            if (list.size() != 0) {
 //                List<BookingPosition> list1 = (List<BookingPosition>) bookingPositionService.positionsByBooking(list.get(0));
-//                System.out.println("Длинна листа позиций " + list1.size());
-//                System.out.println("Длинна листа " + list.size());
-//
-//                System.out.println("Длинна листа позиций " + list.get(0).getBookingPositions().size());
 //                List<BookingPosition> listB = list.get(0).getBookingPositions();
-//                System.out.println("ID 1:  "+ listB.get(0).getId()+";     ID 2: "+listB.get(1).getId());
 //            }
             if (list.size() > 0) {
 
@@ -687,7 +661,6 @@ public class MyController {
                     if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
                         customer.deleteBooking(booking);
                         accountService.updateAccount(customer);
-
                     } else {
                         System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
                     }
@@ -710,7 +683,7 @@ public class MyController {
             }
         } else {
             if (capacity >= posCapacity) {
-                System.out.println("тут 1");
+//                System.out.println("тут 1");
                 booking.deleteBookingPosition(bookingPosition);
                 bookingService.updateBooking(booking);
 
@@ -720,7 +693,7 @@ public class MyController {
                 }
 
             } else if (capacity >= 0) {
-                System.out.println("тут 2");
+//                System.out.println("тут 2");
                 bookingPosition.setCapacity(posCapacity - capacity);
                 bookingPositionService.setBookingPosition(bookingPosition);
             }
@@ -733,9 +706,7 @@ public class MyController {
 
         Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
         List<Booking> list = new ArrayList<>(set);
-//        if (list.size() != 0) {
-//            System.out.println(list.size() + "   " + list.get(0).getBookingPositions().size());
-//        }
+
         model.addAttribute("bookingList", list);
         model.addAttribute("login", customer.getLogin());
 
@@ -749,7 +720,6 @@ public class MyController {
         String clientLogin = auth.getName();
         Account client = accountService.findAccount(clientLogin);
         PositionOfPrice position = positionOfPriceService.findPosition(Integer.valueOf(positionID));
-//        Account customer = position.getAccount();
         String s = position.getAccount().getLogin();
         Account customer = accountService.findAccount(s);
         Product product = position.getProduct();
