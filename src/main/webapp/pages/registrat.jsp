@@ -16,7 +16,7 @@
         <h1 class="text">Добавление аккаунта</h1>
     </header>
     <section class="row">
-        <div class="col-xs-6 col-xs-offset-3">
+        <div class="col-xs-12 col-sm-10 col-md-7">
             <div class="panel panel-default">
                 <div class="panel-heading"><h4>Регистрация</h4></div>
                 <div class="panel-body">
