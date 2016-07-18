@@ -43,7 +43,7 @@
                         <div class="panel-body">
 
                             <div class="row">
-                                <%--<div class="col-md- col-lg-">--%>
+                                <div class="col-md-7 col-sm-10 col-xs-12">
                                     <div class="thumbnail">
 
                                         <%--<c:if test="${refPhoto != null}">--%>
@@ -121,7 +121,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                <%--</div>--%>
+                                </div>
                             </div>
 
                         </div>
