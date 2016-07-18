@@ -34,7 +34,7 @@
                 <%--</sec:authorize>--%>
 
             <header class="row">
-                    <%--<h1 class="text">Добавление продукта в ваш прайс лист</h1>--%>
+                    <h1 class="text">Личная информация</h1>
             </header>
             <section class="row">
                 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
