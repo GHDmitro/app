@@ -52,10 +52,10 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <%--<li class="active"><a href="#">Прайс лист</a></li>--%>
+                        <%--<li class="active"><a href="#">Прайс лист</a></li>--%>
                     <sec:authorize access="hasRole('customer')">
-                    <li><a href="<c:url value="/addPricePosition"/> ">Добавить позицию</a></li>
-                    <li><a href="<c:url value="/bookingPage"/> ">Заказы</a></li>
+                        <li><a href="<c:url value="/addPricePosition"/> ">Добавить позицию</a></li>
+                        <li><a href="<c:url value="/bookingPage"/> ">Заказы</a></li>
                         <li><a href="<c:url value="/ownData"/> ">Личные данные пользователя</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('client')">
@@ -63,29 +63,29 @@
                     </sec:authorize>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <%--<li><p class="text"><sec:authentication property="principal.username"/></p></li>--%>
-                        <sec:authorize access="hasRole('client')">
-                            <li><a href="<c:url value="/home"/> ">К списку продавцов</a></li>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('customer')">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Новый фон<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li class="text-center"><p>Загрузить новый фон </p></li>
-                                    <li>
-                                        <form enctype="multipart/form-data" method="post" action="#">
-                                            <div class="btn-group-justified">
-                                                <input type="file" name="mainPhoto1" placeholder="Photo1" required>
-                                                <input type="file" name="mainPhoto2" placeholder="Photo2">
-                                                <input type="file" name="mainPhoto3" placeholder="Photo3">
-                                                <button type="submit" class="btn btn-success ">Подтвердить</button>
-                                            </div>
-                                        </form>
-                                    </li>
+                        <%--<li><p class="text"><sec:authentication property="principal.username"/></p></li>--%>
+                    <sec:authorize access="hasRole('client')">
+                        <li><a href="<c:url value="/home"/> ">К списку продавцов</a></li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('customer')">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Новый фон<b
+                                    class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li class="text-center"><p>Загрузить новый фон </p></li>
+                                <li>
+                                    <form enctype="multipart/form-data" method="post" action="#">
+                                        <input type="file" name="mainPhoto1" placeholder="Photo1" required>
+                                        <input type="file" name="mainPhoto2" placeholder="Photo2">
+                                        <input type="file" name="mainPhoto3" placeholder="Photo3">
+                                        <button type="submit" style="background: center" class="btn btn-success">Подтвердить</button>
 
-                                </ul>
-                            </li>
-                        </sec:authorize>
+                                    </form>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </sec:authorize>
                     <li><a href="<c:url value="/logout"/>">Вийти</a></li>
                     <!-- <li><a href="#">Войти</a></li> -->
                 </ul>
@@ -95,89 +95,96 @@
         <!-- /.container -->
     </nav>
     <div class="carousel slide" id="carousel">
-        <img  id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
+        <img id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
         <!-- индикаторы слайдов -->
     </div>
     <br>
 
     <c:out value="${myHref}"/>
     <c:forEach items="${listPositions}" var="position">
-    <div class="container marketing">
-        <%--<hr class="featurette-divider">--%>
-        <div class="row featurette" id="left-right-side">
-            <div class="col-lg-1"></div>
+        <div class="container marketing">
+                <%--<hr class="featurette-divider">--%>
+            <div class="row featurette" id="left-right-side">
+                <div class="col-lg-1"></div>
 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
-                    <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
-                    <%--alt="Изображение загружается">--%>
-                <c:if test="${position.product.photo != null}">
-                    <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
-                         alt="Изображение загружается">
-                    <%----%>
-                </c:if>
-                <c:if test="${position.product.photo == null}">
-                    <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
-                         alt="Изображение загружается">
-                </c:if>
-                <%-- src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
-                <%--src="<spring:url value="/img/${position.product.photo}"/>"--%>
-            </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
+                        <%--<img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
+                        <%--alt="Изображение загружается">--%>
+                    <c:if test="${position.product.photo != null}">
+                        <img class="featurette-image img-responsive center-block" width="350" height="350"
+                             src="<c:url value="/givePhoto/${position.product.photo}"/>"
+                             alt="Изображение загружается">
+                        <%----%>
+                    </c:if>
+                    <c:if test="${position.product.photo == null}">
+                        <img class="featurette-image img-responsive center-block" width="350" height="350"
+                             src="<c:url value="/img/defaultPhotoToScreen.png"/>"
+                             alt="Изображение загружается">
+                    </c:if>
+                        <%-- src="<c:url value="/givePhoto/${position.product.photo}"/>"--%>
+                        <%--src="<spring:url value="/img/${position.product.photo}"/>"--%>
+                </div>
 
 
-            <div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5" >
-                <ul>
-                    <%--Here will name of positioin from product--%>
-                    <li><h3 class="featurette-heading"><c:out value="Название:  ${position.product.name}"/></h3></li>
-                        <%--Here will be code of position from product--%>
-                    <li><h4 class="text-muted"><c:out value="Модель:  ${position.product.codeOfModel}"/></h4></li>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5">
+                    <ul>
+                            <%--Here will name of positioin from product--%>
+                        <li><h3 class="featurette-heading"><c:out value="Название:  ${position.product.name}"/></h3>
+                        </li>
+                            <%--Here will be code of position from product--%>
+                        <li><h4 class="text-muted"><c:out value="Модель:  ${position.product.codeOfModel}"/></h4></li>
                         <li><h4 class="text-muted"><c:out value="Цена:  ${position.cost}"/></h4></li>
-                        <%--Here will be decription from position--%>
-                    <li><p class="lead"><c:out value="Описание:   ${position.product.description}"/></p></li>
+                            <%--Here will be decription from position--%>
+                        <li><p class="lead"><c:out value="Описание:   ${position.product.description}"/></p></li>
                         <c:if test="${position.bookingCondition != null}">
-                            <li><p class="lead"> <c:out value="Уточнения для заказов:   ${position.bookingCondition}"/> </p></li>
+                            <li><p class="lead"><c:out
+                                    value="Уточнения для заказов:   ${position.bookingCondition}"/></p></li>
                         </c:if>
                         <c:if test="${position.deliveryCondition != null}">
-                            <li><p class="lead"> <c:out value="Уточнение для доставки:   ${position.deliveryCondition}"/></p></li>
+                            <li><p class="lead"><c:out
+                                    value="Уточнение для доставки:   ${position.deliveryCondition}"/></p></li>
                         </c:if>
                         <c:if test="${position.id != 0}">
-                        <sec:authorize access="hasRole('customer')">
+                            <sec:authorize access="hasRole('customer')">
 
-                                <li><p class="lead"><c:out value="Колличество:   ${position.product.amount}"/> </p> </li>
-                            <div class="btn-group btn-group-justified">
-                                <a class="btn btn-success" href="<c:url value="/changePosition/${position.id}"/> " role="button" style="width: 110px">Изменить &raquo;</a>
-                                <a class="btn btn-success" href="<c:url value="/deletePosition/${position.id}"/> " role="button" style="width: 110px" >Удалить &raquo;</a>
-                            </div>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('client')">
-                            <form action="<c:url value="/bookingPosition"/> " method="post">
-                                <input type="hidden" name="positionID" value="${position.id}"/>
-                                <input type="number" min="1" required name="capacity" style="width: 50px"/>
-                                <button type="submit" class="btn btn-success">Заказать</button>
-                            </form>
-                        </sec:authorize>
+                                <li><p class="lead"><c:out value="Колличество:   ${position.product.amount}"/></p></li>
+                                <div class="btn-group btn-group-justified">
+                                    <a class="btn btn-success" href="<c:url value="/changePosition/${position.id}"/> "
+                                       role="button" style="width: 110px">Изменить &raquo;</a>
+                                    <a class="btn btn-success" href="<c:url value="/deletePosition/${position.id}"/> "
+                                       role="button" style="width: 110px">Удалить &raquo;</a>
+                                </div>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('client')">
+                                <form action="<c:url value="/bookingPosition"/> " method="post">
+                                    <input type="hidden" name="positionID" value="${position.id}"/>
+                                    <input type="number" min="1" required name="capacity" style="width: 50px"/>
+                                    <button type="submit" class="btn btn-success">Заказать</button>
+                                </form>
+                            </sec:authorize>
                         </c:if>
-                    <%--<li><form action="<c:url value="/changePosition"/>" method="post">--%>
-                        <%--&lt;%&ndash;<input type="hidden" name="">&ndash;%&gt;--%>
-                    <%--</form> </li>--%>
-                    <%--<li><form action="<c:url value="/deletePosition"/>" method="post">--%>
-                        <%--<input type="hidden" name="positionId" value="${}">--%>
-                    <%--</form>  </li>--%>
-                </ul>
+                            <%--<li><form action="<c:url value="/changePosition"/>" method="post">--%>
+                            <%--&lt;%&ndash;<input type="hidden" name="">&ndash;%&gt;--%>
+                            <%--</form> </li>--%>
+                            <%--<li><form action="<c:url value="/deletePosition"/>" method="post">--%>
+                            <%--<input type="hidden" name="positionId" value="${}">--%>
+                            <%--</form>  </li>--%>
+                    </ul>
+                </div>
+                <div class="col-lg-1"></div>
+
+                <br>
+
             </div>
-            <div class="col-lg-1"></div>
 
-            <br>
-
+            <hr class="featurette-divider">
+            <!-- /END THE FEATURETTES -->
+            <!-- FOOTER -->
+            <footer>
+                <p class="pull-right"><a href="#">Back to top</a></p>
+                    <%--<p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>--%>
+            </footer>
         </div>
-
-        <hr class="featurette-divider">
-        <!-- /END THE FEATURETTES -->
-        <!-- FOOTER -->
-        <footer>
-            <p class="pull-right"><a href="#">Back to top</a></p>
-                <%--<p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>--%>
-        </footer>
-    </div>
     </c:forEach>
 </sec:authorize>
 <sec:authorize access="!isAuthenticated()">
