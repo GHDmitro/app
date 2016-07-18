@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group">
                   <label for="description">Описание продукта</label>
-                  <input type="text" class="form-control" name="description" id="description" placeholder="описание"
+                  <input type="text" class="form-control" name="description" id="description" style="height: 70px" placeholder="описание"
                          required/>
                 </div>
                 <div class="form-group">
@@ -76,11 +76,11 @@
                 </div>
                 <div class="form-group">
                   <label for="bookingCondition">Описание условий заказа для покупателя</label>
-                  <input type="text" class="form-control" name="bookingCondition" id="bookingCondition" placeholder="Условия заказа" required/>
+                  <input type="text" class="form-control" name="bookingCondition" id="bookingCondition" style="height: 70px" placeholder="Условия заказа" required/>
                 </div>
                 <div class="form-group">
                   <label for="deliveryCondition">Описание условий доставки для покупателя</label>
-                  <input type="text" class="form-control" name="deliveryCondition" id="deliveryCondition" placeholder="Условия доставки" required/>
+                  <input type="text" class="form-control" name="deliveryCondition" id="deliveryCondition" style="height: 70px" placeholder="Условия доставки" required/>
                 </div>
 
                 <div class="form-group-horizontal">

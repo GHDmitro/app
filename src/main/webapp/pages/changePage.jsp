@@ -99,7 +99,7 @@
         <li style="list-style-type: none ">
           <ul>
             <li><p class="lead"><c:out value="${position.product.description}"/></p></li>
-            <li style="list-style-type: none ; height: 200px"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>
+            <li style="list-style-type: none"><input type="text" class="form-control" name="description" style="height: 70px" placeholder="изменить описание"/></li>
           </ul>
         </li>
 
