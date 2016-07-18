@@ -239,7 +239,7 @@ public class MyController {
             String login = userDetail.getUsername();
             Account account = accountService.findAccount(login);
 
-            String ref = name+codeOfModel + login ; //IMAGE_EXTENSION
+            String ref = name+codeOfModel + login +IMAGE_EXTENSION; //
 
 //        String relativepath = "/img/";
 //        String absolutePath = request.getRealPath(relativepath);
