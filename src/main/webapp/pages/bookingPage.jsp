@@ -76,7 +76,7 @@
       <div class="row featurette">
         <%--<input type="hidden" name="id" value="${position.id}"/>--%>
 
-        <div class="col-md-7 col-md-push-5">
+        <div class="col-md-7 col-md-push-5 col-sm-10 col-xs-12">
           <c:forEach items="${booking.bookingPositions}" var="bookingPosition">
 
 
@@ -106,9 +106,19 @@
           </c:forEach>
         </div>
 
-        <div class="col-md-5 col-md-pull-7">
-          <img class="featurette-image img-responsive center-block" height="250" width="250" src="<spring:url value="/img/${booking.accountClient.login}"/>"
-               alt="Изображение загружается"><br><br>
+        <div class="col-md-5 col-md-pull-7 col-sm-10 col-xs-12">
+          <c:if test="${booking.accountClient.login != null}">
+            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${booking.accountClient.login}"/>"
+                 alt="Изображение загружается">
+            <%----%>
+          </c:if>
+          <c:if test="${booking.accountClient.login == null}">
+            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
+                 alt="Изображение загружается">
+          </c:if>
+          <%--<img class="featurette-image img-responsive center-block" height="250" width="250" src="<spring:url value="/img/${}"/>"--%>
+               <%--alt="Изображение загружается">--%>
+          <br><br>
           <ul>
             <li><p class="lead">Email  : <c:out value="${booking.accountClient.email}"/></p></li>
             <li><p class="lead">Телефон  :<c:out value="${booking.accountClient.telNumber}"/></p></li>

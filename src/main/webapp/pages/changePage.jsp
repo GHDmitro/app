@@ -63,7 +63,7 @@
   <div class="row featurette">
     <input type="hidden" name="id" value="${position.id}"/>
 
-    <div class="col-md-7 col-md-push-5">
+    <div class="col-md-7 col-md-push-5 col-sm-110 col-xs-12">
 
       <ul>
         <%--Here will name of positioin from product--%>
@@ -84,7 +84,7 @@
         <li style="list-style-type: none ">
           <ul>
            <li><p class="lead"><c:out value="${position.product.description}"/></p></li>
-           <li style="list-style-type: none"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>
+           <li style="list-style-type: none ; height: 200px"><input type="text" class="form-control" name="description"  placeholder="изменить описание"/></li>
           </ul>
         </li>
 
@@ -110,9 +110,19 @@
     </div>
 
     <div class="col-md-5 col-md-pull-7">
-      <img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"
-           alt="Изображение загружается"><br><br>
-      <input type="file" name="photo" id="Photo" placeholder="Photo">
+      <c:if test="${position.product.photo != null}">
+        <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
+             alt="Изображение загружается">
+        <%----%>
+      </c:if>
+      <c:if test="${position.product.photo == null}">
+        <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
+             alt="Изображение загружается">
+      </c:if>
+      <%--<img class="featurette-image img-responsive center-block" src="<spring:url value="/img/${position.product.photo}"/>"--%>
+           <%--alt="Изображение загружается">--%>
+      <br><br>
+      <input type="file" name="photo" id="Photo" placeholder="Изменить фото">
 
     </div><br>
 
