@@ -43,6 +43,9 @@ public class MyController {
     @Autowired
     private BookingPositionService bookingPositionService;
     private String PATH_TO_IMG = "/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/";
+//  /Users/macbookair/IdeaProjects/App/src/main/resources/
+
+//    /var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/
     //        /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
 
@@ -301,14 +304,14 @@ public class MyController {
                 Account account1 = accountService.findAccount(userName);
                 Account account = accountService.findAccount(login);
                 if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
-
-                    if ((new File(PATH_TO_IMG, login + IMAGE_EXTENSION)).exists()) {
+                    String refPhoto = account.getPhotoAccount();
+                    if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) { //login
                         // существует
-                        model.addAttribute("refPhoto", login + IMAGE_EXTENSION);
+                        model.addAttribute("refPhoto", refPhoto ); //IMAGE_EXTENSION
                         model.addAttribute("login", login);
                     } else {
                         // не существует
-                        model.addAttribute("refPhoto", "defaultPhotoToScreen.png");
+                        model.addAttribute("refPhoto", null);
                         model.addAttribute("login", login);
                     }
 
@@ -328,11 +331,12 @@ public class MyController {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             String login = auth.getName();
             Account account = accountService.findAccount(login);
-            System.out.println(account.getAccountType().getTypeName());
+//            System.out.println(account.getAccountType().getTypeName());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                if ((new File(PATH_TO_IMG, login + IMAGE_EXTENSION)).exists()) {
+                String refPhoto = account.getPhotoAccount();
+                if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) {
                     // существует
-                    model.addAttribute("refPhoto", login); //IMAGE_EXTENSION
+                    model.addAttribute("refPhoto", refPhoto); //IMAGE_EXTENSION
                 } else {
                     // не существует
                     model.addAttribute("refPhoto", null);
@@ -358,14 +362,21 @@ public class MyController {
             Account account = accountService.findAccount(login);
 //        System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
             if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
+                String refPhoto = account.getPhotoAccount();
                 if (!photo.isEmpty()) {
-                    File file = new File(PATH_TO_IMG, login + IMAGE_EXTENSION);
-                    if (file.exists()) {
-                        file.delete();
+                    if (refPhoto != null && refPhoto.length()>0) {
+                        File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION); // login
+                        if (file.exists()) {
+                            file.delete();
+                        }
+                    }else {
+                        refPhoto = account.getLogin();
+                        account.setPhotoAccount(refPhoto);
+//                        accountService.refreshAccount(account);
                     }
                     // существует
 
-                    File file1 = new File(PATH_TO_IMG, login + IMAGE_EXTENSION);
+                    File file1 = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);  // login
                     try (FileOutputStream fileOut = new FileOutputStream(file1)) {
                         fileOut.write(photo.getBytes());
                         fileOut.flush();
@@ -374,8 +385,9 @@ public class MyController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                 }
-                model.addAttribute("refPhoto", login);   // IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
+                model.addAttribute("refPhoto", refPhoto);   //login  IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
 
                 if (email.length() == 0) {
                     model.addAttribute("email", account.getEmail());
@@ -448,19 +460,19 @@ public class MyController {
     public String changePosition(@PathVariable(value = "positionID") Integer positionID, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            String login = auth.getName();
+//            String login = auth.getName();
             if (positionID != null) {
 
                 PositionOfPrice positionOfPrice = positionOfPriceService.findPosition(positionID);
-                System.out.println(positionOfPrice.getId() + " -----  " + positionOfPrice.getCost() + " ----- " + positionOfPrice.getProduct().getName());
+//                System.out.println(positionOfPrice.getId() + " -----  " + positionOfPrice.getCost() + " ----- " + positionOfPrice.getProduct().getName());
                 model.addAttribute("position", positionOfPrice);
                 return "changePage";
             }
             return "canvas";
         } else return "login";
     }
-
-    @RequestMapping(value = "/changePositionPost", method = RequestMethod.POST)
+//changePositionPost
+    @RequestMapping(value = "/changePosition", method = RequestMethod.POST)
     public String changePositionPost(@RequestParam String id, @RequestParam String name,
                                      @RequestParam String codeOfModel, @RequestParam String description,
                                      @RequestParam MultipartFile photo, @RequestParam String amount,
@@ -509,7 +521,7 @@ public class MyController {
                     if (file.exists()) {
                         file.delete();
                     }
-                    System.out.println("фотки нету но в IF вошел ---------------------------");
+//                    System.out.println("фотки нету но в IF вошел ---------------------------");
                     // существует
                     File file1 = new File(PATH_TO_IMG, product.getPhoto() + IMAGE_EXTENSION);
                     try (FileOutputStream fileOut = new FileOutputStream(file1)) {
@@ -643,7 +655,7 @@ public class MyController {
             Product product = bookingPosition.getProduct();
 
             if (product != null && product.getId() != 0) {
-                System.out.println("не нал");
+//                System.out.println("не нал");
                 int amount = product.getAmount();
                 if (amount >= capacity && capacity >= 0) {
                     amount -= capacity;
@@ -702,9 +714,14 @@ public class MyController {
 
             Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
             List<Booking> list = new ArrayList<>(set);
+            if (list != null && list.size() > 0){
+                model.addAttribute("bookingList", list);
 
-            model.addAttribute("bookingList", list);
-            model.addAttribute("login", customer.getLogin());
+            }else {
+                model.addAttribute("bookingList", null);
+            }
+
+//            model.addAttribute("login", customer.getLogin());
 
             return "bookingPage";
         }else return "login";
@@ -797,7 +814,8 @@ public class MyController {
         account.deleteAllBooking();
 //        bookingService.deleteAllBooking(account);
         accountService.updateAccount(account);
-        model.addAttribute("login", login);
+//        model.addAttribute("login", login);
+        model.addAttribute("bookingList", null);
         return "bookingPage";
     }
 

@@ -123,7 +123,6 @@
                                                         <a href="<c:url value="/home"/> " class="btn btn-default"
                                                            role="button">На главную</a>
                                                     </c:if>
-
                                                 </sec:authorize>
 
                                             </p>

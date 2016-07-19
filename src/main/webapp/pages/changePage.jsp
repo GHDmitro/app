@@ -59,7 +59,7 @@
 
 
   <hr class="featurette-divider">
-  <form enctype="multipart/form-data" action="<c:url value="/changePositionPost"/> " method="post">
+  <form enctype="multipart/form-data" action="<c:url value="/changePosition"/> " method="post">
   <div class="row featurette">
     <input type="hidden" name="id" value="${position.id}"/>
 
@@ -113,7 +113,7 @@
         <li style="list-style-type: none ">
           <ul>
             <li><p class="lead"><c:out value="${position.product.amount}"/> </p></li>
-            <li style="list-style-type: none"><input type="number" class="form-control" name="amount" placeholder="изменить колличество"/></li>
+            <li style="list-style-type: none"><input type="number" min="1" class="form-control" name="amount" placeholder="изменить колличество"/></li>
           </ul>
         </li>
       </ul><br><br>

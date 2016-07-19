@@ -107,12 +107,12 @@
         </div>
 
         <div class="col-xs-12 col-md-5 col-md-pull-7 col-sm-10 ">
-          <c:if test="${booking.accountClient.login != null}">
-            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${booking.accountClient.login}"/>"
+          <c:if test="${booking.accountClient.photoAccount != null}">
+            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${booking.accountClient.photoAccount}"/>"
                  alt="Изображение загружается">
             <%----%>
           </c:if>
-          <c:if test="${booking.accountClient.login == null}">
+          <c:if test="${booking.accountClient.photoAccount == null}">
             <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
                  alt="Изображение загружается">
           </c:if>

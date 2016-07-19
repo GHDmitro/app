@@ -26,8 +26,15 @@ public class Account {
     private String telNumber;
     @Column(name = "state")
     private boolean state;
-//    @Column(name = "background")
-//    private byte[] background;
+    @Column(name = "photoAccount")
+    private String photoAccount;
+    @Column(name = "photoBackground1")
+    private String photoBackground1;
+    @Column(name = "photoBackground2")
+    private String photoBackground2;
+    @Column(name = "photoBackground3")
+    private String photoBackground3;
+
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PositionOfPrice> pricePositions  = new HashSet<>();
@@ -172,11 +179,35 @@ public class Account {
         this.state = state;
     }
 
-//    public byte[] getBackground() {
-//        return background;
-//    }
-//
-//    public void setBackground(byte[] background) {
-//        this.background = background;
-//    }
+    public String getPhotoAccount() {
+        return photoAccount;
+    }
+
+    public void setPhotoAccount(String photoAccount) {
+        this.photoAccount = photoAccount;
+    }
+
+    public String getPhotoBackground1() {
+        return photoBackground1;
+    }
+
+    public void setPhotoBackground1(String photoBackground1) {
+        this.photoBackground1 = photoBackground1;
+    }
+
+    public String getPhotoBackground2() {
+        return photoBackground2;
+    }
+
+    public void setPhotoBackground2(String photoBackground2) {
+        this.photoBackground2 = photoBackground2;
+    }
+
+    public String getPhotoBackground3() {
+        return photoBackground3;
+    }
+
+    public void setPhotoBackground3(String photoBackground3) {
+        this.photoBackground3 = photoBackground3;
+    }
 }
