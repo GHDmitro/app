@@ -106,7 +106,7 @@
           </c:forEach>
         </div>
 
-        <div class="col-md-5 col-md-pull-7 col-sm-10 col-xs-12">
+        <div class="col-xs-12 col-md-5 col-md-pull-7 col-sm-10 ">
           <c:if test="${booking.accountClient.login != null}">
             <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${booking.accountClient.login}"/>"
                  alt="Изображение загружается">

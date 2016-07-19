@@ -48,7 +48,7 @@
                 </div>
               </c:if>
 
-              <c:if test="${positionOfPrice != null}"></c:if>
+              <%--<c:if test="${positionOfPrice != null}"></c:if>--%>
               <form enctype="multipart/form-data" action="<c:url value="/addPricePosition"/> " method="post">
                 <%--<input class="login" type="hidden" name="login"  value="<sec:authentication property="principal.username"/>">--%>
                 <div class="form-group">

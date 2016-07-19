@@ -147,7 +147,6 @@
                         </c:if>
                         <c:if test="${position.id != 0}">
                             <sec:authorize access="hasRole('customer')">
-
                                 <li><p class="lead"><c:out value="Колличество:   ${position.product.amount}"/></p></li>
                                 <div class="btn-group btn-group-justified">
                                     <a class="btn btn-success" href="<c:url value="/changePosition/${position.id}"/> "

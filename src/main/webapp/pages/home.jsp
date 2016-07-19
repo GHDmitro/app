@@ -92,10 +92,18 @@
         <c:forEach items="${accountList}" var="customer" varStatus="status">
             <div class="row">
                 <%--src="/givePhoto/${}"--%>
-                <div class="col-lg-6 col-lg-offset-3 col-md-4 col-md-offset-4">
+                <div class="col-lg-6 col-lg-offset-3 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
                     <div class="thumbnail">
-
-                        <img src="<spring:url value="/img/${customer.login}"/>">
+                        <c:if test="${customer.login != null}">
+                            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${customer.login}"/>"
+                                 alt="Изображение загружается">
+                            <%----%>
+                        </c:if>
+                        <c:if test="${customer.login == null}">
+                            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/img/defaultPhotoToScreen.png"/>"
+                                 alt="Изображение загружается">
+                        </c:if>
+                        <%--<img src="<spring:url value="/img/${customer.login}"/>">--%>
 
                         <div class="caption">
                             <h3>${customer.email}</h3>
