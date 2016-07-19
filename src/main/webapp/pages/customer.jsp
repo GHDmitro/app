@@ -32,9 +32,10 @@
       <%--<p><a class="btn btn-lg btn-success" href="<c:url value="/signin" />" role="button">Войти</a></p>--%>
     <%--</sec:authorize>--%>
 
-      <header class="row">
-        <h1 class="text">Добавление продукта в ваш прайс лист</h1>
-      </header>
+      <%--<header class="row">--%>
+        <%--<h1 class="text">Добавление продукта в ваш прайс лист</h1>--%>
+      <%--</header>--%>
+      <br>
       <section class="row">
         <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">
           <div class="panel panel-default">
