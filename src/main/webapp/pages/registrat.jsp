@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container">
 
     <header class="row">
         <h1 class="text">Добавление аккаунта</h1>
