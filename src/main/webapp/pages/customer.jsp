@@ -10,6 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="<c:url value="/pages/css/bootstrap.css"/>">
   <link rel="stylesheet" href="<c:url value="/pages/styles/registrat.css"/>">
   <script src="<c:url value="/pages/js/bootstrap.js"/>"></script>
