@@ -59,7 +59,7 @@
                         <li><a href="<c:url value="/ownData"/> ">Личные данные пользователя</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('client')">
-                        <li><a href="<c:url value="/ownData/${login}"/> ">Личные данные пользователя</a></li>
+                        <li><a href="<c:url value="/ownData/${login}"/> ">Личные данные ${login}</a></li>
                     </sec:authorize>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -78,7 +78,9 @@
                                         <input type="file" name="mainPhoto1" placeholder="Photo1" required>
                                         <input type="file" name="mainPhoto2" placeholder="Photo2">
                                         <input type="file" name="mainPhoto3" placeholder="Photo3">
-                                        <button type="submit" style="background: center" class="btn btn-success">Подтвердить</button>
+                                        <button type="submit" style="background: center" class="btn btn-success">
+                                            Подтвердить
+                                        </button>
 
                                     </form>
                                 </li>
@@ -95,7 +97,11 @@
         <!-- /.container -->
     </nav>
     <div class="carousel slide" id="carousel">
-        <img id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
+        <div class="carousel-inner">
+            <div class="item active">
+                <img id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
+            </div>
+        </div>
         <!-- индикаторы слайдов -->
     </div>
     <br>
@@ -151,7 +157,7 @@
                                 <div class="btn-group btn-group-justified">
                                     <a class="btn btn-success" href="<c:url value="/changePosition/${position.id}"/> "
                                        role="button" style="width: 110px">Изменить &raquo;</a>
-                                    <a class="btn btn-success" href="<c:url value="/deletePosition/${position.id}"/> "
+                                    <a class="btn btn-warning" href="<c:url value="/deletePosition/${position.id}"/> "
                                        role="button" style="width: 110px">Удалить &raquo;</a>
                                 </div>
                             </sec:authorize>

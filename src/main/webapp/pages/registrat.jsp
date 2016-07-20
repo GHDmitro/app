@@ -3,6 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>New Group</title>
     <link rel="stylesheet" href="<c:url value="/pages/css/bootstrap.css"/>">
     <link rel="stylesheet" href="<c:url value="/pages/styles/registrat.css"/>">

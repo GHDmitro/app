@@ -303,7 +303,8 @@ public class MyController {
             if (login != null) {
                 Account account1 = accountService.findAccount(userName);
                 Account account = accountService.findAccount(login);
-                if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
+//                if (account != null && account.getAccountType().getTypeName().equals("customer") && account1.getAccountType().getTypeName().equals("client")) {
+                if (account != null && account1.getAccountType().getTypeName().equals("client")) {
                     String refPhoto = account.getPhotoAccount();
                     if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) { //login
                         // существует
@@ -332,7 +333,45 @@ public class MyController {
             String login = auth.getName();
             Account account = accountService.findAccount(login);
 //            System.out.println(account.getAccountType().getTypeName());
-            if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
+//            if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
+            String refPhoto = account.getPhotoAccount();
+            if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) {
+                // существует
+                model.addAttribute("refPhoto", refPhoto); //IMAGE_EXTENSION
+            } else {
+                // не существует
+                model.addAttribute("refPhoto", null);
+            }
+            model.addAttribute("email", account.getEmail());
+            model.addAttribute("telNumber", account.getTelNumber());
+
+            if (account.getAccountType().getTypeName().equals("customer")) {
+//                if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) {
+//                    // существует
+//                    model.addAttribute("refPhoto", refPhoto); //IMAGE_EXTENSION
+//                } else {
+//                    // не существует
+//                    model.addAttribute("refPhoto", null);
+//                }
+////                System.out.println("ownData: " + account.getEmail() + "    " + account.getTelNumber());
+//
+//                model.addAttribute("email", account.getEmail());
+//                model.addAttribute("telNumber", account.getTelNumber());
+                return "ownData";
+            } else if (account.getAccountType().getTypeName().equals("client")) {
+                return "ownDataForClient";
+            }else return "login";
+        } else return "login";
+    }
+
+    @RequestMapping(value = "/ownDataForClient")
+    public String ownDataForClient(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
+            if (account.getAccountType().getTypeName().equals("client")) {
                 String refPhoto = account.getPhotoAccount();
                 if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) {
                     // существует
@@ -341,14 +380,11 @@ public class MyController {
                     // не существует
                     model.addAttribute("refPhoto", null);
                 }
-                System.out.println("ownData: " + account.getEmail() + "    " + account.getTelNumber());
-
                 model.addAttribute("email", account.getEmail());
                 model.addAttribute("telNumber", account.getTelNumber());
-
-                return "ownData";
+                return "ownDataForClient";
             } else return "login";
-        } else return "login";
+        }else return "login";
     }
 
     @RequestMapping(value = "/changeOwnData", method = RequestMethod.POST)
@@ -360,60 +396,60 @@ public class MyController {
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             String login = auth.getName();
             Account account = accountService.findAccount(login);
-//        System.out.println(account.getLogin() + "  " + account.getPass() + "   " + account.getEmail() + "   " + account.getTelNumber());
-            if (account.getAccountType().getTypeName().equals("customer") | account.getAccountType().getTypeName().equals("client")) {
-                String refPhoto = account.getPhotoAccount();
-                if (!photo.isEmpty()) {
-                    if (refPhoto != null && refPhoto.length()>0) {
-                        File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION); // login
-                        if (file.exists()) {
-                            file.delete();
-                        }
-                    }else {
-                        refPhoto = account.getLogin();
-                        account.setPhotoAccount(refPhoto);
+
+            String refPhoto = account.getPhotoAccount();
+            if (!photo.isEmpty()) {
+                if (refPhoto != null && refPhoto.length()>0) {
+                    File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION); // login
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                }else {
+                    refPhoto = account.getLogin();
+                    account.setPhotoAccount(refPhoto);
 //                        accountService.refreshAccount(account);
-                    }
-                    // существует
-
-                    File file1 = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);  // login
-                    try (FileOutputStream fileOut = new FileOutputStream(file1)) {
-                        fileOut.write(photo.getBytes());
-                        fileOut.flush();
-                        fileOut.close();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                 }
-                model.addAttribute("refPhoto", refPhoto);   //login  IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
+                // существует
 
-                if (email.length() == 0) {
-                    model.addAttribute("email", account.getEmail());
+                File file1 = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION);  // login
+                try (FileOutputStream fileOut = new FileOutputStream(file1)) {
+                    fileOut.write(photo.getBytes());
+                    fileOut.flush();
+                    fileOut.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            model.addAttribute("refPhoto", refPhoto);   //login  IMAGE_EXTENSION c JSP страницы на сервер приходит путь без ".png"
+
+            if (email.length() == 0) {
+                model.addAttribute("email", account.getEmail());
 //                System.out.println("changeOwnData: email by Account: " + account.getEmail());
 
-                } else {
-                    account.setEmail(email);
+            } else {
+                account.setEmail(email);
 //                System.out.println("changeOwnData: email: " + email);
-                    model.addAttribute("email", email);
-                }
+                model.addAttribute("email", email);
+            }
 
-                if (telNumber.length() == 0) {
-                    model.addAttribute("telNumber", account.getTelNumber());
+            if (telNumber.length() == 0) {
+                model.addAttribute("telNumber", account.getTelNumber());
 //                System.out.println("changeOwnData: telNumber by Account: " + account.getTelNumber());
 
-                } else {
+            } else {
 //                System.out.println("changeOwnData: telNumber:" + telNumber);
-                    account.setTelNumber(telNumber);
-                    model.addAttribute("telNumber", telNumber);
-                }
+                account.setTelNumber(telNumber);
+                model.addAttribute("telNumber", telNumber);
+            }
 
-
-                accountService.updateAccount(account);
-
+            accountService.updateAccount(account);
+            if (account.getAccountType().getTypeName().equals("customer")) {
                 return "ownData";
-            } else return "login";
+            } else if (account.getAccountType().getTypeName().equals("client")) {
+                return "ownDataForClient";
+            }else return "login";
         } else return "login";
     }
 

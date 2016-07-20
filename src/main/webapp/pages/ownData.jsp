@@ -11,6 +11,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<c:url value="/pages/css/bootstrap.css"/>">
     <link rel="stylesheet" href="<c:url value="/pages/styles/registrat.css"/>">
     <script src="<c:url value="/pages/js/bootstrap.js"/>"></script>
@@ -68,7 +70,8 @@
                                             <%--value="<sec:authentication property="principal.username"/>">--%>
 
                                         <div class="form-group-horizontal">
-                                            <sec:authorize access="hasAnyRole('customer' , 'client')">
+                                            <%--access="hasAnyRole('customer' , 'client')"--%>
+                                            <sec:authorize access="hasRole('customer')">
                                                 <label for="Photo">Добавление фото</label><br>
                                                 <input type="file" style="margin-left: 5px" name="photo" id="Photo"
                                                        placeholder="Photo">
@@ -87,8 +90,8 @@
                                                                 value="${telNumber}"/></h5></li>
                                                     </ul>
                                                 </div>
-
-                                                <sec:authorize access="hasAnyRole('customer' , 'client')">
+                                                    <%--access="hasAnyRole('customer' , 'client')"--%>
+                                                <sec:authorize access="hasRole('customer')">
                                                     <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-md-offset-1 col-md-5 col-md-offset-1">
                                                         <div class="form-group">
                                                             <label for="email">Изменить електронную почту</label>
@@ -106,24 +109,40 @@
                                             </div>
 
                                             <p>
-                                                <sec:authorize access="hasAnyRole('customer' , 'client')">
-                                                    <button type="submit" class="btn btn-success">Подтвердить</button>
-                                                </sec:authorize>
                                                 <sec:authorize access="hasRole('customer')">
-                                                    <a href="<c:url value="/home"/> " class="btn btn-default"
+                                                    <button type="submit" class="btn btn-success">Подтвердить</button>
+                                                    <a href="<c:url value="/home"/> " class="btn btn-primary"
                                                        role="button">На главную</a>
                                                 </sec:authorize>
                                                 <sec:authorize access="hasRole('client')">
                                                     <c:if test="${login != null}">
                                                         <a href="<c:url value="/home/${login}"/> "
-                                                           class="btn btn-default"
+                                                           class="btn btn-primary"
                                                            role="button">На главную</a>
                                                     </c:if>
-                                                    <c:if test="${login == null}">
-                                                        <a href="<c:url value="/home"/> " class="btn btn-default"
-                                                           role="button">На главную</a>
-                                                    </c:if>
+                                                    <%--<c:if test="${login == null}">--%>
+                                                        <%--<a href="<c:url value="/home"/> " class="btn btn-default"--%>
+                                                           <%--role="button">На главную</a>--%>
+                                                    <%--</c:if>--%>
                                                 </sec:authorize>
+                                                <%--<sec:authorize access="hasAnyRole('customer' , 'client')">--%>
+                                                    <%--<button type="submit" class="btn btn-success">Подтвердить</button>--%>
+                                                <%--</sec:authorize>--%>
+                                                <%--<sec:authorize access="hasRole('customer')">--%>
+                                                    <%--<a href="<c:url value="/home"/> " class="btn btn-default"--%>
+                                                       <%--role="button">На главную</a>--%>
+                                                <%--</sec:authorize>--%>
+                                                <%--<sec:authorize access="hasRole('client')">--%>
+                                                    <%--<c:if test="${login != null}">--%>
+                                                        <%--<a href="<c:url value="/home/${login}"/> "--%>
+                                                           <%--class="btn btn-default"--%>
+                                                           <%--role="button">На главную</a>--%>
+                                                    <%--</c:if>--%>
+                                                    <%--<c:if test="${login == null}">--%>
+                                                        <%--<a href="<c:url value="/home"/> " class="btn btn-default"--%>
+                                                           <%--role="button">На главную</a>--%>
+                                                    <%--</c:if>--%>
+                                                <%--</sec:authorize>--%>
 
                                             </p>
                                         </div>

@@ -21,7 +21,7 @@
 <body>
 <sec:authorize access="!isAuthenticated()">
 
-  <p class="text-center"><a class="btn btn-lg btn-success" href="<c:url value="/login"/>" role="button">Войти</a></p>
+  <p class="text-center"><a class="btn btn-lg btn-primary" href="<c:url value="/login"/>" role="button">Войти</a></p>
 
 </sec:authorize>
 <sec:authorize access="isAuthenticated()">
@@ -95,7 +95,7 @@
                 </div>
                   <p>
                     <button type="submit" class="btn btn-success">Добавить в прайс</button>
-                    <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>
+                    <a href="<c:url value="/home"/>" class="btn btn-primary" role="button">На главную</a>
                   </p>
               </form>
             </div>

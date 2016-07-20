@@ -52,6 +52,13 @@
         <!-- <a class="active" href="#">Прайс лист</a> -->
       </div>
 
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <%--<li><p class="text"><sec:authentication property="principal.username"/></p></li>--%>
+          <li><a href="<c:url value="/home"/>">На главную</a></li>
+          <!-- <li><a href="#">Войти</a></li> -->
+        </ul>
+      </div>
     </div>
     <!-- /.container -->
   </nav>
@@ -79,7 +86,7 @@
       <input type="file" name="photo" id="Photo" placeholder="Изменить фото">
     </div>
 
-    <div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5" >
+    <div class="col-xs-11 col-xs-pull-1 col-sm-6 col-md-6 col-md-5 col-lg-5" >
       <ul>
           <%--Here will name of positioin from product--%>
         <li style="list-style-type: none ">
@@ -120,7 +127,7 @@
 
       <p class="text-center">
         <button type="submit" class="btn btn-success">Изменить позицию</button>
-        <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>
+        <a href="<c:url value="/home"/>" class="btn btn-primary" role="button">На главную</a>
       </p>
     </div>
 
