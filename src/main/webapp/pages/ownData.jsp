@@ -50,8 +50,9 @@
                                 <div class="thumbnail">
                                             <%--<c:if test="${refPhoto != null}">--%>
                                         <c:if test="${refPhoto != null}">
-                                            <img class="featurette-image img-responsive center-block" width="350"
-                                                 height="350" src="<c:url value="/givePhoto/${refPhoto}"/>"
+                                            <%--img-responsive--%>
+                                            <img class="featurette-image img-responsive center-block" width="350" height="350"
+                                                  src="<c:url value="/givePhoto/${refPhoto}"/>"
                                                  alt="Изображение загружается">
                                             <%----%>
                                         </c:if>
@@ -64,7 +65,7 @@
                                             <%--src="<c:url value="/givePhoto/${refPhoto}"/>--%>
                                             <%--</c:if>--%>
                                     <%--</div>--%>
-                                    <form enctype="multipart/form-data" action="<c:url value="/changeOwnData"/> "
+                                    <form enctype="multipart/form-data" action="<c:url value="/ownData"/> "
                                           method="post">
                                             <%--<input class="login" type="hidden" name="login"--%>
                                             <%--value="<sec:authentication property="principal.username"/>">--%>

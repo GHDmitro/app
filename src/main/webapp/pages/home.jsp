@@ -104,8 +104,8 @@
                                  alt="Изображение загружается">
                         </c:if>
                         <%--<img src="<spring:url value="/img/${customer.login}"/>">--%>
-
-                        <div class="caption">
+                        <%--caption--%>
+                        <div class="text-center">
                             <h3>${customer.email}</h3>
 
                             <p>${customer.telNumber}</p>

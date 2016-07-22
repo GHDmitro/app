@@ -38,17 +38,17 @@ footer {
   margin-top: 10px;
   background-color: #888888;
 }
-#pageHeader1{
-  margin-left: auto;
-  margin-right: auto;
-  background-position: top;
-  /*align-content: center;*/
+/*#pageHeader1{*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  /*background-position: top;*/
+  /*/!*align-content: center;*!/*/
+  /*/!*height: auto;*!/*/
+  /*/!*width: auto;*!/*/
+  /*max-height: 315px;*/
   /*height: auto;*/
   /*width: auto;*/
-  max-height: 315px;
-  height: auto;
-  width: auto;
-}
+/*}*/
 /*#pageHeader2{*/
   /*margin-top: 0;*/
   /*align-content: center;*/

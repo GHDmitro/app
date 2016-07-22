@@ -125,10 +125,9 @@ public class MyController {
                             "Описание товара", null, "Код модели", 000000)));
                     list = list1;
                 }
-
 //
                 model.addAttribute("listPositions", list);
-//
+                model.addAttribute("account", account);
                 return "canvas";
             } else if (account.getAccountType().getTypeName().equals("client")) {
                 AccountType accountType = accountTypeService.findByTypeName("customer");
@@ -158,6 +157,7 @@ public class MyController {
                 }
                 model.addAttribute("listPositions", list);
                 model.addAttribute("login", login);
+                model.addAttribute("account", account);
                 return "canvas";
             } else return "login";
         } else return "login";
@@ -288,6 +288,7 @@ public class MyController {
                 model.addAttribute("error", "Проблеммы у сервера в addPricePosition");
                 return "customer";
             }
+            model.addAttribute("account",account);
 
             return "canvas";
         } else return "login";
@@ -387,7 +388,7 @@ public class MyController {
         }else return "login";
     }
 
-    @RequestMapping(value = "/changeOwnData", method = RequestMethod.POST)
+    @RequestMapping(value = "/ownData", method = RequestMethod.POST)
     public String changeOwnData(@RequestParam MultipartFile photo, @RequestParam String email,
                                 @RequestParam String telNumber, Model model) {
 
@@ -482,6 +483,7 @@ public class MyController {
                     setPositions = set;
                 }
                 model.addAttribute("listPositions", setPositions);
+                model.addAttribute("account", account);
                 return "canvas";
             }else {
                 model.addAttribute("error", "Обновите страницу по этой ссылке");
@@ -504,7 +506,7 @@ public class MyController {
                 model.addAttribute("position", positionOfPrice);
                 return "changePage";
             }
-            return "canvas";
+            return "login";
         } else return "login";
     }
 //changePositionPost
@@ -576,7 +578,7 @@ public class MyController {
                 model.addAttribute("position", positionOfPrice);
                 return "changePage";
 
-            } else return "canvas";
+            } else return "login";
         } else return "login";
 
     }
@@ -835,6 +837,7 @@ public class MyController {
             List<PositionOfPrice> listPositions = accountService.listPositions(customer);
             model.addAttribute("listPositions", listPositions);
             model.addAttribute("login", customer.getLogin());
+            model.addAttribute("account", customer);
 
             return "canvas";
         }else return "login";
@@ -854,6 +857,70 @@ public class MyController {
         model.addAttribute("bookingList", null);
         return "bookingPage";
     }
+
+    @RequestMapping(value = "/changeBackground")
+    public String changeBackground(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
+
+            if (account.getAccountType().getTypeName().equals("customer")) {
+                Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
+                List<PositionOfPrice> list = new ArrayList<>(set);
+                model.addAttribute("listPositions", list);
+                model.addAttribute("account", account);
+                return "canvas";
+            } else return "login";
+        }else return "login";
+    }
+
+    @RequestMapping(value = "/changeBackground", method = RequestMethod.POST)
+    public String changeBackground(@RequestParam MultipartFile photoBackground, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
+            if (account.getAccountType().getTypeName().equals("customer")) {
+                StringBuilder refPhoto = new StringBuilder();
+                refPhoto.append(account.getLogin());
+                if (account.getPhotoBackground1() == null){
+                    refPhoto.append("photoBackground1");
+                    account.setPhotoBackground1(refPhoto.toString());
+                }else if (account.getPhotoBackground2() == null){
+                    refPhoto.append("photoBackground2");
+                    account.setPhotoBackground2(refPhoto.toString());
+                }else if (account.getPhotoBackground3() == null){
+                    refPhoto.append("photoBackground3");
+                    account.setPhotoBackground3(refPhoto.toString());
+                }
+
+                File file = new File(PATH_TO_IMG, refPhoto.toString() + IMAGE_EXTENSION);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(photoBackground.getBytes());
+                    fos.flush();
+                    fos.close();
+                } catch (FileNotFoundException e) {
+                    model.addAttribute("error", e.getMessage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                accountService.updateAccount(account);
+
+                Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
+                List<PositionOfPrice> list = new ArrayList<>(set);
+                model.addAttribute("listPositions", list);
+                model.addAttribute("account", account);
+                return "canvas";
+            } else return "login";
+        }else return "login";
+    }
+
+
 
 
 }

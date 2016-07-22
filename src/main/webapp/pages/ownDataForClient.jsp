@@ -64,7 +64,7 @@
                                         <%--src="<c:url value="/givePhoto/${refPhoto}"/>--%>
                                         <%--</c:if>--%>
                                         <%--</div>--%>
-                                    <form enctype="multipart/form-data" action="<c:url value="/changeOwnData"/> "
+                                    <form enctype="multipart/form-data" action="<c:url value="/ownData"/> "
                                           method="post">
                                             <%--<input class="login" type="hidden" name="login"--%>
                                             <%--value="<sec:authentication property="principal.username"/>">--%>

@@ -72,19 +72,26 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Новый фон<b
                                     class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li class="text-center"><p>Загрузить новый фон </p></li>
-                                <li>
-                                    <form enctype="multipart/form-data" method="post" action="#">
-                                        <input type="file" name="mainPhoto1" placeholder="Photo1" required>
-                                        <input type="file" name="mainPhoto2" placeholder="Photo2">
-                                        <input type="file" name="mainPhoto3" placeholder="Photo3">
-                                        <button type="submit" style="background: center" class="btn btn-success">
-                                            Подтвердить
-                                        </button>
+                                <c:if test="${account.photoBackground1 == null or account.photoBackground2 == null or account.photoBackground3 == null}">
+                                    <li class="text-center"><p>Загрузить фоновые изображения </p></li>
+                                    <%--<li>--%>
+                                    <form enctype="multipart/form-data" method="post" action="<c:url value="/changeBackground"/>">
+                                            <%--<ul>--%>
 
+                                        <li><input type="file" name="photoBackground" required></li>
+                                        <li class="divider"></li>
+                                            <%--<li><input type="file" name="photoBackground2"></li>--%>
+                                            <%--<li class="divider"></li>--%>
+                                            <%--<li><input type="file" name="photoBackground3" placeholder="Photo3"></li>--%>
+                                            <%--<li class="divider"></li>--%>
+                                        <li class="text-center" style="list-style-type: none ">
+                                            <button class="btn btn-success" type="submit">Подтвердить</button>
+                                        </li>
+
+                                            <%--</ul>--%>
                                     </form>
-                                </li>
-
+                                    <%--</li>--%>
+                                </c:if>
                             </ul>
                         </li>
                     </sec:authorize>
@@ -96,14 +103,66 @@
         </div>
         <!-- /.container -->
     </nav>
+    <%--<div class="carousel slide" id="carousel">--%>
+    <%--<div class="carousel-inner">--%>
+    <%--<div class="item active">--%>
+    <%--&lt;%&ndash;id="pageHeader1"&ndash;%&gt;--%>
+    <%--<img src="<c:url value="/img/heades/header1.jpg"/>">--%>
+    <%--</div>--%>
+    <%--</div>--%>
+    <%--<!-- индикаторы слайдов -->--%>
+    <%--</div>--%>
+
     <div class="carousel slide" id="carousel">
-        <div class="carousel-inner">
-            <div class="item active">
-                <img id="pageHeader1" src="<c:url value="/img/heades/header1.jpg"/> ">
-            </div>
-        </div>
+
         <!-- индикаторы слайдов -->
+        <ol class="carousel-indicators">
+
+            <li class="active" data-target="#carousel" data-slide="0"></li>
+
+            <c:if test="${account.photoBackground2 != null}">
+                <li data-target="#carousel" data-slide="1"></li>
+            </c:if>
+            <c:if test="${account.photoBackground3 != null}">
+                <li data-target="#carousel" data-slide="2"></li>
+            </c:if>
+        </ol>
+        <!-- сдайды -->
+        <div class="carousel-inner">
+
+            <div class="item active">
+                <c:if test="${account.photoBackground1 == null}">
+                    <img src="<c:url value="/img/heades/header1.jpg"/>" alt="Пример фонового изображения">
+                </c:if>
+                <c:if test="${account.photoBackground1 != null}">
+                    <img src="<c:url value="/givePhoto/${account.photoBackground1}"/>" alt="">
+                </c:if>
+            </div>
+            <c:if test="${account.photoBackground2 != null}">
+                <div class="item">
+                    <img src="<c:url value="/givePhoto/${account.photoBackground2}"/>" alt="">
+                        <%--<div class="carousel-caption">--%>
+                        <%--<h3>Второй слайд</h3>--%>
+                        <%--<p>Описание второго слайда</p>--%>
+                        <%--</div>--%>
+                </div>
+            </c:if>
+            <c:if test="${account.photoBackground3 != null}">
+                <div class="item">
+                    <img src="<c:url value="/givePhoto/${account.photoBackground3}"/>" alt="">
+                </div>
+            </c:if>
+        </div>
+
+        <!-- стрелки переключения слайдов -->
+        <a href="#carousel" class="left carousel-control" data-slide="prev">
+            <span class="glyphcon glyphcon-chevron-left"></span>
+        </a>
+        <a href="#carousel" class="right carousel-control" data-slide="next">
+            <span class="glyphcon glyphcon-chevron-right"></span>
+        </a>
     </div>
+
     <br>
     <c:if test="${error != null}">
         <a class="btn-primary" href="<c:url value="/home"/>">Если прайс лист не появился нажмите на кнопку</a>
