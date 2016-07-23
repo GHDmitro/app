@@ -34,6 +34,15 @@
     <!--<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
     <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
     <%--<![endif]-->--%>
+    <script>
+        function changeValueCheckbox(element) {
+            if (element.checked) {
+                element.value = 'on';
+            } else {
+                element.value = 'off';
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -68,16 +77,16 @@
                         <li><a href="<c:url value="/home"/> ">К списку продавцов</a></li>
                     </sec:authorize>
                     <sec:authorize access="hasRole('customer')">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Новый фон<b
-                                    class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <c:if test="${account.photoBackground1 == null or account.photoBackground2 == null or account.photoBackground3 == null}">
-                                    <li class="text-center"><p>Загрузить фоновые изображения </p></li>
-                                    <%--<li>--%>
-                                    <form enctype="multipart/form-data" method="post" action="<c:url value="/changeBackground"/>">
+                        <c:if test="${account.photoBackground1 == null or account.photoBackground2 == null or account.photoBackground3 == null}">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Добавить фон<b
+                                        class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li class="text-center">Загрузить изображение</li>
+                                    <li class="divider"></li>
+                                    <form enctype="multipart/form-data" method="post"
+                                          action="<c:url value="/changeBackground"/>">
                                             <%--<ul>--%>
-
                                         <li><input type="file" name="photoBackground" required></li>
                                         <li class="divider"></li>
                                             <%--<li><input type="file" name="photoBackground2"></li>--%>
@@ -87,13 +96,52 @@
                                         <li class="text-center" style="list-style-type: none ">
                                             <button class="btn btn-success" type="submit">Подтвердить</button>
                                         </li>
-
-                                            <%--</ul>--%>
+                                        <li class="divider"></li>
                                     </form>
-                                    <%--</li>--%>
-                                </c:if>
-                            </ul>
-                        </li>
+                                </ul>
+
+                            </li>
+                        </c:if>
+                        <c:if test="${account.photoBackground1 != null or account.photoBackground2 != null or account.photoBackground3 != null}">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Удалить фон<b
+                                        class="caret"></b></a>
+                                    <%--<c:if test="${account.photoBackground1 != null or account.photoBackground2 != null or account.photoBackground3 != null}">--%>
+                                <ul class="dropdown-menu">
+                                    <li class="text-center">Отметьте изображения для удаления</li>
+                                    <li class="divider"></li>
+                                    <form method="post" action="<c:url value="/deleteBackground"/>">
+                                        <c:if test="${account.photoBackground1 != null}">
+                                            <li>
+                                                <label for="photoBackground1">Изображение № 1</label>
+                                                <input type="checkbox" name="photoBackground1" id="photoBackground1"/>
+                                            </li>
+                                            <li class="divider"></li>
+                                        </c:if>
+                                        <c:if test="${account.photoBackground2 != null}">
+                                            <li>
+                                                <label for="photoBackground2">Изображение № 2</label>
+                                                <input type="checkbox" name="photoBackground2" id="photoBackground2">
+                                            </li>
+                                            <li class="divider"></li>
+                                        </c:if>
+                                        <c:if test="${account.photoBackground3 != null}">
+                                            <li>
+                                                <label for="photoBackground3">Изображение № 3</label>
+                                                <input type="checkbox" name="photoBackground3" id="photoBackground3"/>
+                                            </li>
+                                            <li class="divider"></li>
+                                        </c:if>
+
+                                        <li class="text-center" style="list-style-type: none ">
+                                            <button class="btn btn-success" type="submit">Подтвердить</button>
+                                        </li>
+                                        <li class="divider"></li>
+                                    </form>
+                                </ul>
+                                    <%--</c:if>--%>
+                            </li>
+                        </c:if>
                     </sec:authorize>
                     <li><a href="<c:url value="/logout"/>">Вийти</a></li>
                     <!-- <li><a href="#">Войти</a></li> -->

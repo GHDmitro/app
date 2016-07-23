@@ -51,38 +51,56 @@ public class MyController {
 
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Foo test(@RequestParam MultipartFile file, HttpServletRequest request, Model model) {
-//
+    public Foo test (HttpServletRequest request, Model model) {
+
 //        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
-//        File file2 = new File(file1, "photo.png");
-//        try{
-//            FileWriter w = new FileWriter(file1);
-//            w.write("Hello world");
-//            w.flush();
-//            w.close();
-//        } catch (IOException e){
-//            model.addAttribute("text1", e.getMessage() + "   write");
-//        }
+        File file2 = new File(PATH_TO_IMG, "test1.txt");
+        try{
+            FileWriter w = new FileWriter(file2);
+            w.write("Hello world");
+            w.flush();
+            w.close();
+        } catch (IOException e){
+            model.addAttribute("text1", e.getMessage() + "   write");
+        }
 ////ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
 //
-//        try {
+        try {
+
+            File file1 = new File(PATH_TO_IMG, "test2.txt");
+
+            FileUtils.moveFile(file2, file1);
+
+            BufferedReader read = new BufferedReader(new FileReader(file1));
+
+            String str;
+            StringBuilder sb = new StringBuilder();
+
+            while((str = read.readLine()) != null){
+                sb.append(str);
+            }
+
+            model.addAttribute("text", sb.toString() + " foooooooo" );
+
+
+            System.out.println(file2.getAbsolutePath());
+//            BufferedReader read1 = new BufferedReader(new FileReader(file2));
 //
+//            String str1;
+//            StringBuilder sb1 = new StringBuilder();
 //
-//            BufferedReader read = new BufferedReader(new FileReader(file2));
-//
-//            String str;
-//            StringBuilder sb = new StringBuilder();
-//
-//            while((str = read.readLine()) != null){
-//                sb.append(str);
+//            while((str1 = read1.readLine()) != null){
+//                sb1.append(str1);
 //            }
-//
-//            model.addAttribute("text", sb.toString() + " foooooooo" );
-//
-//
-//        } catch (IOException e) {
-//            model.addAttribute("text2", e.getMessage() + "  read");
-//        }
+//            model.addAttribute("text3", sb1.toString() + " foo111111" );
+
+
+
+        } catch (IOException e) {
+            model.addAttribute("text2", e.getMessage() + "  read");
+        }
+
+
 
 
         return new Foo(32, "uuuuuuu");
@@ -885,15 +903,16 @@ public class MyController {
             Account account = accountService.findAccount(login);
             if (account.getAccountType().getTypeName().equals("customer")) {
                 StringBuilder refPhoto = new StringBuilder();
-                refPhoto.append(account.getLogin());
+                String ref = photoBackground.getOriginalFilename();
+                refPhoto.append(account.getLogin()).append(ref.substring(0, ref.indexOf(".")));
                 if (account.getPhotoBackground1() == null){
-                    refPhoto.append("photoBackground1");
+//                    refPhoto.append(photoBackground.getOriginalFilename());
                     account.setPhotoBackground1(refPhoto.toString());
                 }else if (account.getPhotoBackground2() == null){
-                    refPhoto.append("photoBackground2");
+//                    refPhoto.append();
                     account.setPhotoBackground2(refPhoto.toString());
                 }else if (account.getPhotoBackground3() == null){
-                    refPhoto.append("photoBackground3");
+//                    refPhoto.append("photoBackground3");
                     account.setPhotoBackground3(refPhoto.toString());
                 }
 
@@ -920,10 +939,163 @@ public class MyController {
         }else return "login";
     }
 
+    @RequestMapping(value = "/deleteBackground")
+    public String deleteBackground(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
 
+            if (account.getAccountType().getTypeName().equals("customer")) {
+                Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
+                List<PositionOfPrice> list = new ArrayList<>(set);
+                model.addAttribute("listPositions", list);
+                model.addAttribute("account", account);
+                return "canvas";
+            } else return "login";
+        }else return "login";
+    }
+
+    @RequestMapping(value = "/deleteBackground", method = RequestMethod.POST)
+    public String deleteBackground(@RequestParam(name = "photoBackground1", required = false) String photoBackground1,
+                                   @RequestParam(name = "photoBackground2", required = false) String photoBackground2,
+                                   @RequestParam(name = "photoBackground3", required = false) String photoBackground3,
+                                   Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            UserDetails userDetail = (UserDetails) auth.getPrincipal();
+            String login = userDetail.getUsername();
+            Account account = accountService.findAccount(login);
+
+            System.out.println(photoBackground1);
+            System.out.println(photoBackground2);
+            System.out.println(photoBackground3);
+            if (account.getAccountType().getTypeName().equals("customer")) {
+
+                File file1 = new File(PATH_TO_IMG, account.getPhotoBackground1() + IMAGE_EXTENSION);
+                File file2 = new File(PATH_TO_IMG, account.getPhotoBackground2() + IMAGE_EXTENSION);
+                File file3 = new File(PATH_TO_IMG, account.getPhotoBackground3() + IMAGE_EXTENSION);
+                String refphoto;
+
+                if (photoBackground1 == null && photoBackground2 == null && photoBackground3 == null){
+                    Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
+                    List<PositionOfPrice> list = new ArrayList<>(set);
+                    model.addAttribute("listPositions", list);
+                    model.addAttribute("account", account);
+                    return "canvas";
+                } else if (photoBackground1 != null && photoBackground2 != null && photoBackground3 != null){
+                    if (file1.exists()){
+                        file1.delete();
+                    }
+                    if (file2.exists()){
+                        file2.delete();
+                    }
+                    if (file3.exists()){
+                        file3.delete();
+                    }
+                    account.setPhotoBackground1(null);
+                    account.setPhotoBackground2(null);
+                    account.setPhotoBackground3(null);
+                }else if (photoBackground1 != null && photoBackground2 != null){
+                    if (file1.exists()){
+                        file1.delete();
+                    }
+                    account.setPhotoBackground1(null);
+                    if (file2.exists()){
+                        file2.delete();
+                    }
+                    account.setPhotoBackground2(null);
+                    refphoto = account.getPhotoBackground3();
+                    if (refphoto != null){
+                        account.setPhotoBackground1(refphoto);
+                        account.setPhotoBackground3(null);
+                    }
+                }else if (photoBackground1 != null && photoBackground3 != null){
+                    if (file1.exists()){
+                        file1.delete();
+                    }
+                    account.setPhotoBackground1(null);
+                    if (file3.exists()){
+                        file3.delete();
+                    }
+                    account.setPhotoBackground3(null);
+                    refphoto = account.getPhotoBackground2();
+                    if (refphoto != null){
+                        account.setPhotoBackground1(refphoto);
+                        account.setPhotoBackground2(null);
+                    }
+                }else if (photoBackground2 != null && photoBackground3 != null){
+                    if (file2.exists()){
+                        file2.delete();
+                    }
+                    if (file3.exists()){
+                        file3.delete();
+                    }
+                    account.setPhotoBackground2(null);
+                    account.setPhotoBackground3(null);
+                }else {
+                    if (photoBackground1 != null) {
+                        if (file1.exists()){
+                            file1.delete();
+                        }
+                        account.setPhotoBackground1(null);
+                        String refPhoto2 = account.getPhotoBackground2();
+                        String refPhoto3 = account.getPhotoBackground3();
+                        if (refPhoto2 != null){
+                            account.setPhotoBackground1(refPhoto2);
+                            account.setPhotoBackground2(null);
+                        }
+                        if (refPhoto3 != null){
+                            account.setPhotoBackground2(refPhoto3);
+                            account.setPhotoBackground3(null);
+                        }
+                    }else if (photoBackground2 != null){
+                        if (file2.exists()){
+                            file2.delete();
+                        }
+                        account.setPhotoBackground2(null);
+                        String refPhoto3 = account.getPhotoBackground3();
+                        if (refPhoto3 != null){
+                            account.setPhotoBackground2(refPhoto3);
+                            account.setPhotoBackground3(null);
+                        }
+                    }else if (photoBackground3 != null){
+                        if (file3.exists()){
+                            file3.delete();
+                        }
+                        account.setPhotoBackground3(null);
+                    }
+                }
+
+                accountService.updateAccount(account);
+
+                Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
+                List<PositionOfPrice> list = new ArrayList<>(set);
+                model.addAttribute("listPositions", list);
+                model.addAttribute("account", account);
+                return "canvas";
+            } else return "login";
+        }else return "login";
+    }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
