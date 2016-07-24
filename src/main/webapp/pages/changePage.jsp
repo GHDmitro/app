@@ -70,7 +70,7 @@
   <div class="row featurette">
     <input type="hidden" name="id" value="${position.id}"/>
 
-    <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 col-lg-offset-1">
       <c:if test="${position.product.photo != null}">
         <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${position.product.photo}"/>"
              alt="Изображение загружается">
@@ -86,7 +86,7 @@
       <input type="file" name="photo" id="Photo" placeholder="Изменить фото">
     </div>
 
-    <div class="col-xs-11 col-xs-pull-1 col-sm-6 col-md-6 col-md-5 col-lg-5" >
+    <div class="col-xs-11 col-xs-pull-1 col-sm-6 col-md-6 col-md-5 col-lg-5 col-lg-pull-1">
       <ul>
           <%--Here will name of positioin from product--%>
         <li style="list-style-type: none ">
