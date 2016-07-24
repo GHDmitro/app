@@ -58,7 +58,7 @@
                                 </div>
                                 <p>
                                     <button type="submit" class="btn btn-success">Подтвердить регистрацию</button>
-                                    <a href="<c:url value="/home"/>" class="btn btn-default" role="button">На
+                                    <a href="<c:url value="/home"/>" class="btn btn-primary" role="button">На
                                         главную</a>
                                 </p>
                             </form>

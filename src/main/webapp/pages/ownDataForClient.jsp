@@ -83,10 +83,10 @@
                                                     <%--col-md-5 col-md-offset-1--%>
                                                 <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-md-offset-1 col-md-5 col-md-offset-1">
                                                     <ul class="text-center">
-                                                        <li class="text-area"><h5>Електронная почта: <c:out
-                                                                value="${email}"/></h5></li>
-                                                        <li class="text-area"><h5>Телефонный номер: <c:out
-                                                                value="${telNumber}"/></h5></li>
+                                                        <li class="text-area"><h4>Електронная почта: <c:out
+                                                                value="${email}"/></h4></li>
+                                                        <li class="text-area"><h4>Телефонный номер: <c:out
+                                                                value="${telNumber}"/></h4></li>
                                                     </ul>
                                                 </div>
 
