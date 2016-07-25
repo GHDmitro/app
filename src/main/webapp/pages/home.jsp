@@ -95,7 +95,7 @@
                 <div class="col-lg-6 col-lg-offset-3 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
                     <div class="thumbnail">
                         <c:if test="${customer.login != null}">
-                            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${customer.login}"/>"
+                            <img class="featurette-image img-responsive center-block" width="350" height="350" src="<c:url value="/givePhoto/${customer.photoAccount}"/>"
                                  alt="Изображение загружается">
                             <%----%>
                         </c:if>
