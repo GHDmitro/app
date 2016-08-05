@@ -34,13 +34,17 @@
     <!--<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
     <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
     <%--<![endif]-->--%>
-    <script>
-        function changeValueCheckbox(element) {
-            if (element.checked) {
-                element.value = 'on';
-            } else {
-                element.value = 'off';
-            }
+    <script type="text/javascript">
+        function bookAjax(posId) {
+            var methodurl = "/bookAjax";
+            $.ajax({
+                type: "POST",
+                url: methodurl,
+                data: $("#" + posId).serialize(),
+                success: function (data) {
+                    $('#p' + posId).text("Товар заказан");
+                }
+            });
         }
     </script>
 </head>
@@ -269,11 +273,25 @@
                                 </div>
                             </sec:authorize>
                             <sec:authorize access="hasRole('client')">
-                                <form action="<c:url value="/bookingPosition"/> " method="post">
+                                <%--<form action="<c:url value="/bookingPosition"/> " method="post">--%>
+                                <%--<input type="hidden" name="positionID" value="${position.id}"/>--%>
+                                <%--<input type="number" min="1" required name="capacity" style="width: 50px"/>--%>
+                                <%--<button type="submit" class="btn btn-success">Заказать</button>--%>
+                                <%--</form>--%>
+
+                                <p>
+
+                                <form name="send" id="${position.id}">
                                     <input type="hidden" name="positionID" value="${position.id}"/>
                                     <input type="number" min="1" required name="capacity" style="width: 50px"/>
-                                    <button type="submit" class="btn btn-success">Заказать</button>
+                                    <a class="btn btn-success" type="button"
+                                       onclick="bookAjax(${position.id})">Заказать</a>
+
+                                    <p class="text-area" id="p${position.id}"></p>
                                 </form>
+                                <%--<span class="glyphicon glyphicon-shopping-cart" id="glyph${position.id}"></span>--%>
+
+
                             </sec:authorize>
                         </c:if>
                             <%--<li><form action="<c:url value="/changePosition"/>" method="post">--%>

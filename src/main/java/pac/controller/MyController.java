@@ -50,6 +50,39 @@ public class MyController {
     private String IMAGE_EXTENSION = ".png";
 
 
+    @RequestMapping(value = "/bookAjax", method = RequestMethod.POST)
+    public @ResponseBody String bookAjax(@RequestParam String positionID, @RequestParam Integer capacity, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         String clientLogin = auth.getName();
+        Account client = accountService.findAccount(clientLogin);
+        PositionOfPrice position = positionOfPriceService.findPosition(Integer.valueOf(positionID));
+        String s = position.getAccount().getLogin();
+        Account customer = accountService.findAccount(s);
+        Product product = position.getProduct();
+
+        Booking booking = bookingService.findForClient(client, customer);
+        if (booking == null) {
+            booking = new Booking(client, customer); //, customer
+            bookingService.save(booking);
+            System.out.println(booking.getId() + " это ID заказа ");
+            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); //, booking
+            bookingPositionService.setBookingPosition(bookingPosition);
+            accountService.updateAccount(customer);
+        } else {
+            System.out.println(booking.getId() + " это ID заказа else");
+            BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); // booking ,
+            bookingPositionService.setBookingPosition(bookingPosition);
+            bookingService.updateBooking(booking);
+        }
+
+        return "Товар заказан";
+    }
+
+//    @RequestMapping(value = "/confirmBookAjax", method = RequestMethod.POST)
+//    public @ResponseBody List<Booking> confirmBookAjax(@RequestParam String positionID, @RequestParam Integer capacity, Model model){
+//
+//    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public Foo test (HttpServletRequest request, Model model) {
 

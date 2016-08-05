@@ -36,6 +36,21 @@
     <script src="<c:url value="../pages/assets/js/ie8-responsive-file-warning.js "/> "></script>
     <script src="<c:url value="../pages/assets/js/ie-emulation-modes-warning.js"/> "></script>
 
+    <%--<script type="text/javascript">--%>
+    <%--function confirmBooking(formID) {--%>
+    <%--var methodURL = "/confirmBookAjax";--%>
+    <%--$.ajax({--%>
+    <%--type: "POST",--%>
+    <%--url: methodURL,--%>
+    <%--data: $("confirmBookAjax" + formID).serialize(),--%>
+    <%--success: function (data) {--%>
+    <%--$('#confirmResponse'+formID).text('');--%>
+    <%----%>
+    <%--}--%>
+    <%--})--%>
+    <%--}--%>
+    <%--</script>--%>
+
 </head>
 <body>
 <sec:authorize access="hasRole('customer')">
@@ -119,17 +134,21 @@
                                            value="${bookingPosition.capacity}"/>
                                     <button type="submit" class="btn btn-success">Подтвердить продажу</button>
                                 </form>
+
+                                    <%--<form name="confirm" id="confirmBookAjax${bookingPosition.id}">--%>
+                                    <%--<input type="hidden" name="positionID" value="${bookingPosition.id}">--%>
+                                    <%--<input type="number" required min="0" name="capacity" style="width: 50px"--%>
+                                    <%--value="${bookingPosition.capacity}"/>--%>
+
+                                    <%--<p>--%>
+                                    <%--<a type="button" class="btn btn-success" onclick="">Подтвердить продажу</a>--%>
+                                    <%--<div class="text-area" id="confirmResponse${bookingPosition.id}"></div>--%>
+                                    <%--</p>--%>
+                                    <%--</form>--%>
                             </li>
                         </ul>
-
-                        <%--Here will be code of position from product--%>
-                        <%--Here will be decription from position--%>
-
                         <br><br>
 
-                        <%--<p class="text-center">--%>
-                        <%--<a href="<c:url value="/home"/>" class="btn btn-default" role="button">На главную</a>--%>
-                        <%--</p>--%>
                     </c:forEach>
                 </div>
 
