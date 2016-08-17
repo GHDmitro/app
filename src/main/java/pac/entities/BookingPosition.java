@@ -1,5 +1,7 @@
 package pac.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 /**
@@ -17,7 +19,7 @@ public class BookingPosition {
     @Column(name = "capacity")
     private int capacity;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "booking_id",  updatable = true, insertable = true) // это было изменено птница nullable = false,
     private Booking booking;
 
@@ -62,7 +64,7 @@ public class BookingPosition {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-
+    @JsonBackReference
     public Booking getBooking() {
         return booking;
     }

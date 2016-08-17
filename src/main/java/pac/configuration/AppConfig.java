@@ -25,6 +25,8 @@ import javax.sql.DataSource;
 import java.nio.charset.Charset;
 import java.util.Properties;
 
+//import com.websystique.springmvc.viewresolver.JsonViewResolver;
+
 @Configuration
 @ComponentScan("pac")
 @EnableTransactionManagement
@@ -92,11 +94,20 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         resolver.setOrder(1);
         return resolver;
     }
+//
+//    @Bean
+//    public ViewResolver jsonViewResolver() {
+//        return new JsonViewResolver();
+//    }
+
 
     @Bean
     public StringHttpMessageConverter stringHttpMessageConverter(){
         return new StringHttpMessageConverter(Charset.forName("UTF-8"));
     }
+
+
+
 
     @Bean
     public UserDetailsService getUserDetailsService(){

@@ -36,20 +36,50 @@
     <script src="<c:url value="../pages/assets/js/ie8-responsive-file-warning.js "/> "></script>
     <script src="<c:url value="../pages/assets/js/ie-emulation-modes-warning.js"/> "></script>
 
-    <%--<script type="text/javascript">--%>
-    <%--function confirmBooking(formID) {--%>
-    <%--var methodURL = "/confirmBookAjax";--%>
-    <%--$.ajax({--%>
-    <%--type: "POST",--%>
-    <%--url: methodURL,--%>
-    <%--data: $("confirmBookAjax" + formID).serialize(),--%>
-    <%--success: function (data) {--%>
-    <%--$('#confirmResponse'+formID).text('');--%>
-    <%----%>
-    <%--}--%>
-    <%--})--%>
-    <%--}--%>
-    <%--</script>--%>
+    <script type="text/javascript">
+        function confirmBookAjax(bookingId,posId) {
+            var methodurl = "/confirmBookAjax";
+            $.ajax({
+                type: "POST",
+                url: methodurl,
+                data: $("#confirmBookAjax" + bookingId+ posId).serialize(),
+                success: function (booking) {
+
+//                     var flug = booking.toString();
+//                       //"Товар заказан" booking != null
+//                    alert(flug);
+                    if (booking !== null) {
+
+//                        $('#lol').text('').append(booking.id).append(" ").append(booking.bookingPositions[0].product.name).append(booking.bookingPositions[0].id);
+                        var bookingPositions = booking.bookingPositions;
+                        var isExist = false;
+
+                        for (var index1 in bookingPositions) {
+                            if (posId == bookingPositions[index1].id){
+                                isExist = true;
+                            }
+                                $('#' + bookingPositions[index1].id + 'capacity').text('').append("Колличество в заказе: ").append(bookingPositions[index1].capacity);
+                                $('#' + bookingPositions[index1].id + 'number').text('').append("Колличество в заказе: ").append(bookingPositions[index1].capacity);
+                        }
+
+                        if (!isExist){
+                            var element = document.getElementById(posId+'bookingPosition');
+                            element.parentNode.removeChild(element);
+                        }
+                    }else{
+
+                    }
+                }, error : function (error){
+                    if (error != null){
+//                        alert(error);
+                        var element1 = document.getElementById(bookingId + 'booking');
+                        element1.parentNode.removeChild(element1);
+                    }
+                }
+            });
+        }
+    </script>
+
 
 </head>
 <body>
@@ -80,11 +110,14 @@
         </div>
         <!-- /.container -->
     </nav>
+
+
+    <%--<div id="lol">---------</div>--%>
     <c:if test="${bookingList == null}">
-        <h4 class="text-center">Заказов пока что нет</h4>
+        <h3 class="text-center">Заказов пока что нет</h3>
     </c:if>
     <c:forEach items="${bookingList}" var="booking">
-        <div class="container marketing">
+        <div class="container marketing" id="${booking.id}booking">
             <h2 class="text-center"><p>Заказы от <c:out value="${booking.accountClient.login}"/></p></h2>
             <hr class="featurette-divider">
                 <%--<form enctype="multipart/form-data" action="<c:url value="/changePositionPost"/> " method="post">--%>
@@ -112,7 +145,7 @@
                     </ul>
                 </div>
 
-                <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-md-7 col-lg-5" id="${booking.id}positions">
                         <%--<div class="col-md-7 col-md-push-5 col-sm-10 col-xs-12">--%>
                     <c:forEach items="${booking.bookingPositions}" var="bookingPosition">
 
@@ -120,34 +153,54 @@
                         <%--Here will name of positioin from product--%>
 
 
-                        <ul class="text-center">
-                            <li style="list-style-type: none"><h3 class="featurette-heading">Название продукта: <c:out
-                                    value="${bookingPosition.product.name}"/></h3></li>
-                            <li style="list-style-type: none"><h4 class="text-muted">Модель продукта: <c:out
-                                    value="${bookingPosition.product.codeOfModel}"/></h4></li>
-                            <li style="list-style-type: none"><h4 class="text-muted">Количество в заказе: <c:out
-                                    value="${bookingPosition.capacity}"/></h4></li>
-                            <li style="list-style-type: none ">
-                                <form action="<c:url value="/confirmBooking"/>" method="post">
-                                    <input type="hidden" name="positionID" value="${bookingPosition.id}">
-                                    <input type="number" required min="0" name="capacity" style="width: 50px"
-                                           value="${bookingPosition.capacity}"/>
-                                    <button type="submit" class="btn btn-success">Подтвердить продажу</button>
-                                </form>
-
-                                    <%--<form name="confirm" id="confirmBookAjax${bookingPosition.id}">--%>
+                        <%--<ul class="text-center">--%>
+                            <%--<li style="list-style-type: none"><h3 class="featurette-heading">Название продукта: <c:out--%>
+                                    <%--value="${bookingPosition.product.name}"/></h3></li>--%>
+                            <%--<li style="list-style-type: none"><h4 class="text-muted">Модель продукта: <c:out--%>
+                                    <%--value="${bookingPosition.product.codeOfModel}"/></h4></li>--%>
+                            <%--<li style="list-style-type: none"><h4 class="text-muted">Количество в заказе: <c:out--%>
+                                    <%--value="${bookingPosition.capacity}"/></h4></li>--%>
+                            <%--<li style="list-style-type: none ">--%>
+                                <%--<form action="<c:url value="/confirmBooking"/>" method="post">--%>
                                     <%--<input type="hidden" name="positionID" value="${bookingPosition.id}">--%>
                                     <%--<input type="number" required min="0" name="capacity" style="width: 50px"--%>
-                                    <%--value="${bookingPosition.capacity}"/>--%>
+                                           <%--value="${bookingPosition.capacity}"/>--%>
+                                    <%--<button type="submit" class="btn btn-success">Подтвердить продажу</button>--%>
+                                <%--</form>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
 
-                                    <%--<p>--%>
-                                    <%--<a type="button" class="btn btn-success" onclick="">Подтвердить продажу</a>--%>
-                                    <%--<div class="text-area" id="confirmResponse${bookingPosition.id}"></div>--%>
-                                    <%--</p>--%>
-                                    <%--</form>--%>
+                        <ul class="text-center" id="${bookingPosition.id}bookingPosition">
+                            <li style="list-style-type: none">
+                                <h3 class="featurette-heading" id="${bookingPosition.id}name">Название: <c:out
+                                        value="${bookingPosition.product.name}"/></h3></li>
+                            <li style="list-style-type: none"><h4 class="text-muted" id="${bookingPosition.id}model">
+                                Модель: <c:out value="${bookingPosition.product.codeOfModel}"/></h4></li>
+                            <li style="list-style-type: none"><h4 class="text-muted" id="${bookingPosition.id}capacity">
+                                Количество в заказе: <c:out value="${bookingPosition.capacity}"/></h4></li>
+                            <li style="list-style-type: none ">
+                                <form id="confirmBookAjax${booking.id}${bookingPosition.id}">
+                                    <input type="hidden" name="positionID" value="${bookingPosition.id}">
+                                    <input type="number" required min="0" name="capacity" style="width: 50px"
+                                           id="${bookingPosition.id}number" value="${bookingPosition.capacity}"/>
+                                    <a type="button" class="btn btn-success"
+                                       onclick="confirmBookAjax(${booking.id},${bookingPosition.id})">Подтвердить
+                                        продажу</a>
+                                </form>
                             </li>
                         </ul>
-                        <br><br>
+
+                        <%--<form name="confirm" id="confirmBookAjax${bookingPosition.id}">--%>
+                        <%--<input type="hidden" name="positionID" value="${bookingPosition.id}">--%>
+                        <%--<input type="number" required min="0" name="capacity" style="width: 50px"--%>
+                        <%--value="${bookingPosition.capacity}"/>--%>
+
+                        <%--<p>--%>
+                        <%--<a type="button" class="btn btn-success" onclick="">Подтвердить продажу</a>--%>
+                        <%--<div class="text-area" id="confirmResponse${bookingPosition.id}"></div>--%>
+                        <%--</p>--%>
+                        <%--</form>--%>
+                        <%--<br><br>--%>
 
                     </c:forEach>
                 </div>
@@ -191,6 +244,7 @@
             </footer>
         </div>
     </c:forEach>
+    <h3 class="text-center" id="notBooking"></h3>
 
 </sec:authorize>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.pages.jsmy "></script>

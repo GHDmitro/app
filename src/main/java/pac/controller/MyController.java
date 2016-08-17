@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import pac.entities.*;
+import pac.errors.Message;
 import pac.services.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.Date;
 import java.util.*;
@@ -45,15 +47,17 @@ public class MyController {
     private String PATH_TO_IMG = "/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/";
 //  /Users/macbookair/IdeaProjects/App/src/main/resources/
 
-//    /var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/
+    //    /var/lib/openshift/57728e217628e1ec270000ea/app-root/data/img/
     //        /var/lib/openshift/PROJECT_ID/app-root/data/
     private String IMAGE_EXTENSION = ".png";
 
 
     @RequestMapping(value = "/bookAjax", method = RequestMethod.POST)
-    public @ResponseBody String bookAjax(@RequestParam String positionID, @RequestParam Integer capacity, Model model){
+    public
+    @ResponseBody
+    Product bookAjax(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-         String clientLogin = auth.getName();
+        String clientLogin = auth.getName();
         Account client = accountService.findAccount(clientLogin);
         PositionOfPrice position = positionOfPriceService.findPosition(Integer.valueOf(positionID));
         String s = position.getAccount().getLogin();
@@ -75,80 +79,179 @@ public class MyController {
             bookingService.updateBooking(booking);
         }
 
-        return "Товар заказан";
+//        Message message = new Message("Товар "+ product.getName()+" "+product.getCodeOfModel() +" заказан");
+//        System.out.println(message.getMsg());
+
+        return product;
     }
 
-//    @RequestMapping(value = "/confirmBookAjax", method = RequestMethod.POST)
-//    public @ResponseBody List<Booking> confirmBookAjax(@RequestParam String positionID, @RequestParam Integer capacity, Model model){
+    @RequestMapping(value = "/confirmBookAjax", method = RequestMethod.POST)
+    public @ResponseBody Booking confirmBookAjax(@RequestParam String positionID, @RequestParam Integer capacity, HttpServletResponse response) throws IOException {
+
+        BookingPosition bookingPosition = bookingPositionService.findByID(Integer.valueOf(positionID));
+        Account customer = bookingPosition.getBooking().getAccountCustomer();
+        Booking booking = bookingPosition.getBooking();
+        int posCapacity = bookingPosition.getCapacity();
+        Product product = bookingPosition.getProduct();
+
+        if (product != null && product.getId() != 0) {
+            int amount = product.getAmount();
+            if (amount >= capacity && capacity >= 0) {
+                amount -= capacity;
+                product.setAmount(amount);
+                productService.setProduct(product);
+                if (posCapacity <= capacity) {
+                    booking.deleteBookingPosition(bookingPosition);
+                    bookingService.updateBooking(booking);
+
+                    if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
+                        customer.deleteBooking(booking);
+                        accountService.updateAccount(customer);
+                    } else {
+                        System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
+                    }
+                } else {
+                    bookingPosition.setCapacity(posCapacity - capacity);
+                    bookingPositionService.setBookingPosition(bookingPosition);
+                }
+            } else if (capacity >= 0) {
+                capacity -= amount;
+                product.setAmount(0);
+
+                productService.setProduct(product);
+
+                bookingPosition.setCapacity(capacity);
+                bookingPositionService.setBookingPosition(bookingPosition);
+            }
+        } else {
+            if (capacity >= posCapacity) {
+//                System.out.println("тут 1");
+                booking.deleteBookingPosition(bookingPosition);
+                bookingService.updateBooking(booking);
+
+                if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
+                    customer.deleteBooking(booking);
+                    accountService.updateAccount(customer);
+                }
+
+            } else if (capacity >= 0) {
+//                System.out.println("тут 2");
+                bookingPosition.setCapacity(posCapacity - capacity);
+                bookingPositionService.setBookingPosition(bookingPosition);
+            }
+        }
+
+
+        Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
+        Booking booking1 = bookingService.findBooking(booking.getId());
+//        List<Booking> list = new ArrayList<>(set);
+//        Booking bookingResp = null;
+        if (booking1 != null) {
+
+            System.out.println("alkjrvnlsbvlksnvksn");
+            System.out.println(booking1.getId() +"  "+booking1.getAccountClient().getLogin()+"  " + booking1.getBookingPositions().size());
+            for (BookingPosition b : booking1.getBookingPositions()) {
+                System.out.println(b.getId() + "  ----   " + b.getProduct().getName());
+            }
+            return booking1;
+        } else {
+            response.sendError(404, "Not entity");
+            System.out.println("return null");
+            return null;
+        }
+
+    }
+
+//            List<Booking> list = new ArrayList<>(set);
+//            if (list != null && list.size() > 0){
+//                model.addAttribute("bookingList", list);
 //
+//            }else {
+//                model.addAttribute("bookingList", null);
+//            }
+//
+////            model.addAttribute("login", customer.getLogin());
+
+//        return "bookingPage";
+
 //    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Foo test (HttpServletRequest request, Model model) {
+    public String test(HttpServletRequest request, Model model) {
+        return "test";
+    }
 
-//        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
-        File file2 = new File(PATH_TO_IMG, "test1.txt");
-        try{
-            FileWriter w = new FileWriter(file2);
-            w.write("Hello world");
-            w.flush();
-            w.close();
-        } catch (IOException e){
-            model.addAttribute("text1", e.getMessage() + "   write");
-        }
-////ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
+    @RequestMapping(value = "/sentest", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Message sentest(@RequestParam Integer capacity) {
+
+        System.out.println(capacity + "   -----------");
 //
-        try {
-
-            File file1 = new File(PATH_TO_IMG, "test2.txt");
-
-            FileUtils.moveFile(file2, file1);
-
-            BufferedReader read = new BufferedReader(new FileReader(file1));
-
-            String str;
-            StringBuilder sb = new StringBuilder();
-
-            while((str = read.readLine()) != null){
-                sb.append(str);
-            }
-
-            model.addAttribute("text", sb.toString() + " foooooooo" );
-
-
-            System.out.println(file2.getAbsolutePath());
-//            BufferedReader read1 = new BufferedReader(new FileReader(file2));
+////        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
+//        File file2 = new File(PATH_TO_IMG, "test1.txt");
+//        try{
+//            FileWriter w = new FileWriter(file2);
+//            w.write("Hello world");
+//            w.flush();
+//            w.close();
+//        } catch (IOException e){
+//            model.addAttribute("text1", e.getMessage() + "   write");
+//        }
+//////ssh 57728e217628e1ec270000ea@app-timoshdomain12.rhcloud.com
+////
+//        try {
 //
-//            String str1;
-//            StringBuilder sb1 = new StringBuilder();
+//            File file1 = new File(PATH_TO_IMG, "test2.txt");
 //
-//            while((str1 = read1.readLine()) != null){
-//                sb1.append(str1);
+//            FileUtils.moveFile(file2, file1);
+//
+//            BufferedReader read = new BufferedReader(new FileReader(file1));
+//
+//            String str;
+//            StringBuilder sb = new StringBuilder();
+//
+//            while((str = read.readLine()) != null){
+//                sb.append(str);
 //            }
-//            model.addAttribute("text3", sb1.toString() + " foo111111" );
-
-
-
-        } catch (IOException e) {
-            model.addAttribute("text2", e.getMessage() + "  read");
-        }
-
-
-
-
-        return new Foo(32, "uuuuuuu");
+//
+//            model.addAttribute("text", sb.toString() + " foooooooo" );
+//
+//
+//            System.out.println(file2.getAbsolutePath());
+////            BufferedReader read1 = new BufferedReader(new FileReader(file2));
+////
+////            String str1;
+////            StringBuilder sb1 = new StringBuilder();
+////
+////            while((str1 = read1.readLine()) != null){
+////                sb1.append(str1);
+////            }
+////            model.addAttribute("text3", sb1.toString() + " foo111111" );
+//
+//
+//
+//        } catch (IOException e) {
+//            model.addAttribute("text2", e.getMessage() + "  read");
+//        }
+//
+//
+//
+//
+        Message message = new Message(capacity.toString());
+        System.out.println(message.getMsg());
+        return message;
     }
 
     class Foo {
-
+        private int age;
+        private String name;
 
         public Foo(int age, String name) {
             this.age = age;
             this.name = name;
         }
 
-        public int age;
-        public String name;
 
     }
 
@@ -339,7 +442,7 @@ public class MyController {
                 model.addAttribute("error", "Проблеммы у сервера в addPricePosition");
                 return "customer";
             }
-            model.addAttribute("account",account);
+            model.addAttribute("account", account);
 
             return "canvas";
         } else return "login";
@@ -360,7 +463,7 @@ public class MyController {
                     String refPhoto = account.getPhotoAccount();
                     if ((new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION)).exists()) { //login
                         // существует
-                        model.addAttribute("refPhoto", refPhoto ); //IMAGE_EXTENSION
+                        model.addAttribute("refPhoto", refPhoto); //IMAGE_EXTENSION
                         model.addAttribute("login", login);
                     } else {
                         // не существует
@@ -412,12 +515,12 @@ public class MyController {
                 return "ownData";
             } else if (account.getAccountType().getTypeName().equals("client")) {
                 return "ownDataForClient";
-            }else return "login";
+            } else return "login";
         } else return "login";
     }
 
     @RequestMapping(value = "/ownDataForClient")
-    public String ownDataForClient(Model model){
+    public String ownDataForClient(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -436,7 +539,7 @@ public class MyController {
                 model.addAttribute("telNumber", account.getTelNumber());
                 return "ownDataForClient";
             } else return "login";
-        }else return "login";
+        } else return "login";
     }
 
     @RequestMapping(value = "/ownData", method = RequestMethod.POST)
@@ -451,12 +554,12 @@ public class MyController {
 
             String refPhoto = account.getPhotoAccount();
             if (!photo.isEmpty()) {
-                if (refPhoto != null && refPhoto.length()>0) {
+                if (refPhoto != null && refPhoto.length() > 0) {
                     File file = new File(PATH_TO_IMG, refPhoto + IMAGE_EXTENSION); // login
                     if (file.exists()) {
                         file.delete();
                     }
-                }else {
+                } else {
                     refPhoto = account.getLogin();
                     account.setPhotoAccount(refPhoto);
 //                        accountService.refreshAccount(account);
@@ -501,7 +604,7 @@ public class MyController {
                 return "ownData";
             } else if (account.getAccountType().getTypeName().equals("client")) {
                 return "ownDataForClient";
-            }else return "login";
+            } else return "login";
         } else return "login";
     }
 
@@ -536,7 +639,7 @@ public class MyController {
                 model.addAttribute("listPositions", setPositions);
                 model.addAttribute("account", account);
                 return "canvas";
-            }else {
+            } else {
                 model.addAttribute("error", "Обновите страницу по этой ссылке");
                 return "canvas";
 
@@ -560,7 +663,8 @@ public class MyController {
             return "login";
         } else return "login";
     }
-//changePositionPost
+
+    //changePositionPost
     @RequestMapping(value = "/changePosition", method = RequestMethod.POST)
     public String changePositionPost(@RequestParam String id, @RequestParam String name,
                                      @RequestParam String codeOfModel, @RequestParam String description,
@@ -679,7 +783,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/addAccount")
-    public String addAccount(Model model){
+    public String addAccount(Model model) {
         return "registrat";
     }
 
@@ -722,102 +826,102 @@ public class MyController {
             } else {
                 return "login";
             }
-        }else return "login";
+        } else return "login";
 
     }
 
     @RequestMapping(value = "/confirmBooking")
-    public String confirmBooking(Model model){
+    public String confirmBooking(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return "bookingPage";
-        }else return "login";
+        } else return "login";
     }
-    @RequestMapping(value = "/confirmBooking", method = RequestMethod.POST)
-    public String confirmBooking(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!(auth instanceof AnonymousAuthenticationToken)) {
-            BookingPosition bookingPosition = bookingPositionService.findByID(Integer.valueOf(positionID));
-            Account customer = bookingPosition.getBooking().getAccountCustomer();
-            Booking booking = bookingPosition.getBooking();
-            int posCapacity = bookingPosition.getCapacity();
-            Product product = bookingPosition.getProduct();
-
-            if (product != null && product.getId() != 0) {
-//                System.out.println("не нал");
-                int amount = product.getAmount();
-                if (amount >= capacity && capacity >= 0) {
-                    amount -= capacity;
-                    product.setAmount(amount);
-                    productService.setProduct(product);
-                    if (posCapacity <= capacity) {
-//                bookingPositionService.deleteBookingPosition(bookingPosition);
-                        booking.deleteBookingPosition(bookingPosition);
-                        bookingService.updateBooking(booking);
-
-                        if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
-                            customer.deleteBooking(booking);
-                            accountService.updateAccount(customer);
-                        } else {
-                            System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
-                        }
-                    } else {
-                        bookingPosition.setCapacity(posCapacity - capacity);
-                        bookingPositionService.setBookingPosition(bookingPosition);
-                    }
-//                if (amount == 0) {
-////                product.setPositions(new HashSet<>());
-//                    productService.setProduct(product); //
+//    @RequestMapping(value = "/confirmBooking", method = RequestMethod.POST)
+//    public String confirmBooking(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (!(auth instanceof AnonymousAuthenticationToken)) {
+//            BookingPosition bookingPosition = bookingPositionService.findByID(Integer.valueOf(positionID));
+//            Account customer = bookingPosition.getBooking().getAccountCustomer();
+//            Booking booking = bookingPosition.getBooking();
+//            int posCapacity = bookingPosition.getCapacity();
+//            Product product = bookingPosition.getProduct();
+//
+//            if (product != null && product.getId() != 0) {
+////                System.out.println("не нал");
+//                int amount = product.getAmount();
+//                if (amount >= capacity && capacity >= 0) {
+//                    amount -= capacity;
+//                    product.setAmount(amount);
+//                    productService.setProduct(product);
+//                    if (posCapacity <= capacity) {
+////                bookingPositionService.deleteBookingPosition(bookingPosition);
+//                        booking.deleteBookingPosition(bookingPosition);
+//                        bookingService.updateBooking(booking);
+//
+//                        if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
+//                            customer.deleteBooking(booking);
+//                            accountService.updateAccount(customer);
+//                        } else {
+//                            System.out.println(booking.getBookingPositions().size() + "  лист не обновился");
+//                        }
+//                    } else {
+//                        bookingPosition.setCapacity(posCapacity - capacity);
+//                        bookingPositionService.setBookingPosition(bookingPosition);
+//                    }
+////                if (amount == 0) {
+//////                product.setPositions(new HashSet<>());
+////                    productService.setProduct(product); //
+////                }
+//                } else if (capacity >= 0) {
+//                    capacity -= amount;
+//                    product.setAmount(0);
+////            product.setPositions(new HashSet<>());
+//                    productService.setProduct(product);
+////            productService.deleteProduct(product);
+//                    bookingPosition.setCapacity(capacity);
+//                    bookingPositionService.setBookingPosition(bookingPosition);
 //                }
-                } else if (capacity >= 0) {
-                    capacity -= amount;
-                    product.setAmount(0);
-//            product.setPositions(new HashSet<>());
-                    productService.setProduct(product);
-//            productService.deleteProduct(product);
-                    bookingPosition.setCapacity(capacity);
-                    bookingPositionService.setBookingPosition(bookingPosition);
-                }
-            } else {
-                if (capacity >= posCapacity) {
-//                System.out.println("тут 1");
-                    booking.deleteBookingPosition(bookingPosition);
-                    bookingService.updateBooking(booking);
-
-                    if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
-                        customer.deleteBooking(booking);
-                        accountService.updateAccount(customer);
-                    }
-
-                } else if (capacity >= 0) {
-//                System.out.println("тут 2");
-                    bookingPosition.setCapacity(posCapacity - capacity);
-                    bookingPositionService.setBookingPosition(bookingPosition);
-                }
-            }
-
-
-//        bookingService.updateBooking(booking); //
-//        accountService.updateAccount(customer);
-
-
-            Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
-            List<Booking> list = new ArrayList<>(set);
-            if (list != null && list.size() > 0){
-                model.addAttribute("bookingList", list);
-
-            }else {
-                model.addAttribute("bookingList", null);
-            }
-
-//            model.addAttribute("login", customer.getLogin());
-
-            return "bookingPage";
-        }else return "login";
-    }
+//            } else {
+//                if (capacity >= posCapacity) {
+////                System.out.println("тут 1");
+//                    booking.deleteBookingPosition(bookingPosition);
+//                    bookingService.updateBooking(booking);
+//
+//                    if (booking.getBookingPositions() == null || booking.getBookingPositions().size() == 0) {
+//                        customer.deleteBooking(booking);
+//                        accountService.updateAccount(customer);
+//                    }
+//
+//                } else if (capacity >= 0) {
+////                System.out.println("тут 2");
+//                    bookingPosition.setCapacity(posCapacity - capacity);
+//                    bookingPositionService.setBookingPosition(bookingPosition);
+//                }
+//            }
+//
+//
+////        bookingService.updateBooking(booking); //
+////        accountService.updateAccount(customer);
+//
+//
+//            Set<Booking> set = accountService.findAccount(customer.getLogin()).getBookingSet();
+//            List<Booking> list = new ArrayList<>(set);
+//            if (list != null && list.size() > 0){
+//                model.addAttribute("bookingList", list);
+//
+//            }else {
+//                model.addAttribute("bookingList", null);
+//            }
+//
+////            model.addAttribute("login", customer.getLogin());
+//
+//            return "bookingPage";
+//        }else return "login";
+//    }
 
     @RequestMapping(value = "/bookingPosition")
-    public String bookingPosition(Model model){
+    public String bookingPosition(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -830,9 +934,10 @@ public class MyController {
                 model.addAttribute("accountList", accountList);
                 return "home";
             } else return "login";
-        }else return "login";
+        } else return "login";
 
     }
+
     @RequestMapping(value = "/bookingPosition", method = RequestMethod.POST)
     public String bookingPosition(@RequestParam String positionID, @RequestParam Integer capacity, Model model) {
 
@@ -891,7 +996,7 @@ public class MyController {
             model.addAttribute("account", customer);
 
             return "canvas";
-        }else return "login";
+        } else return "login";
 
     }
 
@@ -910,7 +1015,7 @@ public class MyController {
     }
 
     @RequestMapping(value = "/changeBackground")
-    public String changeBackground(Model model){
+    public String changeBackground(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -924,11 +1029,11 @@ public class MyController {
                 model.addAttribute("account", account);
                 return "canvas";
             } else return "login";
-        }else return "login";
+        } else return "login";
     }
 
     @RequestMapping(value = "/changeBackground", method = RequestMethod.POST)
-    public String changeBackground(@RequestParam MultipartFile photoBackground, Model model){
+    public String changeBackground(@RequestParam MultipartFile photoBackground, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -938,13 +1043,13 @@ public class MyController {
                 StringBuilder refPhoto = new StringBuilder();
                 String ref = photoBackground.getOriginalFilename();
                 refPhoto.append(account.getLogin()).append(ref.substring(0, ref.indexOf(".")));
-                if (account.getPhotoBackground1() == null){
+                if (account.getPhotoBackground1() == null) {
 //                    refPhoto.append(photoBackground.getOriginalFilename());
                     account.setPhotoBackground1(refPhoto.toString());
-                }else if (account.getPhotoBackground2() == null){
+                } else if (account.getPhotoBackground2() == null) {
 //                    refPhoto.append();
                     account.setPhotoBackground2(refPhoto.toString());
-                }else if (account.getPhotoBackground3() == null){
+                } else if (account.getPhotoBackground3() == null) {
 //                    refPhoto.append("photoBackground3");
                     account.setPhotoBackground3(refPhoto.toString());
                 }
@@ -969,11 +1074,11 @@ public class MyController {
                 model.addAttribute("account", account);
                 return "canvas";
             } else return "login";
-        }else return "login";
+        } else return "login";
     }
 
     @RequestMapping(value = "/deleteBackground")
-    public String deleteBackground(Model model){
+    public String deleteBackground(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -987,14 +1092,14 @@ public class MyController {
                 model.addAttribute("account", account);
                 return "canvas";
             } else return "login";
-        }else return "login";
+        } else return "login";
     }
 
     @RequestMapping(value = "/deleteBackground", method = RequestMethod.POST)
     public String deleteBackground(@RequestParam(name = "photoBackground1", required = false) String photoBackground1,
                                    @RequestParam(name = "photoBackground2", required = false) String photoBackground2,
                                    @RequestParam(name = "photoBackground3", required = false) String photoBackground3,
-                                   Model model){
+                                   Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
@@ -1011,90 +1116,90 @@ public class MyController {
                 File file3 = new File(PATH_TO_IMG, account.getPhotoBackground3() + IMAGE_EXTENSION);
                 String refphoto;
 
-                if (photoBackground1 == null && photoBackground2 == null && photoBackground3 == null){
+                if (photoBackground1 == null && photoBackground2 == null && photoBackground3 == null) {
                     Set<PositionOfPrice> set = (Set<PositionOfPrice>) account.getPricePositions();
                     List<PositionOfPrice> list = new ArrayList<>(set);
                     model.addAttribute("listPositions", list);
                     model.addAttribute("account", account);
                     return "canvas";
-                } else if (photoBackground1 != null && photoBackground2 != null && photoBackground3 != null){
-                    if (file1.exists()){
+                } else if (photoBackground1 != null && photoBackground2 != null && photoBackground3 != null) {
+                    if (file1.exists()) {
                         file1.delete();
                     }
-                    if (file2.exists()){
+                    if (file2.exists()) {
                         file2.delete();
                     }
-                    if (file3.exists()){
+                    if (file3.exists()) {
                         file3.delete();
                     }
                     account.setPhotoBackground1(null);
                     account.setPhotoBackground2(null);
                     account.setPhotoBackground3(null);
-                }else if (photoBackground1 != null && photoBackground2 != null){
-                    if (file1.exists()){
+                } else if (photoBackground1 != null && photoBackground2 != null) {
+                    if (file1.exists()) {
                         file1.delete();
                     }
                     account.setPhotoBackground1(null);
-                    if (file2.exists()){
+                    if (file2.exists()) {
                         file2.delete();
                     }
                     account.setPhotoBackground2(null);
                     refphoto = account.getPhotoBackground3();
-                    if (refphoto != null){
+                    if (refphoto != null) {
                         account.setPhotoBackground1(refphoto);
                         account.setPhotoBackground3(null);
                     }
-                }else if (photoBackground1 != null && photoBackground3 != null){
-                    if (file1.exists()){
+                } else if (photoBackground1 != null && photoBackground3 != null) {
+                    if (file1.exists()) {
                         file1.delete();
                     }
                     account.setPhotoBackground1(null);
-                    if (file3.exists()){
+                    if (file3.exists()) {
                         file3.delete();
                     }
                     account.setPhotoBackground3(null);
                     refphoto = account.getPhotoBackground2();
-                    if (refphoto != null){
+                    if (refphoto != null) {
                         account.setPhotoBackground1(refphoto);
                         account.setPhotoBackground2(null);
                     }
-                }else if (photoBackground2 != null && photoBackground3 != null){
-                    if (file2.exists()){
+                } else if (photoBackground2 != null && photoBackground3 != null) {
+                    if (file2.exists()) {
                         file2.delete();
                     }
-                    if (file3.exists()){
+                    if (file3.exists()) {
                         file3.delete();
                     }
                     account.setPhotoBackground2(null);
                     account.setPhotoBackground3(null);
-                }else {
+                } else {
                     if (photoBackground1 != null) {
-                        if (file1.exists()){
+                        if (file1.exists()) {
                             file1.delete();
                         }
                         account.setPhotoBackground1(null);
                         String refPhoto2 = account.getPhotoBackground2();
                         String refPhoto3 = account.getPhotoBackground3();
-                        if (refPhoto2 != null){
+                        if (refPhoto2 != null) {
                             account.setPhotoBackground1(refPhoto2);
                             account.setPhotoBackground2(null);
                         }
-                        if (refPhoto3 != null){
+                        if (refPhoto3 != null) {
                             account.setPhotoBackground2(refPhoto3);
                             account.setPhotoBackground3(null);
                         }
-                    }else if (photoBackground2 != null){
-                        if (file2.exists()){
+                    } else if (photoBackground2 != null) {
+                        if (file2.exists()) {
                             file2.delete();
                         }
                         account.setPhotoBackground2(null);
                         String refPhoto3 = account.getPhotoBackground3();
-                        if (refPhoto3 != null){
+                        if (refPhoto3 != null) {
                             account.setPhotoBackground2(refPhoto3);
                             account.setPhotoBackground3(null);
                         }
-                    }else if (photoBackground3 != null){
-                        if (file3.exists()){
+                    } else if (photoBackground3 != null) {
+                        if (file3.exists()) {
                             file3.delete();
                         }
                         account.setPhotoBackground3(null);
@@ -1109,7 +1214,7 @@ public class MyController {
                 model.addAttribute("account", account);
                 return "canvas";
             } else return "login";
-        }else return "login";
+        } else return "login";
     }
 
 

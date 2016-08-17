@@ -1,5 +1,8 @@
 package pac.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,6 +85,7 @@ public class Booking {
         this.accountClient = accountClient;
     }
 
+    @JsonBackReference
     public Account getAccountCustomer() {
         return accountCustomer;
     }
@@ -89,7 +93,7 @@ public class Booking {
     public void setAccountCustomer(Account accountCustomer) {
         this.accountCustomer = accountCustomer;
     }
-
+    @JsonManagedReference
     public Set<BookingPosition> getBookingPositions() {
         return bookingPositions;
     }

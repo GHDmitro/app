@@ -1,5 +1,7 @@
 package pac.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -59,6 +61,7 @@ public class PositionOfPrice {
         return two -id;
     }
 
+    @JsonBackReference
     public Account getAccount() {
         return account;
     }

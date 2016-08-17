@@ -41,11 +41,12 @@
                 type: "POST",
                 url: methodurl,
                 data: $("#" + posId).serialize(),
-                success: function (data) {
-                    $('#p' + posId).text("Товар заказан");
+                success: function (product) {
+                    $('#p' + posId).text('').append("Заказан ").append(product.name).append(" ").append(product.codeOfModel);   //"Товар заказан"
                 }
             });
         }
+
     </script>
 </head>
 
@@ -287,11 +288,10 @@
                                     <a class="btn btn-success" type="button"
                                        onclick="bookAjax(${position.id})">Заказать</a>
 
-                                    <p class="text-area" id="p${position.id}"></p>
+
                                 </form>
+                                <p class="text" id="p${position.id}"></p>
                                 <%--<span class="glyphicon glyphicon-shopping-cart" id="glyph${position.id}"></span>--%>
-
-
                             </sec:authorize>
                         </c:if>
                             <%--<li><form action="<c:url value="/changePosition"/>" method="post">--%>
