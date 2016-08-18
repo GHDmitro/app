@@ -45,12 +45,8 @@
                 data: $("#confirmBookAjax" + bookingId+ posId).serialize(),
                 success: function (booking) {
 
-//                     var flug = booking.toString();
-//                       //"Товар заказан" booking != null
-//                    alert(flug);
                     if (booking !== null) {
 
-//                        $('#lol').text('').append(booking.id).append(" ").append(booking.bookingPositions[0].product.name).append(booking.bookingPositions[0].id);
                         var bookingPositions = booking.bookingPositions;
                         var isExist = false;
 
