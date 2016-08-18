@@ -78,10 +78,6 @@ public class MyController {
             bookingPositionService.setBookingPosition(bookingPosition);
             bookingService.updateBooking(booking);
         }
-
-//        Message message = new Message("Товар "+ product.getName()+" "+product.getCodeOfModel() +" заказан");
-//        System.out.println(message.getMsg());
-
         return product;
     }
 
@@ -173,7 +169,7 @@ public class MyController {
     @ResponseBody
     Message sentest(@RequestParam Integer capacity) {
 
-        System.out.println(capacity + "   -----------");
+//        System.out.println(capacity + "   -----------");
 //
 ////        File file1 = new File("/var/lib/openshift/57728e217628e1ec270000ea/app-root/data/");
 //        File file2 = new File(PATH_TO_IMG, "test1.txt");
@@ -226,7 +222,7 @@ public class MyController {
 //
 //
         Message message = new Message(capacity.toString());
-        System.out.println(message.getMsg());
+//        System.out.println(message.getMsg());
         return message;
     }
 

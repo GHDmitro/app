@@ -62,11 +62,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!-- <a class="active" href="#">Прайс лист</a> -->
+
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                        <%--<li class="active"><a href="#">Прайс лист</a></li>--%>
+
                     <sec:authorize access="hasRole('customer')">
                         <li><a href="<c:url value="/addPricePosition"/> ">Добавить позицию</a></li>
                         <li><a href="<c:url value="/bookingPage"/> ">Заказы</a></li>
@@ -156,15 +156,7 @@
         </div>
         <!-- /.container -->
     </nav>
-    <%--<div class="carousel slide" id="carousel">--%>
-    <%--<div class="carousel-inner">--%>
-    <%--<div class="item active">--%>
-    <%--&lt;%&ndash;id="pageHeader1"&ndash;%&gt;--%>
-    <%--<img src="<c:url value="/img/heades/header1.jpg"/>">--%>
-    <%--</div>--%>
-    <%--</div>--%>
-    <%--<!-- индикаторы слайдов -->--%>
-    <%--</div>--%>
+
 
     <div class="carousel slide" id="carousel">
 

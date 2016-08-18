@@ -200,28 +200,6 @@
 
                     </c:forEach>
                 </div>
-
-                    <%--<div class="col-xs-12 col-md-5 col-md-pull-7 col-sm-10 ">--%>
-                    <%--<div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5">--%>
-                    <%--<c:if test="${booking.accountClient.photoAccount != null}">--%>
-                    <%--<img class="featurette-image img-responsive center-block" width="350" height="350"--%>
-                    <%--src="<c:url value="/givePhoto/${booking.accountClient.photoAccount}"/>"--%>
-                    <%--alt="Изображение загружается">--%>
-                    <%--&lt;%&ndash;&ndash;%&gt;--%>
-                    <%--</c:if>--%>
-                    <%--<c:if test="${booking.accountClient.photoAccount == null}">--%>
-                    <%--<img class="featurette-image img-responsive center-block" width="350" height="350"--%>
-                    <%--src="<c:url value="/img/defaultPhotoToScreen.png"/>"--%>
-                    <%--alt="Изображение загружается">--%>
-                    <%--</c:if>--%>
-                    <%--&lt;%&ndash;<img class="featurette-image img-responsive center-block" height="250" width="250" src="<spring:url value="/img/${}"/>"&ndash;%&gt;--%>
-                    <%--&lt;%&ndash;alt="Изображение загружается">&ndash;%&gt;--%>
-                    <%--<br><br>--%>
-                    <%--<ul>--%>
-                    <%--<li><p class="lead">Email : <c:out value="${booking.accountClient.email}"/></p></li>--%>
-                    <%--<li><p class="lead">Телефон :<c:out value="${booking.accountClient.telNumber}"/></p></li>--%>
-                    <%--</ul>--%>
-                    <%--</div>--%>
                 <br>
 
 
