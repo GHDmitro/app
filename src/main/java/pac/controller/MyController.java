@@ -125,7 +125,7 @@ public class MyController {
             }
         } else {
             if (capacity >= posCapacity) {
-//                System.out.println("тут 1");
+
                 booking.deleteBookingPosition(bookingPosition);
                 bookingService.updateBooking(booking);
 
@@ -162,19 +162,6 @@ public class MyController {
 
     }
 
-//            List<Booking> list = new ArrayList<>(set);
-//            if (list != null && list.size() > 0){
-//                model.addAttribute("bookingList", list);
-//
-//            }else {
-//                model.addAttribute("bookingList", null);
-//            }
-//
-////            model.addAttribute("login", customer.getLogin());
-
-//        return "bookingPage";
-
-//    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(HttpServletRequest request, Model model) {
