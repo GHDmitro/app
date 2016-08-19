@@ -226,17 +226,17 @@ public class MyController {
         return message;
     }
 
-    class Foo {
-        private int age;
-        private String name;
-
-        public Foo(int age, String name) {
-            this.age = age;
-            this.name = name;
-        }
-
-
-    }
+//    class Foo {
+//        private int age;
+//        private String name;
+//
+//        public Foo(int age, String name) {
+//            this.age = age;
+//            this.name = name;
+//        }
+//
+//
+//    }
 
     @RequestMapping("/")
     public String rootPage(Model model, HttpServletRequest request) {

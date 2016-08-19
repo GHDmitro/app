@@ -186,10 +186,7 @@
             <c:if test="${account.photoBackground2 != null}">
                 <div class="item">
                     <img src="<c:url value="/givePhoto/${account.photoBackground2}"/>" alt="">
-                        <%--<div class="carousel-caption">--%>
-                        <%--<h3>Второй слайд</h3>--%>
-                        <%--<p>Описание второго слайда</p>--%>
-                        <%--</div>--%>
+
                 </div>
             </c:if>
             <c:if test="${account.photoBackground3 != null}">

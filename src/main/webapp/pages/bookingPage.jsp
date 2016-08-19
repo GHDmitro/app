@@ -118,7 +118,6 @@
             <hr class="featurette-divider">
                 <%--<form enctype="multipart/form-data" action="<c:url value="/changePositionPost"/> " method="post">--%>
             <div class="row featurette">
-                    <%--<input type="hidden" name="id" value="${position.id}"/>--%>
 
                 <div class="col-xs-12 col-sm-6 col-md-6 col-md-5 col-lg-5">
                     <c:if test="${booking.accountClient.photoAccount != null}">
@@ -132,8 +131,7 @@
                              src="<c:url value="/img/defaultPhotoToScreen.png"/>"
                              alt="Изображение загружается">
                     </c:if>
-                        <%--<img class="featurette-image img-responsive center-block" height="250" width="250" src="<spring:url value="/img/${}"/>"--%>
-                        <%--alt="Изображение загружается">--%>
+
                     <br><br>
                     <ul class="text-center">
                         <li><p class="lead">Email : <c:out value="${booking.accountClient.email}"/></p></li>
