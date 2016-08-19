@@ -42,7 +42,7 @@
                 url: methodurl,
                 data: $("#" + posId).serialize(),
                 success: function (product) {
-                    $('#p' + posId).text('').append("Заказан ").append(product.name).append(" ").append(product.codeOfModel);   //"Товар заказан"
+                    $('#p1' + posId).text('').append("Заказан ").append(product.name).append(" ").append(product.codeOfModel);   //"Товар заказан"
                 }
             });
         }
@@ -276,10 +276,8 @@
                                     <input type="number" min="1" required name="capacity" style="width: 50px"/>
                                     <a class="btn btn-success" type="button"
                                        onclick="bookAjax(${position.id})">Заказать</a>
-
-
                                 </form>
-                                <p class="text" id="p${position.id}"></p>
+                                <p class="text" id="p1${position.id}"></p>
                                 <%--<span class="glyphicon glyphicon-shopping-cart" id="glyph${position.id}"></span>--%>
                             </sec:authorize>
                         </c:if>

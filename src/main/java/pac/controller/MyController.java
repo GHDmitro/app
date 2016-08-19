@@ -68,12 +68,12 @@ public class MyController {
         if (booking == null) {
             booking = new Booking(client, customer); //, customer
             bookingService.save(booking);
-            System.out.println(booking.getId() + " это ID заказа ");
+//            System.out.println(booking.getId() + " это ID заказа ");
             BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); //, booking
             bookingPositionService.setBookingPosition(bookingPosition);
             accountService.updateAccount(customer);
         } else {
-            System.out.println(booking.getId() + " это ID заказа else");
+//            System.out.println(booking.getId() + " это ID заказа else");
             BookingPosition bookingPosition = new BookingPosition(capacity, booking, product); // booking ,
             bookingPositionService.setBookingPosition(bookingPosition);
             bookingService.updateBooking(booking);
@@ -144,7 +144,7 @@ public class MyController {
 //        Booking bookingResp = null;
         if (booking1 != null) {
 
-            System.out.println("alkjrvnlsbvlksnvksn");
+//            System.out.println("alkjrvnlsbvlksnvksn");
             System.out.println(booking1.getId() +"  "+booking1.getAccountClient().getLogin()+"  " + booking1.getBookingPositions().size());
             for (BookingPosition b : booking1.getBookingPositions()) {
                 System.out.println(b.getId() + "  ----   " + b.getProduct().getName());
@@ -152,7 +152,7 @@ public class MyController {
             return booking1;
         } else {
             response.sendError(404, "Not entity");
-            System.out.println("return null");
+//            System.out.println("return null");
             return null;
         }
 
