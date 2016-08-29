@@ -222,21 +222,10 @@ public class MyController {
 //
 //
         Message message = new Message(capacity.toString());
-//        System.out.println(message.getMsg());
+        System.out.println(message.getMsg());
         return message;
     }
 
-//    class Foo {
-//        private int age;
-//        private String name;
-//
-//        public Foo(int age, String name) {
-//            this.age = age;
-//            this.name = name;
-//        }
-//
-//
-//    }
 
     @RequestMapping("/")
     public String rootPage(Model model, HttpServletRequest request) {
